@@ -702,6 +702,6 @@ namespace tlib
             return RemovalSpace(std::basic_string_view<_Elem>(Str), Locale);
       }
 
-};
+}
 
 #endif

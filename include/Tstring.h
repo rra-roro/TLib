@@ -49,27 +49,9 @@
 
 namespace tlib
 {
-
-#ifdef _WIN32
-
-#ifdef _UNICODE
       extern const size_t npos;
-      typedef std::wstring tstring;
-      typedef std::wstring_view tstring_view;
-#else
-      extern const size_t npos;
-      typedef std::string tstring;
-      typedef std::string_view tstring_view;
-#endif // _UNICODE
-
-#elif __linux__
-
-      extern const size_t npos;
-      typedef std::u16string tstring;
-      typedef std::u16string_view tstring_view;
-
-#endif
-
+      using tstring = std::basic_string<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tstring_view = std::basic_string_view<TCHAR>;
 
 #if !(defined(UNDER_CE) || defined(WINCE))
       // Не актуально для не консольных и WINCE программ
@@ -81,7 +63,7 @@ namespace tlib
       struct codecvt_byname : std::codecvt_byname<I, E, S>
       {
             template <class... Args>
-            codecvt_byname(Args &&... args) : std::codecvt_byname<I, E, S>(std::forward<Args>(args)...)
+            codecvt_byname(Args&&... args) : std::codecvt_byname<I, E, S>(std::forward<Args>(args)...)
             {
             }
             ~codecvt_byname() {}
@@ -191,7 +173,7 @@ namespace tlib
             {
                   return str2tstr(str);
             }
-      };
+      }
 
       template <class _Elem>
       inline std::basic_string<_Elem> Tstr2TemplateStr(const tstring &str)
@@ -208,7 +190,7 @@ namespace tlib
             {
                   return tstr2str(str);
             }
-      };
+      }
 
       template <class T, class _Elem = typename Type_Str<T>::type>
       inline std::string TemplateStr2str(T str)
@@ -233,11 +215,11 @@ namespace tlib
             {
                   return str;
             }
-      };
+      }
 
 #endif //!(defined(UNDER_CE) || defined(WINCE))
 
-};
+}
 
 
 #if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))

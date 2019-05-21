@@ -15,7 +15,7 @@
 using namespace tlib;
 using namespace std;
 
-void PrintTest11(int r, const TCHAR* Str_Std, streamsize Tab1, const tstring& Str_My, streamsize Tab2)
+void PrintTest11(int r, [[maybe_unused]] const TCHAR* Str_Std, [[maybe_unused]] streamsize Tab1, const tstring& Str_My, streamsize Tab2)
 {
 	tcout << _T("base") << setw(2) << r << _T(": ");
 #ifdef _WIN32
@@ -61,7 +61,7 @@ void PrintBuildInfo()
 	wcout << L"\ntcout is - " << typeid(tcout).name();
 
 	tcout << Color();
-};
+}
 
 
 #ifdef _WIN32

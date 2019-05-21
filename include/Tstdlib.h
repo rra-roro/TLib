@@ -154,6 +154,6 @@ namespace tlib
             else return TempStr;
         }
 
-};
+}
 
 #endif // TSTDLIB

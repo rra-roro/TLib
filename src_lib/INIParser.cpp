@@ -44,6 +44,8 @@
 #include <Tlocale.h>
 #include <vector>
 #include <INIParser.h>
+#include <memory>
+#include <filesystem>
 
 using namespace tlib;
 using namespace std;
@@ -91,7 +93,7 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 		NewSection.SectionName = prev_str.substr(1,prev_str.size()-2);   // Сохраним ее имя
 
 		tstring fileline;
-		while (getline<TCHAR,char_traits<TCHAR>,allocator<TCHAR> >(fs,fileline)) // Читаем параметры и их значения пока не встретим новую секцию
+            while (getline(fs, fileline)) // Читаем параметры и их значения пока не встретим новую секцию
 		{
 			RemovalSpace(fileline); 
 			// Если новая секция вызовем InternalParser рекурсивно.
@@ -137,9 +139,11 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 // И начинает его парсить.
 void INIParser::Parser(const locale& Locale)
 {
+      namespace fs = std::filesystem;
+
 	tifstream inifilestream;
 	inifilestream.imbue(Locale);
-	inifilestream.open(ini_filename.c_str());
+      inifilestream.open(fs::path(ini_filename));
 	tstring fileline;
 	getline(inifilestream,fileline);
 	InternalParser(inifilestream,fileline);

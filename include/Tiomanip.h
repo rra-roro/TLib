@@ -86,15 +86,15 @@ namespace tlib
 		return std::setfill<_Elem>(_Ch);
 	}
 
-#ifdef __linux__
-
-	template<>
-	inline auto tsetfill(char16_t _Ch)
-	{			
-		return std::setfill<char>(std::use_facet<std::ctype<char16_t> >(GetLocaleProgram()).narrow(_Ch,'\0'));
-	}
-
-#endif // __linux__
+//#ifdef __linux__
+//
+//	template<>
+//	inline auto tsetfill(char16_t _Ch)
+//	{			
+//		return std::setfill<char>(std::use_facet<std::ctype<char16_t> >(GetLocaleProgram()).narrow(_Ch,'\0'));
+//	}
+//
+//#endif // __linux__
 
     //========================================================================================
     // Объявим манипуляторы с одним аргументом:
@@ -311,17 +311,17 @@ namespace tlib
      public:
         Color(EnumColor ColorText=grey,EnumColor ColorFone=black): ColorText(ColorText), ColorFone(ColorFone){};
 
-        friend inline std::iostream& operator<<(std::iostream& ios, const Color& c){return ios;};
-        friend inline std::wiostream& operator<<(std::wiostream& wios, const Color& c){return wios;};
+        friend inline std::iostream& operator<<(std::iostream& ios, [[maybe_unused]] const Color& c){return ios;};
+        friend inline std::wiostream& operator<<(std::wiostream& wios, [[maybe_unused]]  const Color& c) { return wios; };
         
-		template<class _Elem>
+	  template<class _Elem>
 		friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const Color& c)
         {
 
 #ifdef _WIN32
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (WORD)c.ColorText|(((WORD)c.ColorFone)<<1));                           
 #elif __linux__
-                os << "\e[;" << (c.ColorFone+10) << ";" << c.ColorText << "m";
+                os << "\033[;" << (c.ColorFone+10) << ";" << c.ColorText << "m";
 #endif 
                 return os;     
         }
@@ -367,7 +367,7 @@ namespace tlib
 		ConversionRadix(T value, int radix, int group=0) : value_str(GetStrOfDig(value, radix)),
 			                                               radix(radix), group(group), 
 			                                               IsSigned(isSigned && (value < 0))
-		{};
+		{}
 
 		template<class _Elem>
 		friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const ConversionRadix& cr)

@@ -12,12 +12,12 @@
 //               param1 = value     ; Имя параметра, должно быть уникальным в пределах
 //               param2 = “;vlue;”  ; секции
 //
-//            Если имя параметра не будет уникальным, то получить значение второго 
+//            Если имя параметра не будет уникальным, то получить значение второго
 //            параметра с одинаковым именем с помощью ф-ии GetValueByName будет невозможно.
 //            Однако его можно получить, перебрав с помощью ф-ии GetSectionLine все пары
 //            имя-параметра/значение для данной секции (это не удобно).
 //
-//            Чтобы распарсить INI файл нужно использовать объект INIParser 
+//            Чтобы распарсить INI файл нужно использовать объект INIParser
 //            у которого такой интерфейс:
 
 //               INIParser(const tstring& ini_filename)  - конструктор, получает имя ini файла.
@@ -25,10 +25,10 @@
 //               SectionList                             - член класса, предоставляющий интерфейс
 //                                                         к данным ini файла:
 //
-//            SectionList.size()                         - возвращает секций в файле 
+//            SectionList.size()                         - возвращает секций в файле
 //            SectionList.empty()                        - возвращает true, если файл не содержит распознаных секций
 //            SectionList.GetSectionByName(tstring& SectionName)                  - возвращает указатель на секцию
-//            SectionList.GetSectionByName(..).GetValueByName(tstring& ParamName) - возвращает значение параметра, 
+//            SectionList.GetSectionByName(..).GetValueByName(tstring& ParamName) - возвращает значение параметра,
 //                                                                                  для данной секции
 //            SectionList.GetSectionByName(..).SectionName                        - содержит имя секции
 //            SectionList.GetSectionByName(..).size()                             - возвращает число параметров в секции
@@ -56,35 +56,34 @@ class INIParser;
 //     class Section - содержит интерфейс доступа к параметрам и значениям секции
 //
 //
-class Section          
+class Section
 {
-    friend INIParser;
+      friend INIParser;
       std::vector<tlib::tstring> ParamName;
-    std::vector<tlib::tstring> Value;
+      std::vector<tlib::tstring> Value;
       tlib::tstring EmptyString;
 
   public:
-	// содержит имя секции
-	tlib::tstring SectionName;
+      // содержит имя секции
+      tlib::tstring SectionName;
 
-	// возвращает значение параметра, для данной секции
-	const tlib::tstring& GetValueByName(const tlib::tstring& argParamName)const;
-	
-	// возвращает параметр/значение по номеру
-	std::pair<tlib::tstring,tlib::tstring> GetSectionLine(size_t Num)const;
+      // возвращает значение параметра, для данной секции
+      const tlib::tstring& GetValueByName(const tlib::tstring& argParamName) const;
 
-	// возвращает число параметров в секции
-	size_t size()const
-	{
-		return ParamName.size();
-	}
+      // возвращает параметр/значение по номеру
+      std::pair<tlib::tstring, tlib::tstring> GetSectionLine(size_t Num) const;
 
-	// возвращает true, если секция пуста
-	bool empty()const
-	{
-		return ParamName.empty();
-	}
+      // возвращает число параметров в секции
+      size_t size() const
+      {
+            return ParamName.size();
+      }
 
+      // возвращает true, если секция пуста
+      bool empty() const
+      {
+            return ParamName.empty();
+      }
 };
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -92,59 +91,60 @@ class Section
 //     class SectionListClass - содержит интерфейс доступа к списку секций
 //
 //
-class SectionListClass       
+class SectionListClass
 {
-	friend INIParser;
-	std::vector<Section> SectionList;
-	Section EmptySection;
-public:
-	// Возвращает секцию по ее имени
-	const Section& GetSectionByName(const tlib::tstring& SectionName)const;
+      friend INIParser;
+      std::vector<Section> SectionList;
+      Section EmptySection;
 
-	// Возвращает число секций
-	size_t size()const
-	{
-		return SectionList.size();
-	}
-	
-	// возвращает true, если есть хоть одна распознаная секция
-	bool empty()const
-	{
-		return SectionList.empty();
-	}
+  public:
+      // Возвращает секцию по ее имени
+      const Section& GetSectionByName(const tlib::tstring& SectionName) const;
 
+      // Возвращает число секций
+      size_t size() const
+      {
+            return SectionList.size();
+      }
+
+      // возвращает true, если есть хоть одна распознаная секция
+      bool empty() const
+      {
+            return SectionList.empty();
+      }
 };
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//     class ErrorLineListClass - содержит интерфейс к списку не распознаных строк 
+//     class ErrorLineListClass - содержит интерфейс к списку не распознаных строк
 //
 //
-class ErrorLineListClass       
+class ErrorLineListClass
 {
-	friend INIParser;
-	std::vector<tlib::tstring> ErrorLine;
-	tlib::tstring EmptyErrorLine;
-public:
-	// Перебирает не распознанные строки по имени 
-	const tlib::tstring& operator[](size_t Num)const
-	{
-      if(Num >= ErrorLine.size()) return EmptyErrorLine;
-	  return ErrorLine[Num];
-	}
+      friend INIParser;
+      std::vector<tlib::tstring> ErrorLine;
+      tlib::tstring EmptyErrorLine;
 
-	// Возвращает число не распознаных строк 
-	size_t size()const
-	{
-		return ErrorLine.size();
-	}
+  public:
+      // Перебирает не распознанные строки по имени
+      const tlib::tstring& operator[](size_t Num) const
+      {
+            if (Num >= ErrorLine.size())
+                  return EmptyErrorLine;
+            return ErrorLine[Num];
+      }
 
-	// возвращает true, если есть хоть одна не распознаная строка 
-	bool empty()const
-	{
-		return ErrorLine.empty();
-	}
+      // Возвращает число не распознаных строк
+      size_t size() const
+      {
+            return ErrorLine.size();
+      }
 
+      // возвращает true, если есть хоть одна не распознаная строка
+      bool empty() const
+      {
+            return ErrorLine.empty();
+      }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -155,19 +155,26 @@ public:
 
 class INIParser
 {
-	tlib::tstring ini_filename;
-	size_t FindComment(const tlib::tstring& str);
-	void InternalParser(tlib::tifstream& fs,tlib::tstring& prev_str);
-public:
-	// Cписок секций
-	SectionListClass SectionList;
-	// Cписок не распознаных строк
-	ErrorLineListClass ErrorLineList;
-	// Конструктор по имени INI файла
-	INIParser(const tlib::tstring& arg_ininame):ini_filename(arg_ininame){};
-	// Функция начала процесса разбора ini файла
-	void Parser(const std::locale& Locale = tlib::GetLocaleGUI());
-	
+      tlib::tstring ini_filename;
+      size_t FindComment(const tlib::tstring& str);
+      void InternalParser(tlib::tifstream& fs, tlib::tstring& prev_str);
+
+  public:
+      // Cписок секций
+      SectionListClass SectionList;
+
+      // Cписок не распознаных строк
+      ErrorLineListClass ErrorLineList;
+
+      // Конструктор по имени INI файла
+      INIParser(const tlib::tstring& arg_ininame) : ini_filename(arg_ininame){};
+
+      // Функция начала процесса разбора ini файла
+#if !(defined(__linux__))
+      void Parser(const std::locale& Locale = tlib::GetLocaleGUI());
+#else
+      void Parser(const std::locale& Locale);
+#endif
 };
 
 #if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))

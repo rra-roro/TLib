@@ -40,7 +40,7 @@ target_include_directories(${TARGT_NAME_TINIPARSER}  PUBLIC "../include/" "${CMA
 
 if (MSVC)
         get_lib_suffix() 
-        SET(ALL_LIBS GTest::GTest GTest::Main tlib${LIB_SUFFIX} tlib_parsers${LIB_SUFFIX} tlib_char16${LIB_SUFFIX})
+        SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers${LIB_SUFFIX} tlib${LIB_SUFFIX} tlib_char16${LIB_SUFFIX})
 
         set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TCLPARSER} ${TARGT_NAME_TINIPARSER} PROPERTIES
           CXX_STANDARD 17
@@ -48,15 +48,20 @@ if (MSVC)
           COMPILE_OPTIONS "/permissive-;/Zc:wchar_t"
         )
 
+        add_compile_definitions(WIN32)
+        add_compile_definitions(_LIB)
+        add_compile_definitions(_UNICODE)
+        add_compile_definitions(UNICODE)
+
 else()
-        SET(ALL_LIBS GTest::GTest GTest::Main tlib tlib_parsers)
+        SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers tlib)
 
         set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TCLPARSER} ${TARGT_NAME_TINIPARSER} PROPERTIES
                   CXX_STANDARD 17
                   CXX_STANDARD_REQUIRED ON
                   COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
         )
-
+        add_compile_definitions(__linux__)
 endif ()
 
 target_link_libraries(${TARGT_NAME_TLIB} ${ALL_LIBS})

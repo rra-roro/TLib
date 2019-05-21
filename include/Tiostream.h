@@ -29,40 +29,27 @@ namespace tlib
 #endif
 
 #if (defined(_WIN32) && defined(_UNICODE))
-
       extern std::wostream& tcout;
       extern std::wistream& tcin;
       extern std::wostream& tcerr;
       extern std::wostream& tclog;
-
-      typedef std::wostream tostream;
-      typedef std::wistream tistream;
-      typedef std::wifstream tifstream;
-      typedef std::wofstream tofstream;
-      typedef std::wfstream tfstream;
-      typedef std::wostringstream tostringstream;
-      typedef std::wistringstream tistringstream;
-      typedef std::wstringstream tstringstream;
-      typedef std::wstringbuf tstringbuf;
-
 #else
-
       extern std::ostream& tcout;
       extern std::istream& tcin;
       extern std::ostream& tcerr;
       extern std::ostream& tclog;
+#endif
 
-      typedef std::ostream tostream;
-      typedef std::istream tistream;
-      typedef std::ifstream tifstream;
-      typedef std::ofstream tofstream;
-      typedef std::fstream tfstream;
-      typedef std::ostringstream tostringstream;
-      typedef std::istringstream tistringstream;
-      typedef std::stringstream tstringstream;
-      typedef std::stringbuf tstringbuf;
+      using tistream = std::basic_istream<TCHAR, std::char_traits<TCHAR>>;
+      using tostream = std::basic_ostream<TCHAR, std::char_traits<TCHAR>>;
+      using tifstream = std::basic_ifstream<TCHAR, std::char_traits<TCHAR>>;
+      using tofstream = std::basic_ofstream<TCHAR, std::char_traits<TCHAR>>;
+      using tfstream = std::basic_fstream<TCHAR, std::char_traits<TCHAR>>;
+      using tistringstream = std::basic_istringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tostringstream = std::basic_ostringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tstringstream = std::basic_stringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tstringbuf = std::basic_stringbuf<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
 
-#endif // _UNICODE
 
 #if !(defined(__linux__) || defined(UNDER_CE) || defined(WINCE))
       // Не актуально для не консольных и WINCE программ

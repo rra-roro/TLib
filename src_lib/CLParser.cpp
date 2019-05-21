@@ -661,12 +661,12 @@ try{
 ParserCommandLine::ParserCommandLine(void)
 {
     GetOptObject = new GetOpt;
-};
+}
 
 ParserCommandLine::~ParserCommandLine(void)
 {
     delete GetOptObject;
-};
+}
 
 
 void ParserCommandLine::SetShowError(bool ShowErrorFl)
