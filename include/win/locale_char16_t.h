@@ -114,7 +114,7 @@ template<>
 		}
 
 	protected:
-		virtual ~ctype() _NOEXCEPT
+		virtual ~ctype() noexcept
 		{	// destroy the object
 			if (_Ctype._Delfl)
 				_CSTD free((void *)_Ctype._Table);
@@ -135,13 +135,13 @@ template<>
 
 		virtual const char16_t* do_is(const char16_t *_First, const char16_t *_Last, mask *_Dest) const
 		{	// get mask sequence for elements in [_First, _Last)
-			_DEBUG_RANGE(_First, _Last);
+			_Adl_verify_range(_First, _Last);
 			return (const char16_t*)(_CSTD _Getwctypes((const wchar_t*)_First, (const wchar_t*)_Last, _Dest, &_Ctype));
 		}
 
 		virtual const char16_t* do_scan_is(mask _Maskval, const char16_t *_First, const char16_t *_Last) const
 		{	// find first in [_First, _Last) that fits mask classification
-			_DEBUG_RANGE(_First, _Last);
+			_Adl_verify_range(_First, _Last);
 			for (; _First != _Last && !is(_Maskval, *_First); ++_First)
 				;
 			return (_First);
@@ -149,7 +149,7 @@ template<>
 
 		virtual const char16_t* do_scan_not(mask _Maskval, const char16_t *_First, const char16_t *_Last) const
 		{	// find first in [_First, _Last) not fitting mask classification
-			_DEBUG_RANGE(_First, _Last);
+			_Adl_verify_range(_First, _Last);
 			for (; _First != _Last && is(_Maskval, *_First); ++_First)
 				;
 			return (_First);
@@ -162,7 +162,7 @@ template<>
 
 		virtual const char16_t* do_tolower(char16_t *_First, const char16_t *_Last) const
 		{	// convert [_First, _Last) in place to lower case
-			_DEBUG_RANGE((const char16_t *)_First, _Last);
+			_Adl_verify_range((const char16_t *)_First, _Last);
 			for (; _First != _Last; ++_First)
 				*_First = _Towlower(*_First, &_Ctype);
 			return ((const char16_t *)_First);
@@ -175,7 +175,7 @@ template<>
 
 		virtual const char16_t* do_toupper(char16_t *_First, const char16_t *_Last) const
 		{	// convert [_First, _Last) in place to upper case
-			_DEBUG_RANGE((const char16_t *)_First, _Last);
+			_Adl_verify_range((const char16_t *)_First, _Last);
 			for (; _First != _Last; ++_First)
 				*_First = _Towupper(*_First, &_Ctype);
 			return ((const char16_t *)_First);
@@ -183,7 +183,7 @@ template<>
 
 		char16_t  _Dowiden(char _Byte) const
 		{	// widen char
-			_Mbstinit(_Mbst);
+			mbstate_t(_Mbst);
 			wchar_t _Wc;
 			return (_Mbrtowc(&_Wc, &_Byte, 1, &_Mbst, &_Cvt) < 0
 				? (wchar_t)WEOF : _Wc);
@@ -208,7 +208,7 @@ template<>
 		*/
 		virtual const char* do_widen(const char *_First, const char *_Last, char16_t *_Dest) const
 		{        // widen chars in [_First, _Last)
-			_DEBUG_RANGE(_First, _Last);
+			_Adl_verify_range(_First, _Last);
 			for (; _First != _Last; ++_First, ++_Dest)
 				*_Dest = _Dowiden(*_First);
 			return (_First);
@@ -217,7 +217,7 @@ template<>
 		char _Donarrow(char16_t _Ch, char _Dflt) const
 		{	// narrow element to char
 			char _Buf[MB_LEN_MAX];
-			_Mbstinit(_Mbst);
+			mbstate_t(_Mbst);
 			return (_Wcrtomb(_Buf, _Ch, &_Mbst, &_Cvt) != 1
 				? _Dflt : _Buf[0]);
 		}
@@ -241,7 +241,7 @@ template<>
 		*/
 		virtual const char16_t* do_narrow(const char16_t *_First, const char16_t *_Last, char _Dflt, char *_Dest) const
 		{        // narrow elements in [_First, _Last) to chars
-			_DEBUG_RANGE(_First, _Last);
+			_Adl_verify_range(_First, _Last);
 			for (; _First != _Last; ++_First, ++_Dest)
 				*_Dest = _Donarrow(*_First, _Dflt);
 			return (_First);

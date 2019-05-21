@@ -1,7 +1,7 @@
 ﻿// testINIParser.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <Tstring.h>
 #include <Tlocale.h>
 #include <CLParser.h>

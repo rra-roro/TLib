@@ -1,7 +1,7 @@
 ﻿// testTException.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <Windows.h>
 #include <TException.h>
 #include <TExceptionCPP.h>
