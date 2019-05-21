@@ -17,7 +17,7 @@
 #include <Tregex.h>
 
 using namespace std;
-using namespace Tstring;
+using namespace tlib;
 
 //=====================================================================================================
 /*         class GetOpt   - является оберткой вокруг переделанной GNU ф-ии _getopt_internal().
@@ -40,7 +40,7 @@ private:
 
 	struct Option
     {
-		Tstring::tstring name;           //Полное имя опции
+		tlib::tstring name;           //Полное имя опции
 		_argtype has_arg;                //Задаем необходимость параметров
 		TCHAR ChArg;                     //Симвльный псевдоним опции
     };
@@ -161,7 +161,7 @@ public:
         /////////////////////////////////////////////////////////////////////////////////////////
         //    Функия, которая инициализирует список содержащий формат длинных опций.
 
-    void AddFormatOfArg(Tstring::tstring name, _argtype has_arg, TCHAR val)
+    void AddFormatOfArg(tlib::tstring name, _argtype has_arg, TCHAR val)
     {
                 Option Temp_Otion;
                 Temp_Otion.name = name;
@@ -679,12 +679,12 @@ void ParserCommandLine::SetSeparatorChar(TCHAR Ch)
     GetOptObject->SeparatorChar = Ch;
 }
 
-void ParserCommandLine::SetShortFormatOfArg(Tstring::tstring Str)
+void ParserCommandLine::SetShortFormatOfArg(tlib::tstring Str)
 {
     GetOptObject->short_opts_str = Str;
 }
 
-void ParserCommandLine::AddFormatOfArg(Tstring::tstring name, _argtype has_arg, TCHAR val)
+void ParserCommandLine::AddFormatOfArg(tlib::tstring name, _argtype has_arg, TCHAR val)
 {
     GetOptObject->AddFormatOfArg(name, has_arg, val);
 }

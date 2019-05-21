@@ -45,7 +45,7 @@
 #include <vector>
 #include <INIParser.h>
 
-using namespace Tstring;
+using namespace tlib;
 using namespace std;
 
 // Ищем во входящей строке начало коментария и возвращаем его позицию. 

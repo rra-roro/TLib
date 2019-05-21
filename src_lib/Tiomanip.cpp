@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace Tstring
+namespace tlib
 {
 	template std::basic_ostream<char>& outGuid::PrintGuid(std::basic_ostream<char>& iostr) const;
 	template std::basic_ostream<wchar_t>& outGuid::PrintGuid(std::basic_ostream<wchar_t>& iostr) const;

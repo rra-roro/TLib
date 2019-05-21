@@ -59,18 +59,19 @@ class INIParser;
 class Section          
 {
     friend INIParser;
-	std::vector<Tstring::tstring> ParamName;
-	std::vector<Tstring::tstring> Value;
-	Tstring::tstring EmptyString;	
-public:
+      std::vector<tlib::tstring> ParamName;
+    std::vector<tlib::tstring> Value;
+      tlib::tstring EmptyString;
+
+  public:
 	// содержит имя секции
-	Tstring::tstring SectionName;
+	tlib::tstring SectionName;
 
 	// возвращает значение параметра, для данной секции
-	const Tstring::tstring& GetValueByName(const Tstring::tstring& argParamName)const;
+	const tlib::tstring& GetValueByName(const tlib::tstring& argParamName)const;
 	
 	// возвращает параметр/значение по номеру
-	std::pair<Tstring::tstring,Tstring::tstring> GetSectionLine(size_t Num)const;
+	std::pair<tlib::tstring,tlib::tstring> GetSectionLine(size_t Num)const;
 
 	// возвращает число параметров в секции
 	size_t size()const
@@ -98,7 +99,7 @@ class SectionListClass
 	Section EmptySection;
 public:
 	// Возвращает секцию по ее имени
-	const Section& GetSectionByName(const Tstring::tstring& SectionName)const;
+	const Section& GetSectionByName(const tlib::tstring& SectionName)const;
 
 	// Возвращает число секций
 	size_t size()const
@@ -122,11 +123,11 @@ public:
 class ErrorLineListClass       
 {
 	friend INIParser;
-	std::vector<Tstring::tstring> ErrorLine;
-	Tstring::tstring EmptyErrorLine;
+	std::vector<tlib::tstring> ErrorLine;
+	tlib::tstring EmptyErrorLine;
 public:
 	// Перебирает не распознанные строки по имени 
-	const Tstring::tstring& operator[](size_t Num)const
+	const tlib::tstring& operator[](size_t Num)const
 	{
       if(Num >= ErrorLine.size()) return EmptyErrorLine;
 	  return ErrorLine[Num];
@@ -154,18 +155,18 @@ public:
 
 class INIParser
 {
-	Tstring::tstring ini_filename;
-	size_t FindComment(const Tstring::tstring& str);
-	void InternalParser(Tstring::tifstream& fs,Tstring::tstring& prev_str);
+	tlib::tstring ini_filename;
+	size_t FindComment(const tlib::tstring& str);
+	void InternalParser(tlib::tifstream& fs,tlib::tstring& prev_str);
 public:
 	// Cписок секций
 	SectionListClass SectionList;
 	// Cписок не распознаных строк
 	ErrorLineListClass ErrorLineList;
 	// Конструктор по имени INI файла
-	INIParser(const Tstring::tstring& arg_ininame):ini_filename(arg_ininame){};
+	INIParser(const tlib::tstring& arg_ininame):ini_filename(arg_ininame){};
 	// Функция начала процесса разбора ini файла
-	void Parser(const std::locale& Locale = Tstring::GetLocaleGUI());
+	void Parser(const std::locale& Locale = tlib::GetLocaleGUI());
 	
 };
 

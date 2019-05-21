@@ -11,7 +11,7 @@
 #include <Tiomanip.h>
 #include <Tstdlib.h>
 
-using namespace Tstring;
+using namespace tlib;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -29,7 +29,7 @@ using namespace Tstring;
 
 class EExceptionCPP: public EException
 {	    
-        const Tstring::tstring m_ErrMsg;
+        const tlib::tstring m_ErrMsg;
         const TCHAR* m_FileName;
         int m_lineNumber;
         DWORD m_LastError;
@@ -38,10 +38,10 @@ class EExceptionCPP: public EException
 
 public:
 	// Конструкторы
-        EExceptionCPP(const TCHAR* FileName, int lineNumber, const Tstring::tstring& ErrMsg)
+        EExceptionCPP(const TCHAR* FileName, int lineNumber, const tlib::tstring& ErrMsg)
                      : m_ErrMsg(ErrMsg),m_FileName(FileName),m_lineNumber(lineNumber),m_LastError(0){};
 
-        EExceptionCPP(const TCHAR* FileName, int lineNumber, const Tstring::tstring& ErrMsg, DWORD LastError)
+        EExceptionCPP(const TCHAR* FileName, int lineNumber, const tlib::tstring& ErrMsg, DWORD LastError)
                      : m_ErrMsg(ErrMsg),m_FileName(FileName),m_lineNumber(lineNumber),m_LastError(LastError){};
 
         EExceptionCPP(const TCHAR* FileName, int lineNumber, const TCHAR* ErrMsg)
@@ -56,29 +56,29 @@ public:
 		   return m_LastError;
 	   }
 
-	   virtual const Tstring::tstring GetMsgOfErrorCode() const
+	   virtual const tlib::tstring GetMsgOfErrorCode() const
 	   {
 		   if(GetErrorCode()!=0) return GetLastErrorMessage(GetErrorCode());
-           return Tstring::tstring();
+           return tlib::tstring();
 	   }
 
-	   virtual const Tstring::tstring GetUserErrorText() const
+	   virtual const tlib::tstring GetUserErrorText() const
 	   {
 		   return m_ErrMsg;
 	   }
 
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EExceptionCPP"));
+		   return tlib::tstring(_T("EExceptionCPP"));
 	   }
 
-	   virtual const Tstring::tstring GetExceptionAllInfoMsg() const
+	   virtual const tlib::tstring GetExceptionAllInfoMsg() const
 	   {
-		   Tstring::tstringstream Msg;
-		   Msg << Tstring::showbase << Tstring::uppercase << Tstring::tsetfill(_T('0'));
+		   tlib::tstringstream Msg;
+		   Msg << tlib::showbase << tlib::uppercase << tlib::tsetfill(_T('0'));
 		   		
 		   Msg << _T("Last Error: ");
-		   Msg << Tstring::setw(8) << Tstring::ConversionRadix(GetErrorCode(), 16) << _T("\n");
+		   Msg << tlib::setw(8) << tlib::ConversionRadix(GetErrorCode(), 16) << _T("\n");
 		   
 		   Msg << _T("Source FileName: ");
 		   Msg << m_FileName << _T(":(") << std::dec << m_lineNumber << _T(")") <<_T("\n");
@@ -108,12 +108,12 @@ public:
 class EBadLoadDLL:public EExceptionCPP
 {
 public:
-	EBadLoadDLL(const TCHAR* FileName, int lineNumber, const Tstring::tstring& ModuleName, DWORD LastError=GetLastError()):
+	EBadLoadDLL(const TCHAR* FileName, int lineNumber, const tlib::tstring& ModuleName, DWORD LastError=GetLastError()):
 		    EExceptionCPP(FileName,lineNumber,_T("Module \"") + ModuleName + _T("\" can't be loaded."),LastError){};
 
-    virtual const Tstring::tstring GetExceptionClassName(void) const
+    virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EBadLoadDLL"));
+		return tlib::tstring(_T("EBadLoadDLL"));
 	}
 };
 
@@ -121,54 +121,54 @@ public:
 class EBadPtrFnDLL:public EExceptionCPP
 {
 public:
-	EBadPtrFnDLL(const TCHAR* FileName, int lineNumber, const Tstring::tstring& ModuleName, const Tstring::tstring& FnName):
+	EBadPtrFnDLL(const TCHAR* FileName, int lineNumber, const tlib::tstring& ModuleName, const tlib::tstring& FnName):
 		     EExceptionCPP(FileName,lineNumber, 
                            _T("Function \"") + FnName + _T("\" is absent in \"") + ModuleName + _T("\". Possibly this module has an incorrect version."),
 			               ERROR_PROC_NOT_FOUND){};
 
-	virtual const Tstring::tstring GetExceptionClassName(void) const
+	virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EBadPtrFnDLL"));
+		return tlib::tstring(_T("EBadPtrFnDLL"));
 	}
 };
 
 class EBadRefArg:public EExceptionCPP
 {
 public:
-	EBadRefArg(const TCHAR* FileName, int lineNumber, const Tstring::tstring& FnName, const Tstring::tstring& ArgName):
+	EBadRefArg(const TCHAR* FileName, int lineNumber, const tlib::tstring& FnName, const tlib::tstring& ArgName):
 		     EExceptionCPP(FileName,lineNumber,
                                    _T("Argument \"") + ArgName + _T("\" of the function \"") + FnName + _T("\" refers to a zero address."), 
 			           ERROR_BAD_ARGUMENTS){};
 
-	virtual const Tstring::tstring GetExceptionClassName(void) const
+	virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EBadRefArg"));
+		return tlib::tstring(_T("EBadRefArg"));
 	}
 };
 
 class EBadPtrArg:public EExceptionCPP
 {
 public:
-	EBadPtrArg(const TCHAR* FileName, int lineNumber, const Tstring::tstring& FnName, const Tstring::tstring& ArgName):
+	EBadPtrArg(const TCHAR* FileName, int lineNumber, const tlib::tstring& FnName, const tlib::tstring& ArgName):
 		     EExceptionCPP(FileName,lineNumber,
                                    _T("Argument \"") + ArgName + _T("\" of the function \"") + FnName + _T("\" is the null pointer."), 
 			           ERROR_BAD_ARGUMENTS){};
 
-	virtual const Tstring::tstring GetExceptionClassName(void) const
+	virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EBadPtrArg"));
+		return tlib::tstring(_T("EBadPtrArg"));
 	}
 };
 
 class EFileNotFound:public EExceptionCPP
 {
 public:
-	EFileNotFound(const TCHAR* FileName, int lineNumber, const Tstring::tstring& ModuleName):
+	EFileNotFound(const TCHAR* FileName, int lineNumber, const tlib::tstring& ModuleName):
 		      EExceptionCPP(FileName,lineNumber, _T("\"") + ModuleName + _T("\" is not found."),ERROR_MOD_NOT_FOUND){};
 
-	virtual const Tstring::tstring GetExceptionClassName(void) const
+	virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EFileNotFound"));
+		return tlib::tstring(_T("EFileNotFound"));
 	}
 };
 
@@ -199,52 +199,52 @@ class EWinApiError:public EExceptionCPP
 public:
      EWinApiError(const TCHAR* FileName, 
                   int lineNumber, 
-                  const Tstring::tstring& FnName, 
+                  const tlib::tstring& FnName, 
                   DWORD RetValue, 
                   DWORD LastError,
-                  const Tstring::tstring& Msg):
-              EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + Tstring::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+                  const tlib::tstring& Msg):
+              EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
 
      EWinApiError(const TCHAR* FileName, 
                   int lineNumber, 
-                  const Tstring::tstring& FnName, 
+                  const tlib::tstring& FnName, 
                   PVOID RetValue, 
                   DWORD LastError,
-                  const Tstring::tstring& Msg):
-		      EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + Tstring::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+                  const tlib::tstring& Msg):
+		      EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
 
 	EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
-                 const Tstring::tstring& FnName, 
+                 const tlib::tstring& FnName, 
                  const TCHAR* RetValue, 
                  DWORD LastError,
-                 const Tstring::tstring& Msg):
+                 const tlib::tstring& Msg):
 		      EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + RetValue + _T("\"."), LastError){};
 
     EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
-                 const Tstring::tstring& FnName, 
+                 const tlib::tstring& FnName, 
                  DWORD RetValue, 
                  DWORD LastError):
-              EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + Tstring::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+              EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
 
     EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
-                 const Tstring::tstring& FnName, 
+                 const tlib::tstring& FnName, 
                  PVOID RetValue, 
                  DWORD LastError):
-		      EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + Tstring::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+		      EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
 
 	EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
-                 const Tstring::tstring& FnName, 
+                 const tlib::tstring& FnName, 
                  const TCHAR* RetValue, 
                  DWORD LastError):
 		      EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + RetValue + _T("\"."), LastError){};
 
-	virtual const Tstring::tstring GetExceptionClassName(void) const
+	virtual const tlib::tstring GetExceptionClassName(void) const
 	{
-		return Tstring::tstring(_T("EWinApiError"));
+		return tlib::tstring(_T("EWinApiError"));
 	}
 };
 
@@ -273,7 +273,7 @@ public:
         {
                 if(bResult==FALSE)
                 {   
-                        Tstring::tstring FnName;
+                        tlib::tstring FnName;
                         if (m_FnName!=0)FnName.assign(m_FnName);
                         if(m_Msg==0)
                            throw EWinApiError(m_FileName, m_lineNumber, FnName, _T("FALSE"), GetLastError());

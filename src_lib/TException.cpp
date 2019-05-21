@@ -15,7 +15,7 @@
 #include <strsafe.h>
 
 
-using namespace Tstring;
+using namespace tlib;
 using namespace std;
 using NT::NTSTATUS;
 

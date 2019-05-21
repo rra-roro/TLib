@@ -17,7 +17,7 @@
 #endif
 
 using namespace std;
-using namespace Tstring;
+using namespace tlib;
 
 void help()
 {
@@ -112,7 +112,7 @@ struct ErrorOpt
         requires_arg                     // Параметр для опции нужен
     };
     ErrorCode  ErrorID;                  // Код ошибки
-	Tstring::tstring    optopt;          // Имя опции которая была не распознана
+	tlib::tstring    optopt;          // Имя опции которая была не распознана
 };
 
 )") << endl;

@@ -27,9 +27,9 @@
 #define TSTRING
 
 #ifdef _WIN32
-	#include <tchar.h>
+#include <tchar.h>
 #elif __linux__
-	#include <linux/tchar.h>
+#include <linux/tchar.h>
 #endif
 
 #ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
@@ -38,7 +38,7 @@
 
 #ifdef _WIN32
 #pragma warning(push)
-#pragma warning(disable: 4996)    // was declared deprecated CodeCvt
+#pragma warning(disable : 4996) // was declared deprecated CodeCvt
 #endif
 
 #include <string>
@@ -47,191 +47,193 @@
 #include <Tcodecvt.h>
 #include <Ttype.h>
 
-namespace Tstring{
+namespace tlib
+{
 
 #ifdef _WIN32
 
-  #ifdef _UNICODE
-    extern const size_t npos;
-    typedef std::wstring tstring;
-    typedef std::wstring_view tstring_view;
-  #else
-    extern const size_t npos;
-    typedef std::string tstring;
-    typedef std::string_view tstring_view;
-  #endif  // _UNICODE
+#ifdef _UNICODE
+      extern const size_t npos;
+      typedef std::wstring tstring;
+      typedef std::wstring_view tstring_view;
+#else
+      extern const size_t npos;
+      typedef std::string tstring;
+      typedef std::string_view tstring_view;
+#endif // _UNICODE
 
 #elif __linux__
 
-    extern const size_t npos;
-    typedef std::u16string tstring;
-    typedef std::u16string_view tstring_view;
+      extern const size_t npos;
+      typedef std::u16string tstring;
+      typedef std::u16string_view tstring_view;
 
 #endif
 
 
 #if !(defined(UNDER_CE) || defined(WINCE))
-// Не актуально для не консольных и WINCE программ
+      // Не актуально для не консольных и WINCE программ
 
-    //=======================================================================
-	//  Вводим две функции, которые позволят присваивать string и wstring друг другу
-	//
-        template<class I, class E, class S>
-        struct codecvt_byname : std::codecvt_byname<I, E, S>
-        {
-            template<class ...Args>
-               codecvt_byname(Args&& ...args) : std::codecvt_byname<I, E, S>(std::forward<Args>(args)...) {}
-               ~codecvt_byname() { }
-        };
+      //=======================================================================
+      //  Вводим две функции, которые позволят присваивать string и wstring друг другу
+      //
+      template <class I, class E, class S>
+      struct codecvt_byname : std::codecvt_byname<I, E, S>
+      {
+            template <class... Args>
+            codecvt_byname(Args &&... args) : std::codecvt_byname<I, E, S>(std::forward<Args>(args)...)
+            {
+            }
+            ~codecvt_byname() {}
+      };
 
-	//   ProgramCodePage <--> wchar_t
-	using codecvt_w = codecvt_byname<wchar_t, char, std::mbstate_t>;
-	extern thread_local std::wstring_convert<codecvt_w> wconv;
+      //   ProgramCodePage <--> wchar_t
+      using codecvt_w = codecvt_byname<wchar_t, char, std::mbstate_t>;
+      extern thread_local std::wstring_convert<codecvt_w> wconv;
 
-	//   utf8 <--> char16_t
-	using codecvt_u16 = codecvt_byname<char16_t, char, std::mbstate_t>;
-	extern thread_local std::wstring_convert<codecvt_u16, char16_t> u16conv;
+      //   utf8 <--> char16_t
+      using codecvt_u16 = codecvt_byname<char16_t, char, std::mbstate_t>;
+      extern thread_local std::wstring_convert<codecvt_u16, char16_t> u16conv;
 
-	//   utf8 <--> wchar_t
-	extern thread_local std::wstring_convert<std::codecvt_utf8<wchar_t>> u8conv;
+      //   utf8 <--> wchar_t
+      extern thread_local std::wstring_convert<std::codecvt_utf8<wchar_t>> u8conv;
 
 
-	inline std::wstring cstr_wstr(std::string_view str)
-	{
-		const char *_first_symbol = str.data();
-		return wconv.from_bytes(_first_symbol, _first_symbol + str.size());
-	}
+      inline std::wstring cstr_wstr(std::string_view str)
+      {
+            const char *_first_symbol = str.data();
+            return wconv.from_bytes(_first_symbol, _first_symbol + str.size());
+      }
 
-	inline std::string wstr_cstr(std::wstring_view wstr)
-	{
-		const wchar_t *_first_symbol = wstr.data();
-		return wconv.to_bytes(_first_symbol, _first_symbol + wstr.size());
-	}
+      inline std::string wstr_cstr(std::wstring_view wstr)
+      {
+            const wchar_t *_first_symbol = wstr.data();
+            return wconv.to_bytes(_first_symbol, _first_symbol + wstr.size());
+      }
 
-	inline std::wstring u8str_wstr(std::string_view u8str)
-	{
-		const char *_first_symbol = u8str.data();
-		return u8conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
-	}
+      inline std::wstring u8str_wstr(std::string_view u8str)
+      {
+            const char *_first_symbol = u8str.data();
+            return u8conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
+      }
 
-	inline std::string wstr_u8str(std::wstring_view wstr)
-	{
-		const wchar_t *_first_symbol = wstr.data();
-		return u8conv.to_bytes(_first_symbol, _first_symbol + wstr.size());
-	}
+      inline std::string wstr_u8str(std::wstring_view wstr)
+      {
+            const wchar_t *_first_symbol = wstr.data();
+            return u8conv.to_bytes(_first_symbol, _first_symbol + wstr.size());
+      }
 
-	inline std::u16string u8str_u16str(std::string_view u8str)
-	{
-		const char *_first_symbol = u8str.data();
-		return u16conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
-	}
+      inline std::u16string u8str_u16str(std::string_view u8str)
+      {
+            const char *_first_symbol = u8str.data();
+            return u16conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
+      }
 
-	inline std::string u16str_u8str(std::u16string_view u16str)
-	{
-		const char16_t * _first_symbol = u16str.data();
-		return u16conv.to_bytes(_first_symbol, _first_symbol + u16str.size());
-	}
+      inline std::string u16str_u8str(std::u16string_view u16str)
+      {
+            const char16_t *_first_symbol = u16str.data();
+            return u16conv.to_bytes(_first_symbol, _first_symbol + u16str.size());
+      }
 
-	inline std::wstring u16str_wstr(std::u16string_view u16str)
-	{
-		return { u16str.begin(), u16str.end() };
-	}
+      inline std::wstring u16str_wstr(std::u16string_view u16str)
+      {
+            return { u16str.begin(), u16str.end() };
+      }
 
-	inline std::u16string wstr_u16str(std::wstring_view wstr)
-	{
-		return { wstr.begin(), wstr.end() };
-	}
+      inline std::u16string wstr_u16str(std::wstring_view wstr)
+      {
+            return { wstr.begin(), wstr.end() };
+      }
 
 #ifdef _WIN32
-	#ifdef _UNICODE
-		#define  str2tstr(str) Tstring::cstr_wstr(str)
-		#define wstr2tstr(str) str
-        #define ustr2tstr(str) Tstring::u16str_wstr(str)
-		#define tstr2str(str)  Tstring::wstr_cstr(str)
-		#define tstr2wstr(str) str
-        #define tstr2ustr(str) Tstring::wstr_u16str(str)
-	#else
-        #define  str2tstr(str) str
-		#define wstr2tstr(str) Tstring::wstr_cstr(str)                 
-        #define ustr2tstr(str) Tstring::wstr_cstr(u16str_wstr(str))
-        #define tstr2str(str)  str
-		#define tstr2wstr(str) Tstring::cstr_wstr(str)		
-        #define tstr2ustr(str) Tstring::wstr_u16str(cstr_wstr(str))
-	#endif
+#ifdef _UNICODE
+#define str2tstr(str) tlib::cstr_wstr(str)
+#define wstr2tstr(str) str
+#define ustr2tstr(str) tlib::u16str_wstr(str)
+#define tstr2str(str) tlib::wstr_cstr(str)
+#define tstr2wstr(str) str
+#define tstr2ustr(str) tlib::wstr_u16str(str)
+#else
+#define str2tstr(str) str
+#define wstr2tstr(str) tlib::wstr_cstr(str)
+#define ustr2tstr(str) tlib::wstr_cstr(u16str_wstr(str))
+#define tstr2str(str) str
+#define tstr2wstr(str) tlib::cstr_wstr(str)
+#define tstr2ustr(str) tlib::wstr_u16str(cstr_wstr(str))
+#endif
 #elif __linux__
-		#define str2tstr(str)  Tstring::u8str_u16str(str)
-		#define wstr2tstr(str) Tstring::wstr_u16str(str) // u8str_u16str(wstr_u8str(str))
-        #define ustr2tstr(str) str
-        #define tstr2str(str)  Tstring::u16str_u8str(str)
-		#define tstr2wstr(str) Tstring::u16str_wstr(str)
-        #define tstr2ustr(str) str
+#define str2tstr(str) tlib::u8str_u16str(str)
+#define wstr2tstr(str) tlib::wstr_u16str(str) // u8str_u16str(wstr_u8str(str))
+#define ustr2tstr(str) str
+#define tstr2str(str) tlib::u16str_u8str(str)
+#define tstr2wstr(str) tlib::u16str_wstr(str)
+#define tstr2ustr(str) str
 #endif
-	//=======================================================================
-    //  Вводим макросы, которые позволяют задавать в явном виде тип char и wchar_t строки и символа
-    //  Предназначен строго для использования в шаблонах, type - это или char или wchar_t
-    //
-#define TemplateTypeOfStr(str,type) ((is_wchar_v<type>) ? ( type *) L##str : (is_char16_v<type>) ? ( type *) u##str : ( type *) str )
-#define TemplateTypeOfCh(str,type)  ((is_wchar_v<type>) ? ( type ) L##str : (is_char16_v<type>) ? ( type ) u##str : ( type ) str )
+      //=======================================================================
+      //  Вводим макросы, которые позволяют задавать в явном виде тип char и wchar_t строки и символа
+      //  Предназначен строго для использования в шаблонах, type - это или char или wchar_t
+      //
+#define TemplateTypeOfStr(str, type) ((is_wchar_v<type>) ? (type *)L##str : (is_char16_v<type>) ? (type *)u##str : (type *)str)
+#define TemplateTypeOfCh(str, type) ((is_wchar_v<type>) ? (type)L##str : (is_char16_v<type>) ? (type)u##str : (type)str)
 
-template <class T, class _Elem = typename Type_Str<T>::type >
-	inline tstring TemplateStr2Tstr(T str)
-	{
-		if constexpr (is_wchar_v<_Elem>)
-		{
-			return wstr2tstr(str);
-		}
-		else if constexpr (is_char16_v<_Elem>)
-		{
-			return ustr2tstr(str);
-		}
-		else
-		{
-			return str2tstr(str);
-		}
+      template <class T, class _Elem = typename Type_Str<T>::type>
+      inline tstring TemplateStr2Tstr(T str)
+      {
+            if constexpr (is_wchar_v<_Elem>)
+            {
+                  return wstr2tstr(str);
+            }
+            else if constexpr (is_char16_v<_Elem>)
+            {
+                  return ustr2tstr(str);
+            }
+            else
+            {
+                  return str2tstr(str);
+            }
+      };
 
-	};
+      template <class _Elem>
+      inline std::basic_string<_Elem> Tstr2TemplateStr(const tstring &str)
+      {
+            if constexpr (is_wchar_v<_Elem>)
+            {
+                  return tstr2wstr(str);
+            }
+            else if constexpr (is_char16_v<_Elem>)
+            {
+                  return tstr2ustr(str);
+            }
+            else
+            {
+                  return tstr2str(str);
+            }
+      };
 
-template <class _Elem>
-	inline  std::basic_string<_Elem> Tstr2TemplateStr(const tstring& str)
-	{
-		if constexpr (is_wchar_v<_Elem>)
-		{
-			return tstr2wstr(str);
-		}
-		else if constexpr (is_char16_v<_Elem>)
-		{
-			return tstr2ustr(str);
-		}
-		else
-		{
-			return tstr2str(str);
-		}
-	};
-
-template <class T, class _Elem = typename Type_Str<T>::type >
-	inline std::string TemplateStr2str(T str)
-	{
-		if constexpr (is_wchar_v<_Elem>)
-		{
+      template <class T, class _Elem = typename Type_Str<T>::type>
+      inline std::string TemplateStr2str(T str)
+      {
+            if constexpr (is_wchar_v<_Elem>)
+            {
 #ifdef _WIN32
-			return wstr_cstr(str);
+                  return wstr_cstr(str);
 #else
-			return wstr_u8str(str);
+                  return wstr_u8str(str);
 #endif
-		} else
-		if constexpr (is_char16_v<_Elem>)
-		{
+            }
+            else if constexpr (is_char16_v<_Elem>)
+            {
 #ifdef _WIN32
-			return wstr_cstr(u16str_wstr(str));
+                  return wstr_cstr(u16str_wstr(str));
 #else
-			return u16str_u8str(str);
+                  return u16str_u8str(str);
 #endif
-		}
-		else
-		{
-			return str;
-		}
-	};
+            }
+            else
+            {
+                  return str;
+            }
+      };
 
 #endif //!(defined(UNDER_CE) || defined(WINCE))
 
@@ -247,9 +249,9 @@ template <class T, class _Elem = typename Type_Str<T>::type >
 #undef _LIB_NAME
 
 #endif // !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))
-    
-#ifdef _WIN32    
-#pragma warning(pop)    // warning(disable: 4996)
+
+#ifdef _WIN32
+#pragma warning(pop) // warning(disable: 4996)
 #endif
 
-#endif  //TSTRING
+#endif //TSTRING

@@ -5,9 +5,9 @@
 #include <Tlocale.h>
 
 using namespace std;
-using namespace Tstring;
+using namespace tlib;
 
-namespace Tstring
+namespace tlib
 {
 
 #ifdef _WIN32
@@ -52,15 +52,15 @@ namespace Tstring
 	//  Корректируем ввод вывод на консоль win32
 	//  Отключаю их только для WINCE
 
-	ostream& Tstring::operator<< (ostream& s, char x)
+	ostream& tlib::operator<< (ostream& s, char x)
 	{
 		string ClassName(typeid(s).name());
 		if (ClassName.find("basic_ostream") != npos)
 		{
-			std::wstring wstr = Tstring::convert_ProgramCP_wide.from_bytes(x);
+			std::wstring wstr = convert_ProgramCP_wide.from_bytes(x);
 
 			// Выведем строку в поток
-			std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(wstr));
+			std::operator<<(s, convert_ConsoleCP_wide.to_bytes(wstr));
 		}
 		else
 		{
@@ -69,15 +69,15 @@ namespace Tstring
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, const char* x)
+	ostream& tlib::operator<< (ostream& s, const char* x)
 	{
 		string ClassName(typeid(s).name());
 		if (ClassName.find("basic_ostream") != npos)
 		{
-			std::wstring wstr = Tstring::convert_ProgramCP_wide.from_bytes(x);
+			std::wstring wstr = convert_ProgramCP_wide.from_bytes(x);
 
 			// Выведем строку в поток
-			std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(wstr));
+			std::operator<<(s, convert_ConsoleCP_wide.to_bytes(wstr));
 		}
 		else
 		{
@@ -86,15 +86,15 @@ namespace Tstring
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, const string& x)
+	ostream& tlib::operator<< (ostream& s, const string& x)
 	{
 		string ClassName(typeid(s).name());
 		if (ClassName.find("basic_ostream") != npos)
 		{
-			std::wstring wstr = Tstring::convert_ProgramCP_wide.from_bytes(x);
+			std::wstring wstr = convert_ProgramCP_wide.from_bytes(x);
 
 			// Выведем строку в поток
-			std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(wstr));
+			std::operator<<(s, convert_ConsoleCP_wide.to_bytes(wstr));
 		}
 		else
 		{
@@ -103,15 +103,15 @@ namespace Tstring
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, string_view x)
+	ostream& tlib::operator<< (ostream& s, string_view x)
 	{
 		string ClassName(typeid(s).name());
 		if (ClassName.find("basic_ostream") != npos)
 		{
-			std::wstring wstr = Tstring::convert_ProgramCP_wide.from_bytes(x.data(), x.data() + x.size());
+			std::wstring wstr = convert_ProgramCP_wide.from_bytes(x.data(), x.data() + x.size());
 
 			// Выведем строку в поток
-			std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(wstr));
+			std::operator<<(s, convert_ConsoleCP_wide.to_bytes(wstr));
 		}
 		else
 		{
@@ -120,7 +120,7 @@ namespace Tstring
 		return s;
 	}
 
-	istream& Tstring::operator>> (istream& s, string& x)
+	istream& tlib::operator>> (istream& s, string& x)
 	{
 		string ClassName(typeid(s).name());
 		if (ClassName.find("basic_istream") != npos)
@@ -128,9 +128,9 @@ namespace Tstring
 			string InputStr;
 			std::operator>>(s, InputStr);
 
-			std::wstring wstr = Tstring::convert_ConsoleCP_wide.from_bytes(InputStr);
+			std::wstring wstr = convert_ConsoleCP_wide.from_bytes(InputStr);
 
-			x.assign(Tstring::convert_ProgramCP_wide.to_bytes(wstr));
+			x.assign(convert_ProgramCP_wide.to_bytes(wstr));
 
 		}
 		else
@@ -142,35 +142,35 @@ namespace Tstring
 
 	// Выводим в wostream строки u16stream
 
-	wostream& Tstring::operator<< (wostream& s, char16_t x)
+	wostream& tlib::operator<< (wostream& s, char16_t x)
 	{
 		// Выведем строку в поток
 		std::operator<<(s, (wchar_t)(x));
 		return s;
 	}
 
-	wostream& Tstring::operator<< (wostream& s, const char16_t* x)
+	wostream& tlib::operator<< (wostream& s, const char16_t* x)
 	{
 		// Выведем строку в поток
 		std::operator<<(s, (wchar_t*)(x));
 		return s;
 	}
 
-	wostream& Tstring::operator<< (wostream& s, const u16string& x)
+	wostream& tlib::operator<< (wostream& s, const u16string& x)
 	{
 		// Выведем строку в поток
 		std::operator<<(s, (wchar_t*)x.c_str());
 		return s;
 	}
 
-	wostream& Tstring::operator<< (wostream& s, u16string_view x)
+	wostream& tlib::operator<< (wostream& s, u16string_view x)
 	{
 		// Выведем строку в поток
 		std::operator<<(s, wstring_view((wchar_t*)x.data(), x.size()));			
 		return s;
 	}
 
-	wistream& Tstring::operator>> (wistream& s, u16string& x)
+	wistream& tlib::operator>> (wistream& s, u16string& x)
 	{
 		wstring InputStr;
 		std::operator>>(s, InputStr);
@@ -181,40 +181,40 @@ namespace Tstring
 
 #elif __linux__
 
-	ostream& Tstring::operator<< (ostream& s, char16_t x)
+	ostream& tlib::operator<< (ostream& s, char16_t x)
 	{
 		// Выведем строку в поток
-		std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(x));
+		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, const char16_t* x)
+	ostream& tlib::operator<< (ostream& s, const char16_t* x)
 	{
 		// Выведем строку в поток
-		std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(x));
+		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, const u16string& x)
+	ostream& tlib::operator<< (ostream& s, const u16string& x)
 	{
 		// Выведем строку в поток
-		std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(x));
+		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
 		return s;
 	}
 
-	ostream& Tstring::operator<< (ostream& s, u16string_view x)
+	ostream& tlib::operator<< (ostream& s, u16string_view x)
 	{
 		// Выведем строку в поток
-		std::operator<<(s, Tstring::convert_ConsoleCP_wide.to_bytes(x.data(), x.data() + x.size()));
+		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x.data(), x.data() + x.size()));
 		return s;
 	}
 
-	istream& Tstring::operator>> (istream& s, u16string& x)
+	istream& tlib::operator>> (istream& s, u16string& x)
 	{
 		string InputStr;
 		std::operator>>(s, InputStr);
 
-		std::u16string u16str = Tstring::convert_ConsoleCP_wide.from_bytes(InputStr);
+		std::u16string u16str = convert_ConsoleCP_wide.from_bytes(InputStr);
 		x.assign(u16str);
 
 		return s;

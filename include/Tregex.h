@@ -37,7 +37,7 @@ extern template std::locale::id std::collate<char16_t>::id;
 
 #endif
 
-namespace Tstring 
+namespace tlib
 {
 	typedef std::basic_regex<char16_t> uregex;
 	typedef std::match_results<const char16_t *> ucmatch;

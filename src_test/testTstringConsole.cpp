@@ -12,7 +12,7 @@
 #include <Tconsole.h>
 #include <algorithm>
 
-using namespace Tstring;
+using namespace tlib;
 using namespace std;
 
 void PrintTest11(int r, const TCHAR* Str_Std, streamsize Tab1, const tstring& Str_My, streamsize Tab2)

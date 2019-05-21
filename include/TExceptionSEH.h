@@ -28,7 +28,7 @@ class EExceptionSEH : public EException
 	PEXCEPTION_POINTERS m_pExcPointers;
 	std::string m_WhatMsg;
 	
-	Tstring::tstring GetExceptionMsg(DWORD NTStatusMessage, const PEXCEPTION_POINTERS pExcPointers) const;
+	tlib::tstring GetExceptionMsg(DWORD NTStatusMessage, const PEXCEPTION_POINTERS pExcPointers) const;
 
 public:
 	// Конструкторы
@@ -40,14 +40,14 @@ public:
 		   return m_nSeCode;
 	   }
 
-	   Tstring::tstring GetNameSEHCode() const;            // Возвращает имя исключения SEH
+	   tlib::tstring GetNameSEHCode() const;            // Возвращает имя исключения SEH
 	   
 	   const PEXCEPTION_POINTERS GetExceptionPtr(void) const
 	   {
 		   return m_pExcPointers;
 	   }
 
-	   Tstring::tstring GetContextRecordMsg() const;
+	   tlib::tstring GetContextRecordMsg() const;
 
 
 	// Замещение виртуальных ф-ий базового класса
@@ -56,27 +56,27 @@ public:
 		   return m_nSeCode;
 	   }
 
-	   virtual const Tstring::tstring GetMsgOfErrorCode() const
+	   virtual const tlib::tstring GetMsgOfErrorCode() const
 	   {
 		   return GetExceptionMsg(m_nSeCode, m_pExcPointers);
 	   }
 
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EExceptionSEH"));
+		   return tlib::tstring(_T("EExceptionSEH"));
 	   }
 
-	   virtual const Tstring::tstring GetUserErrorText() const
+	   virtual const tlib::tstring GetUserErrorText() const
 	   {
-		   return Tstring::tstring();
+		   return tlib::tstring();
 	   }
 
-	   virtual const Tstring::tstring GetExceptionAllInfoMsg() const
+	   virtual const tlib::tstring GetExceptionAllInfoMsg() const
 	   {
-		   Tstring::tstringstream Msg;
-		   Msg << Tstring::showbase << Tstring::uppercase << Tstring::tsetfill(_T('0'));
+		   tlib::tstringstream Msg;
+		   Msg << tlib::showbase << tlib::uppercase << tlib::tsetfill(_T('0'));
 		   
-		   Msg << _T("Error code: ") << GetNameSEHCode() << Tstring::setw(8) << _T(" (") << Tstring::ConversionRadix(GetSEHCode(),16) << _T(") \n");
+		   Msg << _T("Error code: ") << GetNameSEHCode() << tlib::setw(8) << _T(" (") << tlib::ConversionRadix(GetSEHCode(),16) << _T(") \n");
 		   Msg << _T("Error message: ") << GetMsgOfErrorCode() << _T("\n");
 		   Msg << _T("ContextRecord: ") << GetContextRecordMsg() << _T("\n");
 		   return Msg.str();
@@ -111,9 +111,9 @@ class EMemoryAccessSEH :public EExceptionSEH
 	public:
 		EMemoryAccessSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EMemoryAccessSEH"));
+		   return tlib::tstring(_T("EMemoryAccessSEH"));
 	   }
 };
 
@@ -124,9 +124,9 @@ class EAccessViolationSEH :public EMemoryAccessSEH
 	public:
 		EAccessViolationSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EAccessViolationSEH"));
+		   return tlib::tstring(_T("EAccessViolationSEH"));
 	   }
 };
 
@@ -137,9 +137,9 @@ class EArrayBoundsExceededSEH :public EMemoryAccessSEH
 	public:
 		EArrayBoundsExceededSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EArrayBoundsExceededSEH"));
+		   return tlib::tstring(_T("EArrayBoundsExceededSEH"));
 	   }
 };
 
@@ -150,9 +150,9 @@ class EDataMisAlignmentSEH:public EMemoryAccessSEH
 	public:
 		EDataMisAlignmentSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EDataMisAlignmentSEH"));
+		   return tlib::tstring(_T("EDataMisAlignmentSEH"));
 	   }
 };
 
@@ -163,9 +163,9 @@ class EInPageErrorSEH :public EMemoryAccessSEH
 	public:
 		EInPageErrorSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EInPageErrorSEH"));
+		   return tlib::tstring(_T("EInPageErrorSEH"));
 	   }
 };
 
@@ -175,9 +175,9 @@ class EStackOverflowSEH :public EMemoryAccessSEH
 	public:
 		EStackOverflowSEH (unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EStackOverflowSEH"));
+		   return tlib::tstring(_T("EStackOverflowSEH"));
 	   }
 };
 
@@ -187,9 +187,9 @@ class EGuardPageSEH :public EMemoryAccessSEH
 	public:
 		EGuardPageSEH (unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EMemoryAccessSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EGuardPageSEH"));
+		   return tlib::tstring(_T("EGuardPageSEH"));
 	   }
 };
 
@@ -201,9 +201,9 @@ class ESystemObjectSEH :public EExceptionSEH
 	public:
 		ESystemObjectSEH (unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH (nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("ESystemObjectSEH"));
+		   return tlib::tstring(_T("ESystemObjectSEH"));
 	   }
 };
 //   Поток использовал handle на kernel object который был инвалидный 
@@ -213,9 +213,9 @@ class EInvalidHandleSEH :public ESystemObjectSEH
 	public:
 		EInvalidHandleSEH (unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																ESystemObjectSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EInvalidHandleSEH"));
+		   return tlib::tstring(_T("EInvalidHandleSEH"));
 	   }
 };
 
@@ -226,9 +226,9 @@ class EPossibleDeadlockSEH :public ESystemObjectSEH
 	public:
 		EPossibleDeadlockSEH (unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																ESystemObjectSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EPossibleDeadlockSEH"));
+		   return tlib::tstring(_T("EPossibleDeadlockSEH"));
 	   }
 };
 
@@ -239,9 +239,9 @@ class EInstructionSEH :public EExceptionSEH
 	public:
 		EInstructionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EInstructionSEH"));
+		   return tlib::tstring(_T("EInstructionSEH"));
 	   }
 };
 
@@ -251,9 +251,9 @@ class EPrivilegedInstructionSEH :public EInstructionSEH
 	public:
 		EPrivilegedInstructionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EInstructionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EPrivilegedInstructionSEH"));
+		   return tlib::tstring(_T("EPrivilegedInstructionSEH"));
 	   }
 };
 
@@ -263,9 +263,9 @@ class EIllegalInstructionSEH :public EInstructionSEH
 	public:
 		EIllegalInstructionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EInstructionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EIllegalInstructionSEH"));
+		   return tlib::tstring(_T("EIllegalInstructionSEH"));
 	   }
 };
 
@@ -277,9 +277,9 @@ class EDebugExceptionSEH :public EExceptionSEH
 	public:
 		EDebugExceptionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH (nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EDebugExceptionSEH"));
+		   return tlib::tstring(_T("EDebugExceptionSEH"));
 	   }
 };
 
@@ -289,9 +289,9 @@ class EBreakpointSEH :public EDebugExceptionSEH
 	public:
 		EBreakpointSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EDebugExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EBreakpointSEH"));
+		   return tlib::tstring(_T("EBreakpointSEH"));
 	   }
 };
 //   При по шаговой трасировке сигнализирует, что одна инструкция была выполнена
@@ -300,9 +300,9 @@ class ESingleStepSEH :public EDebugExceptionSEH
 	public:
 		ESingleStepSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EDebugExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("ESingleStepSEH"));
+		   return tlib::tstring(_T("ESingleStepSEH"));
 	   }
 };
 
@@ -314,9 +314,9 @@ class EInternalExceptionSEH :public EExceptionSEH
 	public:
 		EInternalExceptionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EInternalExceptionSEH"));
+		   return tlib::tstring(_T("EInternalExceptionSEH"));
 	   }
 };
 
@@ -326,9 +326,9 @@ class ENonContinuableExceptionSEH :public EInternalExceptionSEH
 	public:
 		ENonContinuableExceptionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EInternalExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("ENonContinuableExceptionSEH"));
+		   return tlib::tstring(_T("ENonContinuableExceptionSEH"));
 	   }
 };
 
@@ -339,9 +339,9 @@ class EInvalidDispositionSEH :public EInternalExceptionSEH
 	public:
 		EInvalidDispositionSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EInternalExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EInvalidDispositionSEH"));
+		   return tlib::tstring(_T("EInvalidDispositionSEH"));
 	   }
 };
 
@@ -353,9 +353,9 @@ class EIntegerOperationSEH :public EExceptionSEH
 	public:
 		EIntegerOperationSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EIntegerOperationSEH"));
+		   return tlib::tstring(_T("EIntegerOperationSEH"));
 	   }
 };
 
@@ -365,9 +365,9 @@ class EIntDivideByZeroSEH :public EIntegerOperationSEH
 	public:
 		EIntDivideByZeroSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EIntegerOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EIntDivideByZeroSEH"));
+		   return tlib::tstring(_T("EIntDivideByZeroSEH"));
 	   }
 };
 
@@ -377,9 +377,9 @@ class EIntOverflowSEH :public EIntegerOperationSEH
 	public:
 		EIntOverflowSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EIntegerOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EIntOverflowSEH"));
+		   return tlib::tstring(_T("EIntOverflowSEH"));
 	   }
 };
 
@@ -391,9 +391,9 @@ class EFloatOperationSEH :public EExceptionSEH
 	public:
 		EFloatOperationSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EExceptionSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFloatOperationSEH"));
+		   return tlib::tstring(_T("EFloatOperationSEH"));
 	   }
 };
 
@@ -402,9 +402,9 @@ class EFltDenormalOperandSEH :public EFloatOperationSEH
 	public:
 		EFltDenormalOperandSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltDenormalOperandSEH"));
+		   return tlib::tstring(_T("EFltDenormalOperandSEH"));
 	   }
 };
 
@@ -413,9 +413,9 @@ class EFltDivideByZeroSEH :public EFloatOperationSEH
 	public:
 		EFltDivideByZeroSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltDivideByZeroSEH"));
+		   return tlib::tstring(_T("EFltDivideByZeroSEH"));
 	   }
 };
 
@@ -424,9 +424,9 @@ class EFltInexactResultSEH :public EFloatOperationSEH
 	public:
 		EFltInexactResultSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltInexactResultSEH"));
+		   return tlib::tstring(_T("EFltInexactResultSEH"));
 	   }
 };
 
@@ -435,9 +435,9 @@ class EFltInvalidOperationSEH :public EFloatOperationSEH
 	public:
 		EFltInvalidOperationSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltInvalidOperationSEH"));
+		   return tlib::tstring(_T("EFltInvalidOperationSEH"));
 	   }
 };
 
@@ -446,9 +446,9 @@ class EFltOverflowSEH :public EFloatOperationSEH
 	public:
 		EFltOverflowSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltOverflowSEH"));
+		   return tlib::tstring(_T("EFltOverflowSEH"));
 	   }
 };
 
@@ -457,9 +457,9 @@ class EFltStackCheckSEH :public EFloatOperationSEH
 	public:
 		EFltStackCheckSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltStackCheckSEH"));
+		   return tlib::tstring(_T("EFltStackCheckSEH"));
 	   }
 };
 
@@ -468,9 +468,9 @@ class EFltUnderflowSEH :public EFloatOperationSEH
 	public:
 		EFltUnderflowSEH(unsigned int nSeCode, PEXCEPTION_POINTERS pExcPointers):
 																EFloatOperationSEH(nSeCode, pExcPointers){};
-	   virtual const Tstring::tstring GetExceptionClassName(void) const
+	   virtual const tlib::tstring GetExceptionClassName(void) const
 	   {
-		   return Tstring::tstring(_T("EFltUnderflowSEH"));
+		   return tlib::tstring(_T("EFltUnderflowSEH"));
 	   }
 };
 

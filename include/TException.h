@@ -14,7 +14,7 @@
 //   GetNTStatusMessage -  получает текст сообщения	NTStatus, читая его из NTDLL.DLL
 //                         если текст сообщения имеет параметры, их можно заполнить, передав их в
 //                         GetNTStatusMessage в порядке их следования в тексте сообщения.
-Tstring::tstring GetNTStatusMessage(DWORD NTStatusMessage, ...);
+tlib::tstring GetNTStatusMessage(DWORD NTStatusMessage, ...);
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ Tstring::tstring GetNTStatusMessage(DWORD NTStatusMessage, ...);
 //   GetLastErrorMessage -  получает текст сообщения возвращаемого GetLastError, если текст сообщения 
 //                          имеет параметры, их можно заполнить, передав их в GetLastErrorMessage 
 //                          в порядке их следования в тексте сообщения.
-Tstring::tstring GetLastErrorMessage(DWORD LastError, ...);
+tlib::tstring GetLastErrorMessage(DWORD LastError, ...);
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,14 +42,14 @@ class EException: public std::exception
 {		
 public:
 	virtual DWORD GetErrorCode(void) const =0;                          // Возвращает код ошибки, если он существует      
-	virtual const Tstring::tstring GetMsgOfErrorCode() const=0;         // Возвращает сообщение, связанное с кодом ошибки 
+	virtual const tlib::tstring GetMsgOfErrorCode() const=0;         // Возвращает сообщение, связанное с кодом ошибки 
 	
-	virtual const Tstring::tstring GetExceptionClassName(void) const=0; // Возвращает истинное имя класса исключения      
+	virtual const tlib::tstring GetExceptionClassName(void) const=0; // Возвращает истинное имя класса исключения      
 
-	virtual const Tstring::tstring GetUserErrorText() const=0;          // Возвращает текст сообщения, которое было задано 
+	virtual const tlib::tstring GetUserErrorText() const=0;          // Возвращает текст сообщения, которое было задано 
 	                                                                    // пользователем при возбуждении исключения       
     
-	virtual const Tstring::tstring GetExceptionAllInfoMsg() const=0;    // Возвращает всю информацию об исключении        
+	virtual const tlib::tstring GetExceptionAllInfoMsg() const=0;    // Возвращает всю информацию об исключении        
 	virtual const char* what() const=0;                                 // Унаследованная ф-ия, которая в нашем случае будет 
 	                                                                    // возвращать, то же что и GetExceptionAllInfoMsg()
 };

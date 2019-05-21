@@ -8,7 +8,7 @@
 #include <INIParser.h>
 
 
-using namespace Tstring;
+using namespace tlib;
 using namespace std;
 void help()
 {

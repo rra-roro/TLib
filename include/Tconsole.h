@@ -11,7 +11,7 @@
 #include <wincon.h>
 #include <iostream>
 
-namespace Tstring
+namespace tlib
 {
 	class TConsole
 	{

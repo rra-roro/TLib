@@ -26,7 +26,7 @@
 
 using namespace std;
 
-namespace Tstring
+namespace tlib
 {
 
 //Создадим ссылку на глобальные объекты консоли в зависемости от того Ansi или Unicode

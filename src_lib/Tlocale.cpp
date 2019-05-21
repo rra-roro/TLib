@@ -2,6 +2,7 @@
 #include <Tlocale.h>
 #include <Tiostream.h>
 
+using namespace tlib;
 using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -10,15 +11,15 @@ using namespace std;
 //DWORD InitConsolIO(const string& LocaleName  = "Russian_Russia.866",
 //                     const string& NumberLocale = "C");
 //
-int Tstring::InitConsolIO(void)
+int tlib::InitConsolIO(void)
 {
 	// Системная локаль по умолчанию "C". Проинициализируем CRT, установив для нее 
 	// локаль, соответствующую кодировке строковых литералов типа char, в нашей 
     // откомпилированной программе, заданной при ее компиляции	
-	std::locale::global(Tstring::GetLocaleProgram());
+	std::locale::global(GetLocaleProgram());
 
 	// Создадим локаль соответствующую текущей кодировке консоли
-	locale loc = Tstring::GetLocaleConsole();
+	locale loc = GetLocaleConsole();
 
 	// Установим локаль соответствующую текущей кодировке консоли
 	// для всех консольных потоков ввода/вывода
@@ -35,10 +36,10 @@ int Tstring::InitConsolIO(void)
 }
 
 #ifdef _WIN32
-int Tstring::InitIO(void)
+int tlib::InitIO(void)
 {
-	Tstring::tstringstream temp;
-	temp.imbue(Tstring::GetLocaleGUI());
+	tstringstream temp;
+	temp.imbue(GetLocaleGUI());
 	return 0;
 }
 #endif

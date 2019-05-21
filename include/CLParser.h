@@ -103,7 +103,7 @@ struct ErrorOpt
         requires_arg          //Параметр для опции нужен
     };
     ErrorCode  ErrorID;         // Код ошибки
-	Tstring::tstring    optopt;          // Имя опции которая была не распознана
+    tlib::tstring optopt; // Имя опции которая была не распознана
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ private:
         TCHAR NameOption;
 		ItemArg():IsSet(false),ParamOption(){};
 public:
-		vector<Tstring::tstring> ParamOption;
+        vector<tlib::tstring> ParamOption;
         operator bool()const
         {
                 return IsSet;
@@ -222,7 +222,7 @@ class ParserCommandLine
 
 public:
         //Список неопций
-		TOptionArray<Tstring::tstring>    NonOption;
+		TOptionArray<tlib::tstring>    NonOption;
 		//Список ошибочных опций
 		TOptionArray<ErrorOpt>   ErrorOption;
 		//Список опций
@@ -239,15 +239,15 @@ public:
 		void SetSeparatorChar(TCHAR Ch);
 
 		// Установим формат коротких опций
-		void SetShortFormatOfArg(Tstring::tstring Str);
+		void SetShortFormatOfArg(tlib::tstring Str);
 
 		// Добавим формат для очердной длинной опции
-		void AddFormatOfArg(Tstring::tstring name, _argtype has_arg, TCHAR val);
+		void AddFormatOfArg(tlib::tstring name, _argtype has_arg, TCHAR val);
 
 		// Две функции Parser() с разными входными параметрами
 		template<class _Elem> void Parser(int argc, _Elem* argv[]);
 
-		void Parser(vector<Tstring::tstring>& ArgV_p);
+		void Parser(vector<tlib::tstring>& ArgV_p);
 
 		// Еще одна функция Parser(), которая принимает для разбра строку
 		// bProgramName, этот параметр задает правила интерпритации первой опции в строке ArgV_str:
@@ -255,7 +255,7 @@ public:
 		//                             эта опция не будет проанализирована
 		// Если  bProgramName == false, то в начале строки отсутствует путь и имя программы,
 		//                              и первый аргумент строки будет включен в анализ опций
-		//void Parser(Tstring::tstring& ArgV_str, bool bProgramName=true);
+		//void Parser(tlib::tstring& ArgV_str, bool bProgramName=true);
 		template<class _Elem> void Parser(const std::basic_string<_Elem>& ArgV_str, bool bProgramName=true);
 
 };
