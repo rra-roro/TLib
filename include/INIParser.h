@@ -169,7 +169,7 @@ public:
 	
 };
 
-#if !(defined(_LIB))
+#if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))
 
 #define _LIB_NAME "tlib_parsers"
 
@@ -177,6 +177,6 @@ public:
 
 #undef _LIB_NAME
 
-#endif // !(defined(_LIB))
+#endif // !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))
 
 #endif //INI_PARSER
