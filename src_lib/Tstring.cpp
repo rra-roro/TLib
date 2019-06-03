@@ -44,12 +44,4 @@ namespace tlib
 
 #endif
 
-   //   ProgramCodePage <--> wchar_t
-   thread_local std::wstring_convert<codecvt_w> wconv(new codecvt_w(GetLocaleNameProgram()));
-
-   //   utf8 <--> char16_t
-   thread_local std::wstring_convert<codecvt_u16, char16_t> u16conv(new codecvt_u16(GetLocaleNameProgram()));
-
-   //   utf8 <--> wchar_t
-   thread_local std::wstring_convert<std::codecvt_utf8<wchar_t>> u8conv;
 }

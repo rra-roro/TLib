@@ -17,15 +17,19 @@
 
 namespace tlib
 {
-
       using std::endl;
 
 #ifdef _WIN32
       extern std::wostream& ucout;
       extern std::wistream& ucin;
+      extern std::wostream& ucerr;
+      extern std::wostream& uclog;
+
 #else
-      extern std::ostream& ucout;
-      extern std::istream& ucin;
+      extern std::ostream ucout;
+      extern std::istream ucin;
+      extern std::ostream ucerr;
+      extern std::ostream uclog;
 #endif
 
 #if (defined(_WIN32) && defined(_UNICODE))
@@ -40,15 +44,15 @@ namespace tlib
       extern std::ostream& tclog;
 #endif
 
-      using tistream = std::basic_istream<TCHAR, std::char_traits<TCHAR>>;
-      using tostream = std::basic_ostream<TCHAR, std::char_traits<TCHAR>>;
-      using tifstream = std::basic_ifstream<TCHAR, std::char_traits<TCHAR>>;
-      using tofstream = std::basic_ofstream<TCHAR, std::char_traits<TCHAR>>;
-      using tfstream = std::basic_fstream<TCHAR, std::char_traits<TCHAR>>;
-      using tistringstream = std::basic_istringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
-      using tostringstream = std::basic_ostringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
-      using tstringstream = std::basic_stringstream<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
-      using tstringbuf = std::basic_stringbuf<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tistream = std::basic_istream<TCHAR>;
+      using tostream = std::basic_ostream<TCHAR>;
+      using tifstream = std::basic_ifstream<TCHAR>;
+      using tofstream = std::basic_ofstream<TCHAR>;
+      using tfstream = std::basic_fstream<TCHAR>;
+      using tistringstream = std::basic_istringstream<TCHAR>;
+      using tostringstream = std::basic_ostringstream<TCHAR>;
+      using tstringstream = std::basic_stringstream<TCHAR>;
+      using tstringbuf = std::basic_stringbuf<TCHAR>;
 
 
 #if !(defined(__linux__) || defined(UNDER_CE) || defined(WINCE))
@@ -77,14 +81,6 @@ namespace tlib
             return s << x.toStdWString();
       }
 #endif //Q_OS_WIN
-
-#elif __linux__
-
-      std::ostream& operator<<(std::ostream& s, char16_t x);
-      std::ostream& operator<<(std::ostream& s, const char16_t* x);
-      std::ostream& operator<<(std::ostream& s, const std::u16string& x);
-      std::ostream& operator<<(std::ostream& s, std::u16string_view x);
-      std::istream& operator>>(std::istream& s, std::u16string& x);
 
 #endif //!(defined(UNDER_CE) || defined(WINCE))
 }

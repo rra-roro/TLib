@@ -14,7 +14,7 @@ endif ()
 
 
 SET(TARGT_NAME_TLIB tlib)
-SET(SOURCE_TLIB Tiomanip.cpp Tiostream.cpp Tlocale.cpp Tstring.cpp)
+SET(SOURCE_TLIB Tiomanip.cpp Tiostream.cpp Tlocale.cpp Tstring.cpp Tcodecvt.cpp)
 
 SET(TARGT_NAME_TPARSERS tlib_parsers)
 SET(SOURCE_TPARSERS INIParser.cpp CLParser.cpp)

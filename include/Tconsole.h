@@ -97,7 +97,7 @@ namespace tlib
 		{
 			if (IsConsole)
 			{
-				FreeConsole();
+				//FreeConsole();    // Exception ??? TоDo  узнать почему
 				IsConsole = false;
 			}
 		}

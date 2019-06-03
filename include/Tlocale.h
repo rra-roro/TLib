@@ -37,9 +37,9 @@ extern template std::locale::id std::collate<char16_t>::id;
 namespace tlib
 {
       /*---
-	*   CodePageCharInSrc - задает кодировку строковых литералов и типа char
+	*   CodePageCharInSrc - задает имя кодировки строковых литералов и типа char
 	*                       в скомпилированной программе.
-	*   Это не то же самое, что кодировка исходного текста програмы, которая по
+	*   Это не то же самое, что имя кодировка исходного текста програмы, которая по
 	*   соглашению всегда UTF-8 BOM.
 	*   Кодировка строковых литералов и типа char задается компилятором в момент
 	*   компиляции программы и устанавливается такой же, как кодировка системы в
@@ -52,6 +52,20 @@ namespace tlib
 #else
 #error "Unknown compiler"
 #endif
+
+      /*---
+	*   CodePageUTF8 - задает имя кодировки UTF-8 строковых литералов и типа char.
+      *
+	*   Имена для кодировки UTF-8 отличаются в Windows и Linux
+	*/
+#ifdef _WIN32
+      constexpr const char* CodePageUTF8 = "Russian_Russia.65001";
+#elif __linux__
+      constexpr const char* CodePageUTF8 = "ru_RU.utf8";
+#else
+#error "Unknown compiler"
+#endif
+
 
       ///////////////////////////////////////////////////////////////////////////////////////
       //

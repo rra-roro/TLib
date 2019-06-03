@@ -46,76 +46,72 @@
 #include <locale>
 #include <Tcodecvt.h>
 #include <Ttype.h>
+#include <char8_t.h>
+
+
+#ifndef __cpp_lib_char8_t
+
+namespace std
+{
+      using u8string = basic_string<char8_t>;
+      using u8string_view = basic_string_view<char8_t>;
+}
+
+#endif
 
 namespace tlib
 {
       extern const size_t npos;
-      using tstring = std::basic_string<TCHAR, std::char_traits<TCHAR>, std::allocator<TCHAR>>;
+      using tstring = std::basic_string<TCHAR>;
       using tstring_view = std::basic_string_view<TCHAR>;
 
-#if !(defined(UNDER_CE) || defined(WINCE))
-      // Не актуально для не консольных и WINCE программ
-
       //=======================================================================
-      //  Вводим две функции, которые позволят присваивать string и wstring друг другу
-      //
-      template <class I, class E, class S>
-      struct codecvt_byname : std::codecvt_byname<I, E, S>
-      {
-            template <class... Args>
-            codecvt_byname(Args&&... args) : std::codecvt_byname<I, E, S>(std::forward<Args>(args)...)
-            {
-            }
-            ~codecvt_byname() {}
-      };
+      //  Вводим функции, которые позволяют осуществлять преобразования между различными типами строк.
+      //  Например, преоразовать string и wstring друг в друга
 
-      //   ProgramCodePage <--> wchar_t
-      using codecvt_w = codecvt_byname<wchar_t, char, std::mbstate_t>;
-      extern thread_local std::wstring_convert<codecvt_w> wconv;
-
-      //   utf8 <--> char16_t
-      using codecvt_u16 = codecvt_byname<char16_t, char, std::mbstate_t>;
-      extern thread_local std::wstring_convert<codecvt_u16, char16_t> u16conv;
-
-      //   utf8 <--> wchar_t
-      extern thread_local std::wstring_convert<std::codecvt_utf8<wchar_t>> u8conv;
-
+      //   string <--> wstring
 
       inline std::wstring cstr_wstr(std::string_view str)
       {
             const char *_first_symbol = str.data();
-            return wconv.from_bytes(_first_symbol, _first_symbol + str.size());
+            return strconvert_w_сodepage.from_bytes(_first_symbol, _first_symbol + str.size());
       }
 
       inline std::string wstr_cstr(std::wstring_view wstr)
       {
             const wchar_t *_first_symbol = wstr.data();
-            return wconv.to_bytes(_first_symbol, _first_symbol + wstr.size());
+            return strconvert_w_сodepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
       }
 
-      inline std::wstring u8str_wstr(std::string_view u8str)
+      //   u8string <--> u16string
+
+      inline std::u16string u8str_u16str(std::u8string_view u8str)
       {
             const char *_first_symbol = u8str.data();
-            return u8conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
+            return strconvert_u16_u8.from_bytes(_first_symbol, _first_symbol + u8str.size());
       }
 
-      inline std::string wstr_u8str(std::wstring_view wstr)
-      {
-            const wchar_t *_first_symbol = wstr.data();
-            return u8conv.to_bytes(_first_symbol, _first_symbol + wstr.size());
-      }
-
-      inline std::u16string u8str_u16str(std::string_view u8str)
-      {
-            const char *_first_symbol = u8str.data();
-            return u16conv.from_bytes(_first_symbol, _first_symbol + u8str.size());
-      }
-
-      inline std::string u16str_u8str(std::u16string_view u16str)
+      inline std::u8string_view u16str_u8str(std::u16string_view u16str)
       {
             const char16_t *_first_symbol = u16str.data();
-            return u16conv.to_bytes(_first_symbol, _first_symbol + u16str.size());
+            return strconvert_u16_u8.to_bytes(_first_symbol, _first_symbol + u16str.size());
       }
+
+      //   u8string <--> wstring
+
+      inline std::wstring u8str_wstr(std::u8string_view u8str)
+      {
+            const char *_first_symbol = u8str.data();
+            return strconvert_w_u8.from_bytes(_first_symbol, _first_symbol + u8str.size());
+      }
+
+      inline std::u8string_view wstr_u8str(std::wstring_view wstr)
+      {
+            const wchar_t *_first_symbol = wstr.data();
+            return strconvert_w_u8.to_bytes(_first_symbol, _first_symbol + wstr.size());
+      }
+
+      //   u16string <--> wstring   ???? ToDo: need fix for Linux
 
       inline std::wstring u16str_wstr(std::u16string_view u16str)
       {
@@ -128,28 +124,28 @@ namespace tlib
       }
 
 #ifdef _WIN32
-#ifdef _UNICODE
-#define str2tstr(str) tlib::cstr_wstr(str)
-#define wstr2tstr(str) str
-#define ustr2tstr(str) tlib::u16str_wstr(str)
-#define tstr2str(str) tlib::wstr_cstr(str)
-#define tstr2wstr(str) str
-#define tstr2ustr(str) tlib::wstr_u16str(str)
-#else
-#define str2tstr(str) str
-#define wstr2tstr(str) tlib::wstr_cstr(str)
-#define ustr2tstr(str) tlib::wstr_cstr(u16str_wstr(str))
-#define tstr2str(str) str
-#define tstr2wstr(str) tlib::cstr_wstr(str)
-#define tstr2ustr(str) tlib::wstr_u16str(cstr_wstr(str))
-#endif
+      #ifdef _UNICODE
+            #define str2tstr(str)  tlib::cstr_wstr(str)
+            #define wstr2tstr(str) str
+            #define ustr2tstr(str) tlib::u16str_wstr(str)
+            #define tstr2str(str)  tlib::wstr_cstr(str)
+            #define tstr2wstr(str) str
+            #define tstr2ustr(str) tlib::wstr_u16str(str)
+      #else
+            #define str2tstr(str)  str
+            #define wstr2tstr(str) tlib::wstr_cstr(str)
+            #define ustr2tstr(str) tlib::wstr_cstr(u16str_wstr(str))
+            #define tstr2str(str)  str
+            #define tstr2wstr(str) tlib::cstr_wstr(str)
+            #define tstr2ustr(str) tlib::wstr_u16str(cstr_wstr(str))
+      #endif
 #elif __linux__
-#define str2tstr(str) tlib::u8str_u16str(str)
-#define wstr2tstr(str) tlib::wstr_u16str(str) // u8str_u16str(wstr_u8str(str))
-#define ustr2tstr(str) str
-#define tstr2str(str) tlib::u16str_u8str(str)
-#define tstr2wstr(str) tlib::u16str_wstr(str)
-#define tstr2ustr(str) str
+      #define str2tstr(str)  tlib::u8str_u16str(str)
+      #define wstr2tstr(str) tlib::wstr_u16str(str)       // u8str_u16str(wstr_u8str(str))     ???? ToDo: need fix for Linux
+      #define ustr2tstr(str) str
+      #define tstr2str(str)  tlib::u16str_u8str(str)
+      #define tstr2wstr(str) tlib::u16str_wstr(str)
+      #define tstr2ustr(str) str
 #endif
       //=======================================================================
       //  Вводим макросы, которые позволяют задавать в явном виде тип char и wchar_t строки и символа
@@ -216,8 +212,6 @@ namespace tlib
                   return str;
             }
       }
-
-#endif //!(defined(UNDER_CE) || defined(WINCE))
 
 }
 

@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include <Tiostream.h>
 #include <Tlocale.h>
+#include <Tcodecvt.h>
 
 using namespace std;
 using namespace tlib;
@@ -13,9 +14,13 @@ namespace tlib
 #ifdef _WIN32
 	wostream& ucout = wcout;
 	wistream& ucin = wcin;
+      wostream& ucerr = wcerr;   
+      wostream& uclog = wclog;
 #else
-	ostream& ucout = cout;
-	istream& ucin = cin;
+      ostream ucout(&out_putbufferconvert_u16_u8);
+      istream ucin(&in_bufferconvert_u16_u8);
+      ostream ucerr(&err_bufferconvert_u16_u8);
+      ostream uclog(&log_bufferconvert_u16_u8);
 #endif
 
 	//Создадим ссылку на глобальные объекты консоли в зависемости от того Ansi или Unicode
@@ -25,10 +30,11 @@ namespace tlib
 	wostream& tcerr = wcerr;
 	wostream& tclog = wclog;
 #else
-	ostream& tcout = cout;
-	istream& tcin = cin;
-	ostream& tcerr = cerr;
-	ostream& tclog = clog;
+      ostream& tcout = ucout;
+      istream& tcin = ucin;
+      ostream& tcerr = ucerr;
+      ostream& tclog = uclog;
+
 #endif
 
 #ifdef _WIN32
@@ -178,48 +184,6 @@ namespace tlib
 		x.assign(InputStr.begin(), InputStr.end());
 		return s;
 	}
-
-#elif __linux__
-
-	ostream& tlib::operator<< (ostream& s, char16_t x)
-	{
-		// Выведем строку в поток
-		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
-		return s;
-	}
-
-	ostream& tlib::operator<< (ostream& s, const char16_t* x)
-	{
-		// Выведем строку в поток
-		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
-		return s;
-	}
-
-	ostream& tlib::operator<< (ostream& s, const u16string& x)
-	{
-		// Выведем строку в поток
-		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x));
-		return s;
-	}
-
-	ostream& tlib::operator<< (ostream& s, u16string_view x)
-	{
-		// Выведем строку в поток
-		std::operator<<(s, convert_ConsoleCP_wide.to_bytes(x.data(), x.data() + x.size()));
-		return s;
-	}
-
-	istream& tlib::operator>> (istream& s, u16string& x)
-	{
-		string InputStr;
-		std::operator>>(s, InputStr);
-
-		std::u16string u16str = convert_ConsoleCP_wide.from_bytes(InputStr);
-		x.assign(u16str);
-
-		return s;
-	}
-
 
 #endif //!(defined(UNDER_CE) || defined(WINCE))
 
