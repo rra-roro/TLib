@@ -75,6 +75,8 @@ else()
 
     add_compile_definitions(_LIB)
     add_compile_definitions(__linux__)
+
+    target_link_libraries(${TARGT_NAME_TPARSERS} stdc++fs)
     
 endif ()
 

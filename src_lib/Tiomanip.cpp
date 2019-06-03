@@ -29,6 +29,7 @@ namespace tlib
 
 	template std::basic_ostream<char>& ConversionRadix::C_Radix(std::basic_ostream<char>& iostr) const;
 	template std::basic_ostream<wchar_t>& ConversionRadix::C_Radix(std::basic_ostream<wchar_t>& iostr) const;
+      template std::basic_ostream<char16_t>& ConversionRadix::C_Radix(std::basic_ostream<char16_t>& iostr) const;
 }
 
 

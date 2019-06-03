@@ -206,7 +206,8 @@ namespace tlib
                   concp = 866;
             stream << "Russian_Russia." << std::dec << concp;
 #elif __linux__
-            stream << GetConsoleOutputCP();
+            //stream << GetConsoleOutputCP();
+            stream << CodePageUTF8;
 #endif
             return CreateLocaleByName(stream.str(), "C");
       }

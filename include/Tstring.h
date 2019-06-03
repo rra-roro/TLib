@@ -74,13 +74,13 @@ namespace tlib
       inline std::wstring cstr_wstr(std::string_view str)
       {
             const char *_first_symbol = str.data();
-            return strconvert_w_сodepage.from_bytes(_first_symbol, _first_symbol + str.size());
+            return strconvert_w_codepage.from_bytes(_first_symbol, _first_symbol + str.size());
       }
 
       inline std::string wstr_cstr(std::wstring_view wstr)
       {
             const wchar_t *_first_symbol = wstr.data();
-            return strconvert_w_сodepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
+            return strconvert_w_codepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
       }
 
       //   u8string <--> u16string
@@ -91,7 +91,7 @@ namespace tlib
             return strconvert_u16_u8.from_bytes(_first_symbol, _first_symbol + u8str.size());
       }
 
-      inline std::u8string_view u16str_u8str(std::u16string_view u16str)
+      inline std::u8string u16str_u8str(std::u16string_view u16str)
       {
             const char16_t *_first_symbol = u16str.data();
             return strconvert_u16_u8.to_bytes(_first_symbol, _first_symbol + u16str.size());
@@ -105,7 +105,7 @@ namespace tlib
             return strconvert_w_u8.from_bytes(_first_symbol, _first_symbol + u8str.size());
       }
 
-      inline std::u8string_view wstr_u8str(std::wstring_view wstr)
+      inline std::u8string wstr_u8str(std::wstring_view wstr)
       {
             const wchar_t *_first_symbol = wstr.data();
             return strconvert_w_u8.to_bytes(_first_symbol, _first_symbol + wstr.size());
@@ -172,7 +172,7 @@ namespace tlib
       }
 
       template <class _Elem>
-      inline std::basic_string<_Elem> Tstr2TemplateStr(const tstring &str)
+      inline std::basic_string<_Elem> Tstr2TemplateStr(const tstring& str)
       {
             if constexpr (is_wchar_v<_Elem>)
             {

@@ -47,10 +47,10 @@ script:
 - CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8
 - cmake -DSTATIC_LINK_LIBS=ON .
 - cmake --build .
-- cmake --build . --target test
+#- cmake --build . --target test
 - cmake --build . --target package
 - cd ./src_lib_shared
-- /home/travis/build/rra-roro/homework_11_async/src_test/test_async
+- /home/travis/build/rra-roro/TLib/src_test/test_tlib
 - cd -
 - doxygen Doxyfile
 

@@ -19,6 +19,9 @@ namespace tlib
 {
       using std::endl;
 
+      using u16istream = std::basic_istream<char16_t>;
+      using u16ostream = std::basic_ostream<char16_t>;
+
 #ifdef _WIN32
       extern std::wostream& ucout;
       extern std::wistream& ucin;
@@ -26,22 +29,10 @@ namespace tlib
       extern std::wostream& uclog;
 
 #else
-      extern std::ostream ucout;
-      extern std::istream ucin;
-      extern std::ostream ucerr;
-      extern std::ostream uclog;
-#endif
-
-#if (defined(_WIN32) && defined(_UNICODE))
-      extern std::wostream& tcout;
-      extern std::wistream& tcin;
-      extern std::wostream& tcerr;
-      extern std::wostream& tclog;
-#else
-      extern std::ostream& tcout;
-      extern std::istream& tcin;
-      extern std::ostream& tcerr;
-      extern std::ostream& tclog;
+      extern u16ostream ucout;
+      extern u16istream ucin;
+      extern u16ostream ucerr;
+      extern u16ostream uclog;
 #endif
 
       using tistream = std::basic_istream<TCHAR>;
@@ -54,8 +45,20 @@ namespace tlib
       using tstringstream = std::basic_stringstream<TCHAR>;
       using tstringbuf = std::basic_stringbuf<TCHAR>;
 
+#if (defined(_WIN32) && defined(_UNICODE))
+      extern std::wostream& tcout;
+      extern std::wistream& tcin;
+      extern std::wostream& tcerr;
+      extern std::wostream& tclog;
+#else
+      extern u16ostream& tcout;
+      extern u16istream& tcin;
+      extern u16ostream& tcerr;
+      extern u16ostream& tclog;
+#endif
 
-#if !(defined(__linux__) || defined(UNDER_CE) || defined(WINCE))
+
+#ifdef _WIN32
       // Не актуально для не консольных и WINCE программ
       std::ostream& operator<<(std::ostream& s, char x);
       std::ostream& operator<<(std::ostream& s, const char* x);
@@ -80,11 +83,11 @@ namespace tlib
       {
             return s << x.toStdWString();
       }
-#endif //Q_OS_WIN
-
-#endif //!(defined(UNDER_CE) || defined(WINCE))
+#endif // Q_OS_WIN
+#endif // _WIN32
 }
 
+#ifdef _WIN32
 template <>
 class std::ostream_iterator<std::string, char>
 { // wrap _Ty inserts to output stream as output iterator
@@ -188,6 +191,9 @@ class std::ostream_iterator<std::u16string, char16_t>
       const char16_t* _Mydelim; // pointer to delimiter string (NB: not freed)
       ostream_type* _Myostr;    // pointer to output stream
 };
+
+#endif // _WIN32
+
 
 #if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))
 

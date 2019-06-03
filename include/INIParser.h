@@ -173,7 +173,7 @@ class INIParser
 #if !(defined(__linux__))
       void Parser(const std::locale& Locale = tlib::GetLocaleGUI());
 #else
-      void Parser(const std::locale& Locale);
+      void Parser(const std::locale& Locale = tlib::GetLocaleProgram());
 #endif
 };
 

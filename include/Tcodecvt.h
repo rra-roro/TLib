@@ -40,7 +40,7 @@ namespace tlib
 
 
       //   String converter wchar_t <--> char  (UTF-16  <--> ProgramCodePage )
-      extern thread_local std::wstring_convert<codecvt_w_o> strconvert_w_сodepage;
+      extern thread_local std::wstring_convert<codecvt_w_o> strconvert_w_codepage;
 
       //   String converter char16_t <--> char8_t  (UTF-16  <--> UTF-8)
       extern thread_local std::wstring_convert<codecvt_u16_u8, char16_t> strconvert_u16_u8;
@@ -50,10 +50,17 @@ namespace tlib
 
 
       //   Convertering buffer char16_t --> char8_t  (UTF-16  --> UTF-8)
-      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t> in_bufferconvert_u16_u8;
-      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t> out_bufferconvert_u16_u8;
-      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t> err_bufferconvert_u16_u8;
-      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t> log_bufferconvert_u16_u8;
+      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t>& in_bufferconvert_u16_u8;
+      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t>& out_bufferconvert_u16_u8;
+      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t>& err_bufferconvert_u16_u8;
+      extern thread_local std::wbuffer_convert<codecvt_u16_u8, char16_t>& log_bufferconvert_u16_u8;
+
+      //   Convertering buffer wchar_t --> char8_t  (UTF-16  --> UTF-8)
+      extern thread_local std::wbuffer_convert<codecvt_w_u8, wchar_t>& in_bufferconvert_w_u8;
+      extern thread_local std::wbuffer_convert<codecvt_w_u8, wchar_t>& out_bufferconvert_w_u8;
+      extern thread_local std::wbuffer_convert<codecvt_w_u8, wchar_t>& err_bufferconvert_w_u8;
+      extern thread_local std::wbuffer_convert<codecvt_w_u8, wchar_t>& log_bufferconvert_w_u8;
+
       
 
 }
