@@ -31,22 +31,34 @@ int tlib::InitConsolIO(void)
       wcin.rdbuf(&in_bufferconvert_w_u8);
       wcerr.rdbuf(&err_bufferconvert_w_u8);
       wclog.rdbuf(&log_bufferconvert_w_u8);
+
+#elif _WIN32
+      // Консоль Windows по умолчанию имеет кодировку отличную от кодировки строк в программе.
+      // Заменим у iostream потоков потоковый буфер, на тот который осуществляет правильное перекодирование символов
+      cout.rdbuf(&out_bufferconvert_programCP_consoleCP);
+      cin.rdbuf(&in_bufferconvert_programCP_consoleCP);
+      cerr.rdbuf(&err_bufferconvert_programCP_consoleCP);
+      clog.rdbuf(&log_bufferconvert_programCP_consoleCP);
+
 #endif
 
       // Установим локаль соответствующую текущей кодировке консоли
       // для всех консольных потоков ввода/вывода
-      wcout.imbue(loc); wcout.clear();
-      ucout.imbue(loc); ucout.clear();
-      cout.imbue(loc); cout.clear();
-      wcin.imbue(loc); wcin.clear();
-      ucin.imbue(loc); ucin.clear();
-      cin.imbue(loc); cin.clear();
-      wcerr.imbue(loc); wcerr.clear();
-      ucerr.imbue(loc); ucerr.clear();
-      cerr.imbue(loc); cerr.clear();
-      wclog.imbue(loc); wclog.clear();
-      uclog.imbue(loc); uclog.clear();
-      clog.imbue(loc); clog.clear();
+
+      auto set_locale = [&](auto& stream) {stream.imbue(loc); stream.clear(); };
+
+      set_locale(wcout);
+      set_locale(ucout);
+      set_locale(cout);
+      set_locale(wcin);
+      set_locale(ucin);
+      set_locale(cin);
+      set_locale(wcerr);
+      set_locale(ucerr);
+      set_locale(cerr);
+      set_locale(wclog);
+      set_locale(uclog);
+      set_locale(clog);
 
       return 0;
 }

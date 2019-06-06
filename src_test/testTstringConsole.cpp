@@ -116,11 +116,17 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       wcout << L"\nwcout: Next string shoud not be show: " << L"Мама мыла раму";
       wcout.clear();
+      ucout << u"\nucout:  Next string may not be show: " << u"Мама мыла раму";
+      ucout.clear();
+      cout << "\ncout:  Next string shoud not be show: " << "Мама мыла раму";
+      cout.clear();
+
       wcout << L"\n       Set local for console. InitConsolIO()";
-      InitConsolIO();
+      InitConsolIO();      
+
       wcout << L"\nwcout: Next string shoud be show: " << L"Мама мыла раму";
-      cout << "\ncout:  Next string shoud be show: "
-           << "Мама мыла раму";
+      ucout << u"\nucout:  Next string shoud be show: " << u"Мама мыла раму";
+      cout << "\ncout:  Next string shoud be show: " << "Мама мыла раму";
 
       // Тестируем получение информации о глобальной локали:
       //tcout << Color(yellow);
