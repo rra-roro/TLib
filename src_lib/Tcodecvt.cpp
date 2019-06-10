@@ -105,6 +105,7 @@ namespace tlib
           char* to, char* to_end, char*& to_next) const
       {
 #ifdef _WIN32
+            std::cout << "Iroro:";                  
             return utf16_char.out(state.state, (wchar_t*)from, (wchar_t*)from_end, (const wchar_t*&)from_next, to, to_end, to_next);
 #elif __linux__
             return utf16_utf8.out(state.state, from, from_end, from_next, to, to_end, to_next);
@@ -117,6 +118,7 @@ namespace tlib
           char16_t* to, char16_t* to_end, char16_t*& to_next) const
       {
 #ifdef _WIN32
+            std::cout << "Iroro:";                  
             return utf16_char.in(state.state, from, from_end, from_next, (wchar_t*)to, (wchar_t*)to_end, (wchar_t*&)to_next);
 #elif __linux__
             return utf16_utf8.in(state.state, from, from_end, from_next, to, to_end, to_next);
@@ -128,6 +130,7 @@ namespace tlib
           char* to, char* to_end, char*& to_next) const
       {
 #ifdef _WIN32
+            std::cout << "Uroro:";
             return utf16_char.unshift(state.state, to, to_end, to_next);
 #elif __linux__
             return utf16_utf8.unshift(state.state, to, to_end, to_next);
