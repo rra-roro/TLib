@@ -69,6 +69,29 @@
             "cmakeCommandArgs": "${env.STATIC_LINK_LIBS} -DCMAKE_TOOLCHAIN_FILE=${env.TOOLCHAIN}",
             "buildCommandArgs": "-v",
             "ctestCommandArgs": ""
+        },
+        {
+            "name": "Linux-Debug",
+            "generator": "Unix Makefiles",
+            "remoteMachineName": "${defaultRemoteMachineName}",
+            "configurationType": "Debug",
+            "remoteCMakeListsRoot": "/var/tmp/src/${workspaceHash}/${name}",
+            "cmakeExecutable": "/home/roro/cmake/bin/cmake",
+            "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "installRoot": "${env.LOCALAPPDATA}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+            "remoteBuildRoot": "/var/tmp/build/${workspaceHash}/build/${name}",
+            "remoteInstallRoot": "/var/tmp/build/${workspaceHash}/install/${name}",
+            "remoteCopySources": true,
+            "remoteCopySourcesOutputVerbosity": "Normal",
+            "remoteCopySourcesConcurrentCopies": "10",
+            "remoteCopySourcesMethod": "rsync",
+            "remoteCopySourcesExclusionList": [ ".vs", ".git" ],
+            "rsyncCommandArgs": "-t --delete --delete-excluded",
+            "remoteCopyBuildOutput": "false",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "linux-x64" ]            
         }
     ]
 }
