@@ -88,10 +88,10 @@
             "remoteCopySourcesExclusionList": [ ".vs", ".git" ],
             "rsyncCommandArgs": "-t --delete --delete-excluded",
             "remoteCopyBuildOutput": "false",
-            "cmakeCommandArgs": "",
+            "cmakeCommandArgs": "-DTRAVIS_BUILD_NUMBER=1",
             "buildCommandArgs": "",
             "ctestCommandArgs": "",
-            "inheritEnvironments": [ "linux-x64" ]            
+            "inheritEnvironments": [ "linux-x64" ]
         }
     ]
 }

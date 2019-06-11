@@ -9,9 +9,9 @@
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1
 #endif
 
+#include <locale>
 #include <codecvt>
 #include <char8_t.h>
-#include <iostream>
 
 namespace tlib
 {
@@ -50,20 +50,23 @@ namespace tlib
 
       template <>
       class codecvt_bynames<char, char, tlib_mbstate_t> : public std::codecvt_byname<char, char, tlib_mbstate_t>
-      {
-            using result = std::codecvt_base::result;
+      {            
+            using base = std::codecvt_byname<char, char, tlib_mbstate_t>;
             using codecvt_w_o = deletable_facet<std::codecvt_byname<wchar_t, char, std::mbstate_t>>;
 
             codecvt_w_o codepage1_wide;
             codecvt_w_o wide_codepage2;
 
         public:
+            using result = std::codecvt_base::result;
             using state_type = tlib_mbstate_t;
+            using intern_type = char;
+            using extern_type = char;
 
             explicit codecvt_bynames(
                 const char* locname1,
                 const char* locname2,
-                size_t _refs = 0) : std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs),
+                size_t _refs = 0) : base(locname2, _refs),
                                     codepage1_wide(locname1, _refs),
                                     wide_codepage2(locname2, _refs)
             {
@@ -72,7 +75,7 @@ namespace tlib
             explicit codecvt_bynames(
                 const std::string& locname1,
                 const std::string& locname2,
-                size_t _refs = 0) : std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs),
+                size_t _refs = 0) : base(locname2, _refs),
                                     codepage1_wide(locname1, _refs),
                                     wide_codepage2(locname2, _refs)
             {
@@ -143,6 +146,7 @@ namespace tlib
       template <>
       class codecvt_bynames<char16_t, char, tlib_mbstate_t> : public std::codecvt_byname<char16_t, char, tlib_mbstate_t>
       {
+            using base = std::codecvt_byname<char16_t, char, tlib_mbstate_t>;
             using codecvt_u16_o = deletable_facet<std::codecvt_byname<wchar_t, char, std::mbstate_t>>;
             using codecvt_u16_u8 = deletable_facet<std::codecvt_byname<char16_t, char8_t, std::mbstate_t>>;
 
@@ -157,7 +161,7 @@ namespace tlib
 
             explicit codecvt_bynames(
                 const char* locname1,
-                size_t _refs = 0) : std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs),
+                size_t _refs = 0) : base(locname1, _refs),
                                     utf16_char(locname1, _refs),
                                     utf16_utf8(locname1, _refs)
             {
@@ -165,7 +169,7 @@ namespace tlib
 
             explicit codecvt_bynames(
                 const std::string& locname1,
-                size_t _refs = 0) : std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs),
+                size_t _refs = 0) : base(locname1, _refs),
                                     utf16_char(locname1, _refs),
                                     utf16_utf8(locname1, _refs)
             {

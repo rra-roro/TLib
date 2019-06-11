@@ -299,7 +299,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
       tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));
 #elif __linux__
-      cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
+      //cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
       wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
       ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
       tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));

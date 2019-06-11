@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(tlib VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+if (NOT TRAVIS_BUILD_NUMBER)
+    set(TRAVIS_BUILD_NUMBER $ENV{TRAVIS_BUILD_NUMBER})
+endif()
+
+project(tlib VERSION 0.0.${TRAVIS_BUILD_NUMBER})
 
 configure_file("./include/version.h.in" version.h)
 

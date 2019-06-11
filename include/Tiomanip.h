@@ -301,7 +301,7 @@ namespace tlib
             friend inline std::wiostream& operator<<(std::wiostream& wios, [[maybe_unused]] const Color& c) { return wios; };
 
             template <class _Elem>
-            friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const Color& c)
+            friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, [[maybe_unused]]  const Color& c)
             {
                   //os << TemplateTypeOfStr("\033[", _Elem) << (c.ColorFone + 10) << TemplateTypeOfStr(";", _Elem) << c.ColorText << TemplateTypeOfStr("m", _Elem);
                   //os.clear();

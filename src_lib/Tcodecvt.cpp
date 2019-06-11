@@ -6,6 +6,19 @@
 #include <Tcodecvt.h>
 #include <algorithm>
 
+#ifdef __linux__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wterminate"
+
+      #include <linux/locale_glibcxx.h>
+
+      CODECVT_DEFINE_PURE(char, char, tlib::tlib_mbstate_t)
+      CODECVT_DEFINE_PURE(char16_t, char, tlib::tlib_mbstate_t)
+
+#pragma GCC diagnostic pop
+#endif
+
+
 #ifndef NOMINMAX
 #define NOMINMAX // На всякий случай
 #endif
@@ -21,7 +34,6 @@ using namespace std;
 
 namespace tlib
 {
-
       using codecvt_bn = codecvt_bynames<char, char, tlib_mbstate_t>;
 
       codecvt_bn::result codecvt_bn::do_out(
@@ -183,7 +195,7 @@ namespace tlib
                   using base = wbuffer_convert<_Codecvt, _Elem, _Traits>;
 
                   template <class... Args>
-                  wbuffer_sync_convert(Args&&... args) : wbuffer_convert<_Codecvt, _Elem, _Traits>(forward<Args>(args)...)
+                  wbuffer_sync_convert(Args&&... args) : base(forward<Args>(args)...)
                   {
                   }
 
