@@ -303,8 +303,8 @@ namespace tlib
             template <class _Elem>
             friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const Color& c)
             {
-                  os << TemplateTypeOfStr("\033[", _Elem) << (c.ColorFone + 10) << TemplateTypeOfStr(";", _Elem) << c.ColorText << TemplateTypeOfStr("m", _Elem);
-                  os.clear();
+                  //os << TemplateTypeOfStr("\033[", _Elem) << (c.ColorFone + 10) << TemplateTypeOfStr(";", _Elem) << c.ColorText << TemplateTypeOfStr("m", _Elem);
+                  //os.clear();
                   return os;
             }
       };

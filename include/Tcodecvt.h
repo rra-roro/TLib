@@ -11,6 +11,7 @@
 
 #include <codecvt>
 #include <char8_t.h>
+#include <iostream>
 
 namespace tlib
 {
@@ -62,18 +63,18 @@ namespace tlib
             explicit codecvt_bynames(
                 const char* locname1,
                 const char* locname2,
-                size_t _refs = 0) : codepage1_wide(locname1, _refs),
-                                    wide_codepage2(locname2, _refs),
-                                    std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs)
+                size_t _refs = 0) : std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs),
+                                    codepage1_wide(locname1, _refs),
+                                    wide_codepage2(locname2, _refs)
             {
             }
 
             explicit codecvt_bynames(
                 const std::string& locname1,
                 const std::string& locname2,
-                size_t _refs = 0) : codepage1_wide(locname1, _refs),
-                                    wide_codepage2(locname2, _refs),
-                                    std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs)
+                size_t _refs = 0) : std::codecvt_byname<char, char, tlib_mbstate_t>(locname2, _refs),
+                                    codepage1_wide(locname1, _refs),
+                                    wide_codepage2(locname2, _refs)
             {
             }
 
@@ -103,11 +104,45 @@ namespace tlib
             }
       };
 
-      template <>
-      class codecvt_bynames<char16_t, char, tlib_mbstate_t> : public std::codecvt_byname<char16_t, char, tlib_mbstate_t>
+      /*template <>
+      class codecvt_bynames<char16_t, char8_t, std::mbstate_t> : public std::codecvt_byname<char16_t, char8_t, std::mbstate_t>
       {
             using result = std::codecvt_base::result;
 
+        public:
+            using state_type = std::mbstate_t;
+            using intern_type = char16_t;
+            using extern_type = char;
+
+            explicit codecvt_bynames(
+                const char* locname1,
+                size_t _refs = 0) : std::codecvt_byname<char16_t, char8_t, std::mbstate_t>(locname1, _refs)
+            {
+            }
+
+            explicit codecvt_bynames(
+                const std::string& locname1,
+                size_t _refs = 0) : std::codecvt_byname<char16_t, char8_t, std::mbstate_t>(locname1, _refs)
+            {
+            }
+
+        protected:
+            virtual result do_out(state_type& state,
+                const intern_type* __from,
+                const intern_type* __from_end, const intern_type*& __from_next,
+                extern_type* __to, extern_type* __to_end,
+                extern_type*& __to_next) const
+            {
+                  std::cout << "QQQQ -> " << *__to << "\n";                  
+                  result res = std::codecvt_byname<char16_t, char8_t, std::mbstate_t>::do_out(state, __from, __from_end, __from_next, __to, __to_end, __to_next);
+                  return res;
+            }
+      };*/
+
+
+      template <>
+      class codecvt_bynames<char16_t, char, tlib_mbstate_t> : public std::codecvt_byname<char16_t, char, tlib_mbstate_t>
+      {
             using codecvt_u16_o = deletable_facet<std::codecvt_byname<wchar_t, char, std::mbstate_t>>;
             using codecvt_u16_u8 = deletable_facet<std::codecvt_byname<char16_t, char8_t, std::mbstate_t>>;
 
@@ -115,23 +150,24 @@ namespace tlib
             codecvt_u16_u8 utf16_utf8;
 
         public:
+            using result = std::codecvt_base::result;
             using state_type = tlib_mbstate_t;
+            using intern_type = char16_t;
+            using extern_type = char;
 
             explicit codecvt_bynames(
                 const char* locname1,
-                size_t _refs = 0) : utf16_char(locname1, _refs),
-                                    utf16_utf8(locname1, _refs),
-                                    std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs)
-
+                size_t _refs = 0) : std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs),
+                                    utf16_char(locname1, _refs),
+                                    utf16_utf8(locname1, _refs)
             {
             }
 
             explicit codecvt_bynames(
                 const std::string& locname1,
-                size_t _refs = 0) : utf16_char(locname1, _refs),
-                                    utf16_utf8(locname1, _refs),
-                                    std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs)
-
+                size_t _refs = 0) : std::codecvt_byname<char16_t, char, tlib_mbstate_t>(locname1, _refs),
+                                    utf16_char(locname1, _refs),
+                                    utf16_utf8(locname1, _refs)
             {
             }
 

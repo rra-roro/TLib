@@ -28,11 +28,14 @@
 #ifdef _WIN32
 #include <win/locale_char16_t.h>
 extern template std::locale::id std::collate<char16_t>::id;
+extern template std::locale::id std::numpunct<char16_t>::id;
 #elif __linux__
 #include <linux/locale_char16_t.h>
 #endif
 
 #include <Tstring.h>
+
+#include <Tiostream.h> //???
 
 namespace tlib
 {
@@ -91,7 +94,10 @@ namespace tlib
             loc = locale(loc_tmp, loc.name().c_str(), std::locale::time);
 
 #elif __linux__
-            if constexpr (std::is_same<_Facet, std::collate<char16_t>>::value)
+            if constexpr (std::is_same<_Facet, std::collate<char16_t>>::value ||
+                          std::is_same<_Facet, std::num_put<char16_t>>::value ||
+                          std::is_same<_Facet, std::num_get<char16_t>>::value ||
+                          std::is_same<_Facet, std::numpunct<char16_t>>::value)                  
             {
                   // Добавим в переданную локаль Фасет заданный в параметре шаблона
                   loc = std::locale(loc, new _Facet());
@@ -133,6 +139,9 @@ namespace tlib
 
             AddFacet<std::ctype<char16_t>>(NewLocale);
             AddFacet<std::collate<char16_t>>(NewLocale);
+            AddFacet<std::numpunct<char16_t>>(NewLocale);
+            AddFacet<std::num_put<char16_t>>(NewLocale);
+            AddFacet<std::num_get<char16_t>>(NewLocale);
 
             return NewLocale;
       }

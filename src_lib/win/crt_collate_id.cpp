@@ -7,7 +7,9 @@
 #define LIB_CRT __declspec(dllexport)
 #endif
 
+#include "win/xlocnum"
 #include "win/locale"
 
 
 std::locale::id std::collate<char16_t>::id;
+std::locale::id std::numpunct<char16_t>::id;

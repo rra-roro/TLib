@@ -7,7 +7,7 @@
 #include <xlocbuf>
 #include <xlocmes>
 #include <xlocmon>
-#include <xlocnum>
+//#include <xlocnum>
 #include <xloctime>
 
  #pragma pack(push,_CRT_PACKING)

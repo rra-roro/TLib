@@ -32,7 +32,7 @@ void PrintTest11(int r, [[maybe_unused]] const TCHAR* Str_Std, [[maybe_unused]] 
 
 void PrintBuildInfo()
 {
-      //wcout << Color(green) << "Build Info: ";
+      wcout << Color(green) << "Build Info: ";
 
 #if (defined(_M_X64) || defined(__x86_64__))
       wcout << L"x64 ";
@@ -60,13 +60,15 @@ void PrintBuildInfo()
       wcout << L"release";
 #endif
 
-      (is_same<tstring, wstring>::value) ? wcout << L"\ntstring is - wstring" : (is_same<tstring, u16string>::value) ? wcout << L"\ntstring is - u16string" : wcout << L"\ntstring is - string";
+     (is_same<tstring, wstring>::value) ? wcout << L"\ntstring is - wstring" :
+     (is_same<tstring, u16string>::value) ? wcout << L"\ntstring is - u16string" : wcout << L"\ntstring is - string";
 
-      wcout << L"\ntcout is - \"" << cstr_wstr(typeid(tcout).name()) << L"\"\n";
+      wcout << L"\ntcout is - \"" << cstr_wstr(typeid(tcout).name()) << L"\"";
 
-      //wcout << Color();
+      wcout << Color();
 }
 
+//basic_ostream<char>& qqq = cout.put('\0');
 
 #ifdef _WIN32
 int _tmain([[maybe_unused]] int argc, [[maybe_unused]] _TCHAR* argv[])
@@ -81,20 +83,17 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       console.SetScreenBufferSize(147, 950);
       console.SetWindowSize(147, 50);
 #endif
-      cout.put('\0');
-      wcout.put(L'\0');
-      ucout.put(u'\0');
-
-      PrintBuildInfo();
+      
+      PrintBuildInfo();      
 
       // =============================================================================================
       // Тестируем функционал <Tlocale.h>
 
       // Тестируем получение информации о локалях:
-      //tcout << Color(yellow);
+      tcout << Color(yellow);
       tcout << _T("\n\nTest 1 <Tlocale.h>: get locale info");
       tcout << _T("\n------------------------------------------------------------------------\n");
-      //tcout << Color();
+      tcout << Color();
 
       cout << "\nGetConsoleOutputCP() -> " << GetConsoleOutputCP();
       cout << "\nGetLocaleNameProgram() -> " << GetLocaleNameProgram() << "\n";
@@ -109,16 +108,16 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
 
       // Тестируем установку локалей для потоков:
-      //tcout << Color(yellow);
+      tcout << Color(yellow);
       tcout << _T("\n\nTest 2 <Tlocale.h>: set locale for streams - InitConsolIO()");
       tcout << _T("\n------------------------------------------------------------------------\n");
-      //tcout << Color();
+      tcout << Color();
 
-      wcout << L"\nwcout: Next string shoud not be show: " << L"Мама мыла раму";
+      wcout << L"\nwcout: Next string may not be show: " << L"Мама мыла раму";
       wcout.clear();
       ucout << u"\nucout:  Next string may not be show: " << u"Мама мыла раму";
       ucout.clear();
-      cout << "\ncout:  Next string shoud not be show: " << "Мама мыла раму";
+      cout << "\ncout:  Next string may not be show: " << "Мама мыла раму";
       cout.clear();
 
       wcout << L"\n       Set local for console. InitConsolIO()";
@@ -128,11 +127,22 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       ucout << u"\nucout:  Next string shoud be show: " << u"Мама мыла раму";
       cout << "\ncout:  Next string shoud be show: " << "Мама мыла раму";
 
+      cout << "\n\ncout << " << 10 << " << " << true << " - " << false;
+      wcout << L"\nwcout << " << 10 << L" << " << true << L" - " << false;
+      ucout << u"\nucout << " << 10 << u" << " << true << u" - " << false;
+      tcout << _T("\ntcout << ") << 10 << _T(" << ") << true << _T(" - ") << false;
+
+      cout << "\ncout << " << 10 << " << boolalpha << " << boolalpha << true << " - " << false;
+      wcout << L"\nwcout << " << 10 << L" << boolalpha  << " << boolalpha << true << L" - " << false;
+      ucout << u"\nucout << " << 10 << u" << boolalpha  << " << boolalpha << true << u" - " << false;
+      tcout << _T("\ntcout << ") << 10 << _T(" << boolalpha  << ") << boolalpha << true << _T(" - ") << false;
+
+
       // Тестируем получение информации о глобальной локали:
-      //tcout << Color(yellow);
+      tcout << Color(yellow);
       tcout << _T("\n\nTest 3 <Tlocale.h>: get global locale info, after call InitConsolIO()");
       tcout << _T("\n------------------------------------------------------------------------\n");
-      //tcout << Color();
+      tcout << Color();
 
       cout << "\nGet global locale. Shoud be:\n\"" << GetLocaleProgram().name() << "\"\nThere's locale() -> \n"
            << locale().name();
@@ -168,8 +178,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       tcout << _T("\nu16string -> string UTF-8 | ");
 #ifdef _WIN32
-      tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ")
-            << _T("пропускаем тест");
+      tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ") << _T("пропускаем тест");
 #elif __linux__
       tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ") << str2tstr(u16str_u8str(u"Мама мыла раму"));
 #endif
@@ -231,10 +240,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tstring UpStr = GetUpperStr(str_str);
 
       tcout << _T("\n\nРезультат сравнения: ");
-      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" без учета регистра. Строки равны?: ") << StrCmpI(LoStr, UpStr);
+      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" без учета регистра. Строки равны?: ") << boolalpha << StrCmpI(LoStr, UpStr);
 
       tcout << _T("\nРезультат сравнения: ");
-      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << (LoStr == UpStr);
+      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << boolalpha <<  (LoStr == UpStr);
 
       // Проверяем ф-ии работы с пробельными символами данной локали:
       tcout << Color(yellow);
@@ -287,11 +296,13 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 #ifdef _WIN32
       cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
       wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
-      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << (wchar_t)(use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б'));
+      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
+      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));
 #elif __linux__
-      //tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): ") << use_facet<ctype<char> >(GetLocaleProgram()).toupper('б');
-      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): ") << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
-      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): ") << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
+      cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
+      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
+      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
+      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));
 #endif
 
 
@@ -307,7 +318,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем -10LL в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( -10LL, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _i64tot_s()         | dig_to_tstr()       |  compare status") << endl;
 #elif __linux__
@@ -329,7 +340,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (unsigned long long) -10LL в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (unsigned long long) -10LL, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _ui64tot_s()     | dig_to_tstr()    |  compare status") << endl;
 #elif __linux__
@@ -352,7 +363,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем -10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr(-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _ltot_s()  | dig_to_tstr()|  compare status") << endl;
 #elif __linux__
@@ -375,7 +386,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (unsigned long)-10 в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (unsigned long)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _ultot_s() | dig_to_tstr()|  compare status") << endl;
 #elif __linux__
@@ -398,7 +409,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (short)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (short)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _itot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -421,7 +432,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (unsigned short)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (unsigned short)-10LL, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _itot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -444,7 +455,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (int)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (int)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _itot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -467,7 +478,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (unsigned int)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (unsigned int)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _ultot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -490,7 +501,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (char)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (char)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _itot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -513,7 +524,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       //  Конвертируем (unsigned char)-10L в строку в системы счисления по основанию от 16 до 2-х
       tcout << Color(cyan);
       tcout << _T("\nКонвертируем dig_to_tstr( (unsigned char)-10L, Str_My, r) :");
-      tcout << Color(dark_cyan);
+      tcout << Color();
 #ifdef _WIN32
       tcout << _T("\n      : _itot_s() | dig_to_tstr() |  compare status") << endl;
 #elif __linux__
@@ -544,7 +555,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color(cyan);
       tcout << _T("\nВыводим число 15 в char потоки в системах счисления: BIN, DEC и HEX");
       tcout << _T("\nно без заполнения поля лидирующими Нулями:");
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 
@@ -569,7 +580,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color(cyan);
       tcout << _T("\nВыводим число 15 в char потоки в системах счисления: BIN, DEC и HEX");
       tcout << _T("\nзаполнения поля (размер поля 2 символа) лидирующими Нулями:");
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 
@@ -588,7 +599,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color(cyan);
       tcout << _T("\nВыводим число 15 в wchar_t потоки в системах счисления: BIN, DEC и HEX");
       tcout << _T("\nзаполнения поля (размер поля 3 символа) лидирующими Нулями:");
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 
@@ -607,7 +618,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color(cyan);
       tcout << _T("\nВыводим число 15 в TCHAR потоки в системах счисления: BIN, DEC и HEX");
       tcout << _T("\nзаполнения поля (размер поля 4 символа) лидирующими Нулями:");
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 
@@ -628,7 +639,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\nхотя размер поля установлен в 4 символа, он не учитывается для отрицательных чисел");
       tcout << _T("\nдля отрицательных чисел размер поля определяется типом числа(-10 -это int, т.е. 4-е байта )");
 
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t\t\t\t\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 
@@ -649,7 +660,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\nхотя размер поля установлен в 4 символа, он не учитывается для отрицательных чисел");
       tcout << _T("\nдля отрицательных чисел размер поля определяется типом числа (char)-10 , т.е. 1 байт");
 
-      tcout << Color(dark_cyan);
+      tcout << Color();
       tcout << _T("\n  BIN\t\t|\tDEC\t|\tHEX") << endl;
       tcout << Color();
 

@@ -8,6 +8,12 @@
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1
 #endif
 
+#ifdef _WIN32
+#include <tchar.h>
+#elif __linux__
+#include <linux/tchar.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <sstream>

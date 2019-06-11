@@ -42,4 +42,8 @@ namespace tlib
 
 #endif
 
+#ifdef __linux__
+      int _dummy_init_stdout = fputc('\0', stdout);
+#endif
+
 }
