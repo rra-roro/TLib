@@ -137,7 +137,7 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 
 // Ф-ия которая открывает INI файл, задает для него локаль
 // И начинает его парсить.
-void INIParser::Parser(const locale& Locale)
+void INIParser::Parser(const std::locale& Locale)
 {
       namespace fs = std::filesystem;
 

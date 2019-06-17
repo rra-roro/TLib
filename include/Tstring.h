@@ -111,16 +111,25 @@ namespace tlib
             return strconvert_w_u8.to_bytes(_first_symbol, _first_symbol + wstr.size());
       }
 
-      //   u16string <--> wstring   ???? ToDo: need fix for Linux
-
+      //   u16string <--> wstring   
       inline std::wstring u16str_wstr(std::u16string_view u16str)
       {
+#ifdef _WIN32
             return { u16str.begin(), u16str.end() };
+#elif __linux__
+            std::u8string tmp = u16str_u8str(u16str);
+            return u8str_wstr(tmp);
+#endif
       }
 
       inline std::u16string wstr_u16str(std::wstring_view wstr)
       {
+#ifdef _WIN32
             return { wstr.begin(), wstr.end() };
+#elif __linux__
+            std::u8string tmp = wstr_u8str(wstr);
+            return u8str_u16str(tmp);
+#endif
       }
 
 #ifdef _WIN32
@@ -141,7 +150,7 @@ namespace tlib
       #endif
 #elif __linux__
       #define str2tstr(str)  tlib::u8str_u16str(str)
-      #define wstr2tstr(str) tlib::wstr_u16str(str)       // u8str_u16str(wstr_u8str(str))     ???? ToDo: need fix for Linux
+      #define wstr2tstr(str) tlib::wstr_u16str(str)
       #define ustr2tstr(str) str
       #define tstr2str(str)  tlib::u16str_u8str(str)
       #define tstr2wstr(str) tlib::u16str_wstr(str)

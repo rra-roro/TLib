@@ -12,6 +12,9 @@
 #include <Tconsole.h>
 #include <algorithm>
 
+#include <ctime>
+#include <iomanip>
+
 using namespace tlib;
 using namespace std;
 
@@ -60,8 +63,7 @@ void PrintBuildInfo()
       wcout << L"release";
 #endif
 
-     (is_same<tstring, wstring>::value) ? wcout << L"\ntstring is - wstring" :
-     (is_same<tstring, u16string>::value) ? wcout << L"\ntstring is - u16string" : wcout << L"\ntstring is - string";
+      (is_same<tstring, wstring>::value) ? wcout << L"\ntstring is - wstring" : (is_same<tstring, u16string>::value) ? wcout << L"\ntstring is - u16string" : wcout << L"\ntstring is - string";
 
       wcout << L"\ntcout is - \"" << cstr_wstr(typeid(tcout).name()) << L"\"";
 
@@ -83,8 +85,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       console.SetScreenBufferSize(147, 950);
       console.SetWindowSize(147, 50);
 #endif
-      
-      PrintBuildInfo();      
+
+      PrintBuildInfo();
 
       // =============================================================================================
       // Тестируем функционал <Tlocale.h>
@@ -104,8 +106,20 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       cout << "\nGetLocaleNameGUI() -> " << GetLocaleNameGUI();
       cout << "\nGetLocaleGUI() -> " << GetLocaleGUI().name() << "\n";
 #endif
-      cout << "\nGet global locale: locale() -> \"" << locale().name() << "\"";
+      cout << "\nGet global locale: locale() -> \"" << std::locale().name() << "\"";
 
+      // тестируем установку локали с произвольным именем
+      try
+      {
+            cout << "tlib::locale(\"ru_RU.utf8\") -> " << tlib::locale(".UTF8").name() << "\n";
+            cout << "tlib::locale(\"ru_RU.Utf-8\") -> " << tlib::locale("ru_RU.Utf-8").name() << "\n";
+            cout << "tlib::locale(\"ru_RU.uTf-8\") -> " << tlib::locale("ru_RU.uTf-8").name() << "\n";
+            cout << "tlib::locale(\"ru_RU.uTf8\") -> " << tlib::locale("ru_RU.uTf8").name() << "\n";
+      }
+      catch (...)
+      {
+            cout << "error locale";
+      }
 
       // Тестируем установку локалей для потоков:
       tcout << Color(yellow);
@@ -117,26 +131,48 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       wcout.clear();
       ucout << u"\nucout:  Next string may not be show: " << u"Мама мыла раму";
       ucout.clear();
-      cout << "\ncout:  Next string may not be show: " << "Мама мыла раму";
+      cout << "\ncout:  Next string may not be show: "
+           << "Мама мыла раму";
       cout.clear();
 
       wcout << L"\n       Set local for console. InitConsolIO()";
-      InitConsolIO();      
+      InitConsolIO();
 
       wcout << L"\nwcout: Next string shoud be show: " << L"Мама мыла раму";
       ucout << u"\nucout:  Next string shoud be show: " << u"Мама мыла раму";
-      cout << "\ncout:  Next string shoud be show: " << "Мама мыла раму";
+      cout << "\ncout:  Next string shoud be show: "
+           << "Мама мыла раму\n\n";
 
-      cout << "\n\ncout << " << 10 << " << " << true << " - " << false;
-      wcout << L"\nwcout << " << 10 << L" << " << true << L" - " << false;
-      ucout << u"\nucout << " << 10 << u" << " << true << u" - " << false;
-      tcout << _T("\ntcout << ") << 10 << _T(" << ") << true << _T(" - ") << false;
+      // Тестируем отображение цифр
 
-      cout << "\ncout << " << 10 << " << boolalpha << " << boolalpha << true << " - " << false;
-      wcout << L"\nwcout << " << 10 << L" << boolalpha  << " << boolalpha << true << L" - " << false;
-      ucout << u"\nucout << " << 10 << u" << boolalpha  << " << boolalpha << true << u" - " << false;
-      tcout << _T("\ntcout << ") << 10 << _T(" << boolalpha  << ") << boolalpha << true << _T(" - ") << false;
+      auto test_numbers = [](auto stream_name, auto& os)
+      {
+            using char_type = typename std::remove_reference<decltype(os)>::type::char_type;
 
+#define _tt(str) TemplateTypeOfStr(str, char_type)
+
+            os << _tt("\n") << stream_name << _tt(" - bool : ") << true << _tt(" ") << false;
+            os << _tt("\n") << stream_name << _tt(" - boolalpha: ") << boolalpha << true << _tt(" ") << false;
+            os << _tt("\n") << stream_name << _tt(" - integer: ") << 10000;
+            os << _tt("\n") << stream_name << _tt(" - double: ") << 10000.1234;
+
+            os << _tt("\n\n") << stream_name << _tt(" - scientific double: ") << scientific << 10000.1234;
+            os << _tt("\n") << stream_name << _tt(" - fixed double: ") << fixed << 10000.1234;
+            os << _tt("\n") << stream_name << _tt(" - hexfloat double: ") << std::hexfloat << 10000.1234;
+            os << _tt("\n") << stream_name << _tt(" - defaultfloat double: ") << std::defaultfloat << 10000.1234;
+
+            os << _tt("\n\n") << stream_name << _tt(" - сколько денег: ") << std::showbase << std::put_money(1234567891);
+
+            std::time_t t = std::time(NULL);
+            os << _tt("\n\n") << stream_name << _tt(" - время: ") << std::put_time<char_type>(std::localtime(&t), _tt("%A %c")) << _tt("\n");
+
+#undef _tt
+      };
+
+      test_numbers("cout", cout);
+      test_numbers(L"wcout", wcout);
+      test_numbers(u"ucout", ucout);
+      test_numbers(_T("tcout"), tcout);
 
       // Тестируем получение информации о глобальной локали:
       tcout << Color(yellow);
@@ -145,7 +181,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       cout << "\nGet global locale. Shoud be:\n\"" << GetLocaleProgram().name() << "\"\nThere's locale() -> \n"
-           << locale().name();
+           << std::locale().name();
 
       // Проверяем ф-ии конвертации строк с учетом кодировки:
       tcout << Color(yellow);
@@ -178,7 +214,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       tcout << _T("\nu16string -> string UTF-8 | ");
 #ifdef _WIN32
-      tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ") << _T("пропускаем тест");
+      tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ")
+            << _T("пропускаем тест");
 #elif __linux__
       tcout << _T("u16str_u8str(u\"Мама мыла раму\") -> ") << str2tstr(u16str_u8str(u"Мама мыла раму"));
 #endif
@@ -243,7 +280,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" без учета регистра. Строки равны?: ") << boolalpha << StrCmpI(LoStr, UpStr);
 
       tcout << _T("\nРезультат сравнения: ");
-      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << boolalpha <<  (LoStr == UpStr);
+      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << boolalpha << (LoStr == UpStr);
 
       // Проверяем ф-ии работы с пробельными символами данной локали:
       tcout << Color(yellow);

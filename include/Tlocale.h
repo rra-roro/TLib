@@ -29,33 +29,24 @@
 #include <win/locale_char16_t.h>
 extern template std::locale::id std::collate<char16_t>::id;
 extern template std::locale::id std::numpunct<char16_t>::id;
+extern template std::locale::id std::moneypunct<char16_t, false>::id;
+extern template std::locale::id std::moneypunct<char16_t, true>::id;
+extern template std::locale::id std::money_get<char16_t>::id;
+extern template std::locale::id std::money_put<char16_t>::id;
 #elif __linux__
 #include <linux/locale_char16_t.h>
 #endif
 
 #include <Tstring.h>
 
+#include <Tlocale_config.h>
+#include <locale/Tlocale_facets.h>
+#include <locale/Tlocale_class.h>
+
 #include <Tiostream.h> //???
 
 namespace tlib
 {
-      /*---
-	*   CodePageCharInSrc - задает имя кодировки строковых литералов и типа char
-	*                       в скомпилированной программе.
-	*   Это не то же самое, что имя кодировка исходного текста програмы, которая по
-	*   соглашению всегда UTF-8 BOM.
-	*   Кодировка строковых литералов и типа char задается компилятором в момент
-	*   компиляции программы и устанавливается такой же, как кодировка системы в
-	*   момент компиляции.
-	*/
-#ifdef _WIN32
-      constexpr const char* CodePageCharInSrc = "Russian_Russia.1251";
-#elif __linux__
-      constexpr const char* CodePageCharInSrc = "ru_RU.utf8";
-#else
-#error "Unknown compiler"
-#endif
-
       /*---
 	*   CodePageUTF8 - задает имя кодировки UTF-8 строковых литералов и типа char.
       *
@@ -72,43 +63,37 @@ namespace tlib
 
       ///////////////////////////////////////////////////////////////////////////////////////
       //
-      //   Внесем в наше пространство имен основной класс представляющий локаль
-      //
-      using std::locale;
-
-      ///////////////////////////////////////////////////////////////////////////////////////
-      //
       //   Ф-ия AddFacet<>(std::locale& loc) - добавляет к переданной локали фасет, заданный в
       //                                       параметре шаблона
       //  Примечание: с помощью этой ф-ии нельзя подключить
       //	            std::time_get<> и std::time_put<> фасеты
       //
 
-      template <class _Facet>
-      inline void AddFacet(std::locale& loc)
-      {
-#ifdef _WIN32
-            // Добавим в переданную локаль Фасет заданный в параметре шаблона
-            std::locale loc_tmp(loc, new _Facet(std::_Locinfo(loc.name().c_str())));
-            // Исправим у полученной локали имя, и вернем ее обратно
-            loc = locale(loc_tmp, loc.name().c_str(), std::locale::time);
-
-#elif __linux__
-            if constexpr (std::is_same<_Facet, std::collate<char16_t>>::value ||
-                          std::is_same<_Facet, std::num_put<char16_t>>::value ||
-                          std::is_same<_Facet, std::num_get<char16_t>>::value ||
-                          std::is_same<_Facet, std::numpunct<char16_t>>::value)                  
-            {
-                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
-                  loc = std::locale(loc, new _Facet());
-            }
-            else
-            {
-                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
-                  loc = std::locale(loc, new _Facet(loc));
-            }
-#endif
-      }
+//      template <class _Facet>
+//      inline void AddFacet(std::locale& loc)
+//      {
+//#ifdef _WIN32
+//            // Добавим в переданную локаль Фасет заданный в параметре шаблона
+//            std::locale loc_tmp(loc, new _Facet(std::_Locinfo(loc.name().c_str())));
+//            // Исправим у полученной локали имя, и вернем ее обратно
+//            loc = std::locale(loc_tmp, loc.name().c_str(), std::locale::time);
+//
+//#elif __linux__
+//            if constexpr (std::is_same<_Facet, std::collate<char16_t>>::value ||
+//                          std::is_same<_Facet, std::num_put<char16_t>>::value ||
+//                          std::is_same<_Facet, std::num_get<char16_t>>::value ||
+//                          std::is_same<_Facet, std::numpunct<char16_t>>::value)
+//            {
+//                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
+//                  loc = std::locale(loc, new _Facet());
+//            }
+//            else
+//            {
+//                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
+//                  loc = std::locale(loc, new _Facet(loc));
+//            }
+//#endif
+//      }
 
       ///////////////////////////////////////////////////////////////////////////////////////
       //
@@ -131,40 +116,28 @@ namespace tlib
       //     return  - возвращаем созданную локаль
       //
 
-      inline std::locale CreateLocaleByName(std::string_view name_new_locale, std::string_view name_number_locale)
-      {
-            int LocaleType = std::locale::collate | std::locale::ctype |
-                             std::locale::monetary | std::locale::time | std::locale::messages;
-            std::locale NewLocale(std::locale(name_number_locale.data()), name_new_locale.data(), LocaleType);
+      //inline std::locale CreateLocaleByName(std::string_view name_new_locale, std::string_view name_number_locale)
+      //{
+      //      int LocaleType = std::locale::collate | std::locale::ctype |
+      //                       std::locale::monetary | std::locale::time | std::locale::messages;
+      //      std::locale NewLocale(std::locale(name_number_locale.data()), name_new_locale.data(), LocaleType);
 
-            AddFacet<std::ctype<char16_t>>(NewLocale);
-            AddFacet<std::collate<char16_t>>(NewLocale);
-            AddFacet<std::numpunct<char16_t>>(NewLocale);
-            AddFacet<std::num_put<char16_t>>(NewLocale);
-            AddFacet<std::num_get<char16_t>>(NewLocale);
+      //      AddFacet<std::ctype<char16_t>>(NewLocale);
+      //      AddFacet<std::collate<char16_t>>(NewLocale);
+      //      AddFacet<std::numpunct<char16_t>>(NewLocale);
+      //      AddFacet<std::num_put<char16_t>>(NewLocale);
+      //      AddFacet<std::num_get<char16_t>>(NewLocale);
 
-            return NewLocale;
-      }
+      //      return NewLocale;
+      //}
 
-      inline std::locale CreateLocaleByName(std::string_view name_new_locale)
-      {
-            return CreateLocaleByName(name_new_locale, "C");
-      }
+      //inline std::locale CreateLocaleByName(std::string_view name_new_locale)
+      //{
+      //      return CreateLocaleByName(name_new_locale, "C");
+      //}
+
+
 #ifdef _WIN32
-      ///////////////////////////////////////////////////////////////////////////////////////
-      //
-      //  Ф-ия GetLocaleGUI() - возвращает текущую локаль установленную в OS для GUI.
-      //                        Т.е.возвращает локаль для CP_ACP
-      //
-
-      inline std::locale GetLocaleGUI()
-      {
-            std::stringstream stream;
-            stream << "Russian_Russia." << std::dec << GetACP();
-
-            return CreateLocaleByName(stream.str(), "C");
-      }
-
       ///////////////////////////////////////////////////////////////////////////////////////
       //
       //  Ф-ия GetCodePageGUI() - возвращает текущую кодовую страницу
@@ -173,8 +146,23 @@ namespace tlib
 
       inline std::string GetLocaleNameGUI()
       {
-            return GetLocaleGUI().name();
+            std::stringstream stream;
+            stream << "Russian_Russia." << std::dec << GetACP();
+
+            return stream.str();
       }
+
+      ///////////////////////////////////////////////////////////////////////////////////////
+      //
+      //  Ф-ия GetLocaleGUI() - возвращает текущую локаль установленную в OS для GUI.
+      //                        Т.е.возвращает локаль для CP_ACP
+      //
+
+      inline std::locale GetLocaleGUI()
+      {
+            return tlib::locale(GetLocaleNameGUI());
+      }
+
 #endif
       ///////////////////////////////////////////////////////////////////////////////////////
       //
@@ -183,9 +171,9 @@ namespace tlib
       //                            программе
       //
 
-      inline std::locale GetLocaleProgram()
+      inline tlib::locale GetLocaleProgram()
       {
-            return CreateLocaleByName(CodePageCharInSrc);
+            return tlib::locale(CodePageCharInSrc);
       }
 
       ///////////////////////////////////////////////////////////////////////////////////////
@@ -202,11 +190,11 @@ namespace tlib
 
       ///////////////////////////////////////////////////////////////////////////////////////
       //
-      //  Ф-ия GetLocaleConsole() - возвращает текущую локаль установленную в OS для консоли
-      //                            Т.е.возвращает локаль для CP_OEMCP
+      //  Ф-ия GetCodePageConsole() - возвращает текущую кодовую страницу
+      //                              установленную в OS для консоли.
       //
 
-      inline std::locale GetLocaleConsole()
+      inline std::string GetLocaleNameConsole()
       {
             std::stringstream stream;
 #ifdef _WIN32
@@ -215,21 +203,21 @@ namespace tlib
                   concp = 866;
             stream << "Russian_Russia." << std::dec << concp;
 #elif __linux__
-            //stream << GetConsoleOutputCP();
-            stream << CodePageUTF8;
+            stream << GetConsoleOutputCP();
+            //stream << CodePageUTF8;
 #endif
-            return CreateLocaleByName(stream.str(), "C");
+            return stream.str();
       }
 
       ///////////////////////////////////////////////////////////////////////////////////////
       //
-      //  Ф-ия GetCodePageConsole() - возвращает текущую кодовую страницу
-      //                              установленную в OS для консоли.
+      //  Ф-ия GetLocaleConsole() - возвращает текущую локаль установленную в OS для консоли
+      //                            Т.е.возвращает локаль для CP_OEMCP
       //
 
-      inline std::string GetLocaleNameConsole()
+      inline tlib::locale GetLocaleConsole()
       {
-            return GetLocaleConsole().name();
+            return tlib::locale(GetLocaleNameConsole());
       }
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -725,7 +713,6 @@ namespace tlib
       {
             return RemovalSpace(std::basic_string_view<_Elem>(Str), Locale);
       }
-
 }
 
 #endif
