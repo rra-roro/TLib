@@ -23,7 +23,7 @@ SET(SOURCE_TPARSERS INIParser.cpp CLParser.cpp)
 #SET(SOURCE_TEXCEPTIONS TException.cpp)
 
 SET(TARGT_NAME_TCHAR16 tlib_char16)
-SET(SOURCE_TCHAR16 ./win/crt_codecvt_id.cpp ./win/crt_collate_id.cpp)
+SET(SOURCE_TCHAR16 ./win/crt_facets_id_codecvt.cpp ./win/crt_facets_id.cpp)
 
 if (MSVC)
 
@@ -35,7 +35,8 @@ if (MSVC)
 #    SET(TARGT_NAME_TEXCEPTIONS  ${TARGT_NAME_TEXCEPTIONS}${LIB_SUFFIX})
     SET(TARGT_NAME_TCHAR16     ${TARGT_NAME_TCHAR16}${LIB_SUFFIX})    
     
-    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./win/locale_char16_t.cpp")    
+    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB})    
+
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})    
 #    add_library(${TARGT_NAME_TEXCEPTIONS} ${SOURCE_TEXCEPTIONS})    
     add_library(${TARGT_NAME_TCHAR16} ${SHARED_LIB} ${SOURCE_TCHAR16})    
@@ -59,7 +60,7 @@ if (MSVC)
 
 else()
 
-    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./linux/locale_char16_t.cpp")
+    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./linux/locale_facets_linux.cpp")
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})      
     #add_library(${TARGT_NAME_TEXCEPTIONS} ${SOURCE_TEXCEPTIONS})    
 

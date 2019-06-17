@@ -72,3 +72,101 @@
             }                                                                                                   \
       } /* namespace std */
 
+
+#define CTYPE_DEFINE_PURE(CharT)                                                                                \
+      namespace std                                                                                             \
+      {                                                                                                         \
+            template <>                                                                                         \
+            bool                                                                                                \
+            ctype<CharT>::do_is([[maybe_unused]] mask __m, [[maybe_unused]] CharT __c) const                    \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_is with 2 args");                               \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_is([[maybe_unused]] const CharT* __lo, [[maybe_unused]] const CharT* __hi,         \
+                                [[maybe_unused]] mask* __vec) const                                             \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_is with 3 args");                               \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_scan_is([[maybe_unused]] mask __m, [[maybe_unused]] const CharT* __lo,             \
+                                     [[maybe_unused]] const CharT* __hi) const                                  \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_scan_is");                                      \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_scan_not([[maybe_unused]] mask __m, [[maybe_unused]] const CharT* __lo,            \
+                                      [[maybe_unused]] const CharT* __hi) const                                 \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_scan_not");                                     \
+            }                                                                                                   \
+            template <>                                                                                         \
+            CharT                                                                                               \
+            ctype<CharT>::do_toupper([[maybe_unused]] CharT __c) const                                          \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_toupper with 1 arg");                           \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_toupper([[maybe_unused]] CharT* __lo, [[maybe_unused]] const CharT* __hi) const    \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_toupper with 2 args");                          \
+            }                                                                                                   \
+            template <>                                                                                         \
+            CharT                                                                                               \
+            ctype<CharT>::do_tolower([[maybe_unused]] CharT __c) const                                          \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_tolower with 1 arg");                           \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_tolower([[maybe_unused]] CharT* __lo, [[maybe_unused]] const CharT* __hi) const    \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_tolower with 2 args");                          \
+            }                                                                                                   \
+            template <>                                                                                         \
+            CharT                                                                                               \
+            ctype<CharT>::do_widen([[maybe_unused]] char __c) const                                             \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_widen with 1 arg");                             \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const char*                                                                                         \
+            ctype<CharT>::do_widen([[maybe_unused]] const char* __lo, [[maybe_unused]] const char* __hi,        \
+                                   [[maybe_unused]] CharT* __to) const                                          \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_widen with 3 args");                            \
+            }                                                                                                   \
+            template <>                                                                                         \
+            char                                                                                                \
+            ctype<CharT>::do_narrow([[maybe_unused]] CharT __c, [[maybe_unused]] char __dfault) const           \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_narrow with 2 args");                           \
+            }                                                                                                   \
+            template <>                                                                                         \
+            const CharT*                                                                                        \
+            ctype<CharT>::do_narrow([[maybe_unused]] const CharT* __lo, [[maybe_unused]] const CharT* __hi,     \
+                                    [[maybe_unused]] char __dfault, [[maybe_unused]] char* __to) const          \
+            {                                                                                                   \
+                  throw logic_error("pure virtual method called"                                                \
+                                    "std::ctype<" #CharT ">::do_narrow with 4 args");                           \
+            }                                                                                                   \
+            template <>                                                                                         \
+            std::ctype<char16_t>::~ctype()                                                                      \
+            {                                                                                                   \
+            }                                                                                                   \
+      } /* namespace std */

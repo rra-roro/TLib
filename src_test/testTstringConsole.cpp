@@ -283,7 +283,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << boolalpha << (LoStr == UpStr);
 
       // Проверяем ф-ии работы с пробельными символами данной локали:
-      tcout << Color(yellow);
+            tcout << Color(yellow);
       tcout << _T("\n\nTest 7 <Tlocale.h>: ф-ии детектироваения пробельных и управляющих символов локали");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();

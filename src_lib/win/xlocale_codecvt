@@ -1006,7 +1006,7 @@ public:
 		return (do_length(_State, _First1, _Last1, _Count));
 		}
 
-        __PURE_APPDOMAIN_GLOBAL LIB_CRT static locale::id id;
+	__PURE_APPDOMAIN_GLOBAL LIB_CRT static locale::id id;
 
 	explicit __CLR_OR_THIS_CALL codecvt(size_t _Refs = 0)
 		: codecvt_base(_Refs), _Maxcode(0x10ffff), _Mode(_Consume_header)

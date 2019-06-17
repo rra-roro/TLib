@@ -73,8 +73,6 @@ namespace tlib
             //
             //   Ф-ия AddFacet<>(std::locale& loc) - добавляет к переданной локали фасет, заданный в
             //                                       параметре шаблона
-            //  Примечание: с помощью этой ф-ии нельзя подключить
-            //	            std::time_get<> и std::time_put<> фасеты
             //
 
             template <class _Facet>
@@ -84,19 +82,20 @@ namespace tlib
                   // Добавим в переданную локаль Фасет заданный в параметре шаблона
                   internal_locale = std::locale(internal_locale, new _Facet(std::_Locinfo(name_locale.c_str())));
 #elif __linux__
-                  if constexpr (std::is_same_v<_Facet, std::ctype<char16_t>>)
-                  {
-                        // Добавим в переданную локаль Фасет заданный в параметре шаблона
-                        internal_locale = std::locale(internal_locale, new _Facet(internal_locale));
-                  } else
-                  if constexpr (std::is_same_v<_Facet, std::numpunct<char16_t>> ||
-                                std::is_same_v<_Facet, tlib::numpunct<char>> )
+                  //if constexpr (std::is_same_v<_Facet, tlib::inner_impl::ctype<char16_t>>)
+                  //{
+                  //      // Добавим в переданную локаль Фасет заданный в параметре шаблона
+                  //      internal_locale = std::locale(internal_locale, new _Facet(internal_locale));
+                  //} else
+                  if constexpr (std::is_same_v<_Facet, tlib::inner_impl::ctype<char16_t>> ||
+                                std::is_same_v<_Facet, std::numpunct<char16_t>> ||
+                                std::is_same_v<_Facet, tlib::inner_impl::numpunct<char>>)
                   {
                         internal_locale = std::locale(internal_locale, new _Facet(newlocale(LC_ALL_MASK, name_locale.c_str(), (locale_t)0)));             
                   } else
                   if constexpr (std::is_same_v<_Facet, std::moneypunct<char16_t>> ||
                                 std::is_same_v<_Facet, std::__timepunct<char16_t>> ||
-                                std::is_same_v<_Facet, tlib::moneypunct<char, false>>)
+                                std::is_same_v<_Facet, tlib::inner_impl::moneypunct<char>>)
                   {
                         internal_locale = std::locale(internal_locale, new _Facet(newlocale(LC_ALL_MASK, name_locale.c_str(), (locale_t)0), name_locale.c_str()));
                   }
@@ -116,33 +115,33 @@ namespace tlib
 
             void add_support_char16()
             {
-                  add_facet<std::ctype<char16_t>>();
-                  add_facet<std::collate<char16_t>>();                                  
+                  add_facet<std::collate<char16_t>>();
+                  add_facet<tlib::inner_impl::ctype<char16_t>>();
 #ifdef _WIN32
-                  add_facet<tlib::numpunct<char16_t>>();       // need windows
-                  add_facet<tlib::time_put<char16_t>>();   // need windows
-                  add_facet<tlib::moneypunct<char16_t>>();     // need windows
-#elif __linux__
+                  add_facet<tlib::inner_impl::numpunct<char16_t>>(); 
+                  add_facet<tlib::inner_impl::moneypunct<char16_t>>(); 
+                  add_facet<tlib::inner_impl::time_put<char16_t>>();
+#elif __linux__                  
                   add_facet<std::numpunct<char16_t>>();
+                  add_facet<std::moneypunct<char16_t>>();
                   add_facet<std::__timepunct<char16_t>>();
-                  add_facet<std::moneypunct<char16_t>>();      
+                  add_facet<std::time_put<char16_t>>();
 #endif
                   add_facet<std::num_put<char16_t>>();
                   add_facet<std::num_get<char16_t>>();
-                  add_facet<std::time_put<char16_t>>();
-                  add_facet<std::time_get<char16_t>>();
                   add_facet<std::money_get<char16_t>>();
-                  add_facet<std::money_put<char16_t>>();                 
+                  add_facet<std::money_put<char16_t>>();
+                  //add_facet<std::time_get<char16_t>>();
             }
 
             void add_fix_other_facets()
             {
 #ifdef _WIN32
-                  add_facet<tlib::moneypunct<wchar_t>>();
-                  add_facet<tlib::moneypunct<char, false>>();
+                  add_facet<tlib::inner_impl::moneypunct<wchar_t>>();
+                  add_facet<tlib::inner_impl::moneypunct<char, false>>();
 #elif __linux__
-                  add_facet<tlib::numpunct<char>>();
-                  add_facet<tlib::moneypunct<char,false>>();
+                  add_facet<tlib::inner_impl::numpunct<char>>();
+                  add_facet<tlib::inner_impl::moneypunct<char, false>>();
 #endif
             }
 

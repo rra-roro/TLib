@@ -13,6 +13,10 @@
 #include <codecvt>
 #include <char8_t.h>
 
+//#ifdef _WIN32
+//extern template std::locale::id std::codecvt<char16_t, char, struct _Mbstatet>::id;
+//#endif
+
 namespace tlib
 {
 

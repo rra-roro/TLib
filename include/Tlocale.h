@@ -26,7 +26,7 @@
 #include <locale>
 
 #ifdef _WIN32
-#include <win/locale_char16_t.h>
+#include <win/locale_facets_win.h>
 extern template std::locale::id std::collate<char16_t>::id;
 extern template std::locale::id std::numpunct<char16_t>::id;
 extern template std::locale::id std::moneypunct<char16_t, false>::id;
@@ -34,7 +34,7 @@ extern template std::locale::id std::moneypunct<char16_t, true>::id;
 extern template std::locale::id std::money_get<char16_t>::id;
 extern template std::locale::id std::money_put<char16_t>::id;
 #elif __linux__
-#include <linux/locale_char16_t.h>
+#include <linux/locale_facets_linux.h>
 #endif
 
 #include <Tstring.h>
@@ -60,81 +60,6 @@ namespace tlib
 #error "Unknown compiler"
 #endif
 
-
-      ///////////////////////////////////////////////////////////////////////////////////////
-      //
-      //   Ф-ия AddFacet<>(std::locale& loc) - добавляет к переданной локали фасет, заданный в
-      //                                       параметре шаблона
-      //  Примечание: с помощью этой ф-ии нельзя подключить
-      //	            std::time_get<> и std::time_put<> фасеты
-      //
-
-//      template <class _Facet>
-//      inline void AddFacet(std::locale& loc)
-//      {
-//#ifdef _WIN32
-//            // Добавим в переданную локаль Фасет заданный в параметре шаблона
-//            std::locale loc_tmp(loc, new _Facet(std::_Locinfo(loc.name().c_str())));
-//            // Исправим у полученной локали имя, и вернем ее обратно
-//            loc = std::locale(loc_tmp, loc.name().c_str(), std::locale::time);
-//
-//#elif __linux__
-//            if constexpr (std::is_same<_Facet, std::collate<char16_t>>::value ||
-//                          std::is_same<_Facet, std::num_put<char16_t>>::value ||
-//                          std::is_same<_Facet, std::num_get<char16_t>>::value ||
-//                          std::is_same<_Facet, std::numpunct<char16_t>>::value)
-//            {
-//                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
-//                  loc = std::locale(loc, new _Facet());
-//            }
-//            else
-//            {
-//                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
-//                  loc = std::locale(loc, new _Facet(loc));
-//            }
-//#endif
-//      }
-
-      ///////////////////////////////////////////////////////////////////////////////////////
-      //
-      //  Ф-ия CreateLocaleByName() - создает локаль по ее имени.
-      //
-      //  Имена локалей имеют формат: "C" или "language[_area[.codepage]]" или ".codepage"
-      //  Например: "Russian_Russia.866", "", "C", ".1251"
-      //
-      //  Примечание: в локаль создаваемую этой ф-ией будут добавлены дополнительные фасеты
-      //          	ctype_wchar_t и ctype<char16_t>
-      //  Примечание: следует иметь в виду, что код MS CRT до сих пор не поддерживает utf-8,
-      //              в нем есть прямой запрет на установку таких локалей как CP_UTF8 == 65001
-      //              установка такой кодовой страницы вызовет исключение.
-      //              Судя по комментариям скоро поддержку utf-8 они все же добавят.
-      //
-      //     name_new_locale      - имя локали которую мы хотим создать
-      //     name_number_locale   - имя локали из которой мы хотим добавить способ отображение цифр
-      //                            в создаваемую локаль
-      //
-      //     return  - возвращаем созданную локаль
-      //
-
-      //inline std::locale CreateLocaleByName(std::string_view name_new_locale, std::string_view name_number_locale)
-      //{
-      //      int LocaleType = std::locale::collate | std::locale::ctype |
-      //                       std::locale::monetary | std::locale::time | std::locale::messages;
-      //      std::locale NewLocale(std::locale(name_number_locale.data()), name_new_locale.data(), LocaleType);
-
-      //      AddFacet<std::ctype<char16_t>>(NewLocale);
-      //      AddFacet<std::collate<char16_t>>(NewLocale);
-      //      AddFacet<std::numpunct<char16_t>>(NewLocale);
-      //      AddFacet<std::num_put<char16_t>>(NewLocale);
-      //      AddFacet<std::num_get<char16_t>>(NewLocale);
-
-      //      return NewLocale;
-      //}
-
-      //inline std::locale CreateLocaleByName(std::string_view name_new_locale)
-      //{
-      //      return CreateLocaleByName(name_new_locale, "C");
-      //}
 
 
 #ifdef _WIN32
