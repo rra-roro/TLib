@@ -1,16 +1,19 @@
 ﻿#pragma once
 
+#include <string_view>
+#include <string>
 #include <sstream>
 #include <functional>
 #include <algorithm>
 #include <locale>
 #include <locale/Tlocale_class.h>
+#include <Ttype.h>
 
 
 namespace tlib
 {
 
-       //////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////////////
       // Функции проверки из STL принадлежности символов группе
       // Ф-ии одинаково хорошо работают и c Ansi и с Unicode
 
@@ -111,40 +114,47 @@ namespace tlib
       //    void to_lower(string& str, const locale& Locale = tlib::locale::get_locale_program());
       //
 
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::basic_string<_Elem> get_lower_str(T&& str_arg,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_t = std::basic_string<_Elem>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline string_t get_lower_str(T&& str_arg, const tl& loc = tl::get_locale_program())
       {
-            std::basic_string_view<_Elem> Str(std::forward<T>(str_arg));
-            std::basic_string<_Elem> StrLowerCase(Str.size(), 0);
+            string_view_t str(std::forward<T>(str_arg));
+            string_t str_lower_case(str.size(), 0);
 
-            std::transform(Str.begin(), Str.end(), StrLowerCase.begin(),
-                [&](_Elem _Ch1) {
-                      return tolower<_Elem>(_Ch1, Locale);
-                });
-
-            return StrLowerCase;
+            std::transform(str.begin(), str.end(), str_lower_case.begin(),
+                                  [&](_Elem _Ch1)
+                                  {
+                                         return tolower<_Elem>(_Ch1, loc);
+                                  });
+            return str_lower_case;
       }
 
-      template <typename _Elem>
-      inline void to_lower(std::basic_string<_Elem>& Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <typename _Elem,
+                class tl = tlib::locale
+      >
+      inline void to_lower(std::basic_string<_Elem>& str, const tl& loc = tl::get_locale_program())
       {
-            std::transform(Str.begin(), Str.end(), Str.begin(),
-                [&](_Elem _Ch1) {
-                      return tolower<_Elem>(_Ch1, Locale);
-                });
+            std::transform(str.begin(), str.end(), str.begin(),
+                            [&](_Elem _ch1)
+                            {
+                                   return tolower<_Elem>(_ch1, loc);
+                            });
       }
 
-      template <typename _Elem>
-      inline void to_lower(_Elem* Str,
-          size_t SizeStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <typename _Elem,
+                class tl = tlib::locale
+      >
+      inline void to_lower(_Elem* str, size_t size_str, const tl& loc = tl::get_locale_program())
       {
-            std::transform(&Str[0], &Str[SizeStr - 1], &Str[0],
-                [&](_Elem _Ch1) {
-                      return tolower<_Elem>(_Ch1, Locale);
-                });
+            std::transform(&str[0], &str[size_str - 1], &str[0],
+                            [&](_Elem _ch1)
+                            {
+                                   return tolower<_Elem>(_ch1, loc);
+                            });
       }
 
       //////////////////////////////////////////////////////////////////////////////////
@@ -155,74 +165,80 @@ namespace tlib
       //    void to_upper(string& str, const locale& Locale = tlib::locale::get_locale_program());
       //
 
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::basic_string<_Elem> get_upper_str(T&& str_arg,
-            const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_t = std::basic_string<_Elem>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline string_t get_upper_str(T&& str_arg, const tl& loc = tl::get_locale_program())
       {
-            std::basic_string_view<_Elem> Str(std::forward<T>(str_arg));
-            std::basic_string<_Elem> StrUpperCase(Str.size(), 0);
+            string_view_t str(std::forward<T>(str_arg));
+            string_t str_upper_case(str.size(), 0);
 
-            std::transform(Str.begin(), Str.end(), StrUpperCase.begin(),
-                [&](_Elem _Ch1) {
-                      return toupper<_Elem>(_Ch1, Locale);
-                });
-
-            return StrUpperCase;
+            std::transform(str.begin(), str.end(), str_upper_case.begin(),
+                                  [&](_Elem _ch1)
+                                  {
+                                          return toupper<_Elem>(_ch1, loc);
+                                  });
+            return str_upper_case;
       }
 
-      template <typename _Elem>
-      inline void to_upper(std::basic_string<_Elem>& Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <typename _Elem,
+                class tl = tlib::locale
+      >
+      inline void to_upper(std::basic_string<_Elem>& str, const tl& loc = tl::get_locale_program())
       {
-            std::transform(Str.begin(), Str.end(), Str.begin(),
-                [&](_Elem _Ch1) {
-                      return toupper<_Elem>(_Ch1, Locale);
-                });
+            std::transform(str.begin(), str.end(), str.begin(),
+                                  [&](_Elem _ch1)
+                                  {
+                                           return toupper<_Elem>(_ch1, loc);
+                                  });
       }
 
-      template <typename _Elem>
-      inline void to_upper(_Elem* Str,
-          size_t SizeStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <typename _Elem,
+                class tl = tlib::locale
+      >
+      inline void to_upper(_Elem* str, size_t size_str, const tl& loc = tl::get_locale_program())
       {
-            std::transform(&Str[0], &Str[SizeStr - 1], &Str[0],
-                [&](_Elem _Ch1) {
-                      return toupper<_Elem>(_Ch1, Locale);
-                });
+            std::transform(&str[0], &str[size_str - 1], &str[0],
+                                  [&](_Elem _ch1)
+                                  {
+                                        return toupper<_Elem>(_ch1, loc);
+                                  });
       }
 
       //////////////////////////////////////////////////////////////////////////////////
       //
-      //    strcmp_i    - Перегруженная шаблонная ф-ия которя позволяет сравнить две строки без
+      //    strcmp_i    -  шаблонная ф-ия которя позволяет сравнить две строки без
       //                 учета регистра символов. И в случае равенства возвращает true
       //
       //    bool strcmp_i( Str1, Str2,  const std::locale& Locale = tlib::locale::get_locale_program());
       //
 
-      template <typename _Elem>
-      inline bool strcmp_i(std::basic_string_view<_Elem> Str1,
-          std::basic_string_view<_Elem> Str2,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T1, class _Elem1 = get_underlying_char_t<T1>,
+                class T2, class _Elem2 = get_underlying_char_t<T2>,
+                class _Elem = std::enable_if_t<std::is_same_v<_Elem1, _Elem2>, _Elem1>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline bool strcmp_i(T1&& str_arg1, T2&& str_arg2, const tl& loc = tl::get_locale_program())
       {
+            string_view_t str1(std::forward<T1>(str_arg1));
+            string_view_t str2(std::forward<T2>(str_arg2));
+
             // версия для двух STL строк
-            if (Str1.size() != Str2.size())
+            if (str1.size() != str2.size())
                   return false;
 
-            return std::equal(Str1.begin(), Str1.end(), Str2.begin(),
-                [&](_Elem _Ch1, _Elem _Ch2) {
-                      // сравниваваем два символа без учета их регистра
-                      return toupper<_Elem>(_Ch1, Locale) == toupper<_Elem>(_Ch2, Locale);
-                });
+            return std::equal(str1.begin(), str1.end(), str2.begin(),
+                                  [&](_Elem _ch1, _Elem _ch2)
+                                  {
+                                        // сравниваваем два символа без учета их регистра
+                                        return toupper<_Elem>(_ch1, loc) == toupper<_Elem>(_ch2, loc);
+                                  });
       }
 
-      template <class T1, class _Elem1 = get_underlying_char_t<T1>,
-          class T2, class _Elem2 = get_underlying_char_t<T2>>
-      inline bool strcmp_i(T1 Str1, T2 Str2,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return strcmp_i(std::basic_string_view<_Elem1>(Str1),
-                std::basic_string_view<_Elem2>(Str2), Locale);
-      }
 
       //////////////////////////////////////////////////////////////////////////////////
       //
@@ -233,151 +249,124 @@ namespace tlib
       //    size_t find_substr_i( Str, searchStr,  const std::locale& Locale =tlib::locale::get_locale_program());
       //
 
-      template <typename _Elem>
-      inline size_t find_substr_i(std::basic_string_view<_Elem> Str,
-          std::basic_string_view<_Elem> searchStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+
+      template <class T1, class _Elem1 = get_underlying_char_t<T1>,
+                class T2, class _Elem2 = get_underlying_char_t<T2>,
+                class _Elem = std::enable_if_t<std::is_same_v<_Elem1, _Elem2>, _Elem1>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline size_t find_substr_i(T1&& str_arg, T2&& search_str_arg, const tl& loc = tl::get_locale_program())
       {
+            string_view_t str(std::forward<T1>(str_arg));
+            string_view_t search_str(std::forward<T2>(search_str_arg));
 
-            auto iter = std::search(Str.begin(), Str.end(), searchStr.begin(), searchStr.end(),
-                [&](_Elem _Ch1, _Elem _Ch2) {
-                      // сравниваваем два символа без учета их регистра
-                      return toupper<_Elem>(_Ch1, Locale) == toupper<_Elem>(_Ch2, Locale);
-                });
-
-            if (iter == Str.end())
+            auto iter = std::search(str.begin(), str.end(), search_str.begin(), search_str.end(),
+                                        [&](_Elem _ch1, _Elem _ch2)
+                                        {
+                                              // сравниваваем два символа без учета их регистра
+                                              return toupper<_Elem>(_ch1, loc) == toupper<_Elem>(_ch2, loc);
+                                        });
+            if (iter == str.end())
                   return npos;
             else
-                  return iter - Str.begin();
+                  return iter - str.begin();
       }
 
       template <class T1, class _Elem1 = get_underlying_char_t<T1>,
-          class T2, class _Elem2 = get_underlying_char_t<T2>>
-      inline size_t find_substr_i(T1 Str, T2 searchSymbolStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+                class T2, class _Elem2 = get_underlying_char_t<T2>,
+                class _Elem = std::enable_if_t<std::is_same_v<_Elem1, _Elem2>, _Elem1>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline size_t find_substr_i(T1&& str_arg, size_t start_position,
+                                  T2&& search_str_arg,  const tl& loc = tl::get_locale_program())
       {
-            return find_substr_i(std::basic_string_view<_Elem1>(Str),
-                std::basic_string_view<_Elem2>(searchSymbolStr), Locale);
-      }
+            string_view_t str(std::forward<T1>(str_arg));
+            string_view_t search_str(std::forward<T2>(search_str_arg));
 
-      template <typename _Elem>
-      inline size_t find_substr_i(std::basic_string_view<_Elem> Str,
-          size_t StartPosition,
-          std::basic_string_view<_Elem> searchStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-
-            if ((Str.begin() + StartPosition) > Str.end())
+            if ((str.begin() + start_position) > str.end())
                   return npos;
 
-            auto iter = std::search(Str.begin() + StartPosition, Str.end(), searchStr.begin(), searchStr.end(),
-                [&](_Elem _Ch1, _Elem _Ch2) {
-                      // сравниваваем два символа без учета их регистра
-                      return toupper<_Elem>(_Ch1, Locale) == toupper<_Elem>(_Ch2, Locale);
-                });
-
-            if (iter == Str.end())
+            auto iter = std::search(str.begin() + start_position, str.end(), search_str.begin(), search_str.end(),
+                                        [&](_Elem _Ch1, _Elem _Ch2)
+                                        {
+                                              // сравниваваем два символа без учета их регистра
+                                              return toupper<_Elem>(_Ch1, loc) == toupper<_Elem>(_Ch2, loc);
+                                        });
+            if (iter == str.end())
                   return npos;
             else
-                  return iter - Str.begin();
-      }
-
-      template <class T1, class _Elem1 = get_underlying_char_t<T1>,
-          class T2, class _Elem2 = get_underlying_char_t<T2>>
-      inline size_t find_substr_i(T1 Str, size_t StartPosition, T2 searchSymbolStr,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return find_substr_i(std::basic_string_view<_Elem1>(Str),
-                StartPosition,
-                std::basic_string_view<_Elem2>(searchSymbolStr), Locale);
+                  return iter - str.begin();
       }
 
       //////////////////////////////////////////////////////////////////////////////////
       //
-      //    find_print_symbol  - Перегруженная шаблонная ф-ия которя позволяет искать позицую первого
+      //    find_graph_symbol  - шаблонная ф-ия которя позволяет искать позицую первого
       //                       печатного символа с начала строки. Тоесть любого не пробельного.
       //                       Не пробельный символ определяется при помощи ф-ии std::isgraph.
       //          size_t pos - параметр определяющий позицию в строке с которой будет осуществляться
       //                       поиск.
       //
-      //    size_t find_print_symbol( Str,  const std::locale& Locale = tlib::locale::get_locale_program())
-      //    size_t find_print_symbol( Str,  size_t pos, const std::locale& Locale = tlib::locale::get_locale_program())
+      //    size_t find_graph_symbol( Str,  size_t pos=0, const std::locale& Locale = tlib::locale::get_locale_program())
       //
 
-      template <typename _Elem>
-      inline size_t find_print_symbol(std::basic_string_view<_Elem> Str,
-          size_t pos,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline size_t find_graph_symbol(T&& str_arg, size_t pos = 0, const tl& loc = tl::get_locale_program())
       {
-            auto start_iter = Str.begin() + pos;
-            auto iter = std::find_if(start_iter, Str.end(), [&](_Elem _Ch1) {
-                  // Это печатный символ?
-                  return isgraph<_Elem>(_Ch1, Locale);
-            });
-            if (iter == Str.end())
+            string_view_t str(std::forward<T>(str_arg));
+            
+            auto start_iter = str.begin() + pos;
+            auto iter = std::find_if(start_iter, str.end(),
+                                          [&](_Elem _ch1)
+                                          {
+                                                // Это печатный символ?
+                                                return isgraph<_Elem>(_ch1, loc);
+                                          });
+            if (iter == str.end())
                   return npos;
             else
-                  return iter - Str.begin();
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline size_t find_print_symbol(T Str, size_t pos,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return find_print_symbol(std::basic_string_view<_Elem>(Str), pos, Locale);
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline size_t find_print_symbol(T Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return find_print_symbol(std::basic_string_view<_Elem>(Str), 0, Locale);
-      }
+                  return iter - str.begin();
+      }      
 
       //////////////////////////////////////////////////////////////////////////////////
       //
-      //    rfind_print_symbol - Перегруженная шаблонная ф-ия которя позволяет искать позицую первого
+      //    rfind_graph_symbol - Перегруженная шаблонная ф-ия которя позволяет искать позицую первого
       //                       печатного символа с конца строки. Тоесть любого не пробельного.
       //                       Не пробельный символ определяется при помощи ф-ии std::isgraph.
       //          size_t pos - параметр определяющий позицию в строке с которой будет осуществляться
       //                       поиск.
       //
-      //    size_t rfind_print_symbol( Str,  const std::locale& Locale = tlib::locale::get_locale_program())
-      //    size_t rfind_print_symbol( Str,  size_t pos, const std::locale& Locale = tlib::locale::get_locale_program())
+      //    size_t rfind_graph_symbol( Str,  size_t pos = npos, const std::locale& Locale = tlib::locale::get_locale_program())
       //
 
-      template <typename _Elem>
-      inline size_t rfind_print_symbol(std::basic_string_view<_Elem> Str,
-          size_t pos,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline size_t rfind_graph_symbol(T&& str_arg, size_t pos=npos, const tl& loc = tl::get_locale_program())
       {
-            auto start = Str.rbegin();
-            advance(start, Str.size() - pos); // смещаем итератор start в позицию pos, где pos задается от начала строки
+            string_view_t str(std::forward<T>(str_arg));
+            if (pos == npos) pos = str.size();
 
-            auto iter = std::find_if(start, Str.rend(), [&](_Elem _Ch1) {
-                  // Это печатный символ?
-                  return isgraph<_Elem>(_Ch1, Locale);
-            });
+            auto start = str.rbegin();
+            advance(start, str.size() - pos); // смещаем итератор start в позицию pos, где pos задается от начала строки
 
-            if (iter == Str.rend())
+            auto iter = std::find_if(start, str.rend(),
+                                          [&](_Elem _ch1)
+                                          {
+                                                // Это печатный символ?
+                                                return isgraph<_Elem>(_ch1, loc);
+                                          });
+            if (iter == str.rend())
                   return npos;
             else
-                  return Str.size() - distance(Str.rbegin(), iter) - 1;
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline size_t rfind_print_symbol(T Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            std::basic_string_view<_Elem> StrInternal(Str);
-            return rfind_print_symbol(StrInternal, StrInternal.size(), Locale);
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline size_t rfind_print_symbol(T Str, size_t pos,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return rfind_print_symbol(std::basic_string_view<_Elem>(Str), pos, Locale);
+                  return str.size() - distance(str.rbegin(), iter) - 1;
       }
 
       //////////////////////////////////////////////////////////////////////////////////
@@ -386,23 +375,22 @@ namespace tlib
       //
       //    void remove_first_spaces( Str, const std::locale& Locale = tlib::locale::get_locale_program())
       //
-      template <typename _Elem>
-      inline std::basic_string<_Elem> remove_first_spaces(std::basic_string_view<_Elem> Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_t = std::basic_string<_Elem>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline string_t remove_first_spaces(T&& str_arg, const tl& loc = tl::get_locale_program())
       {
-            if (!Str.empty())
+            string_view_t str(std::forward<T>(str_arg));
+
+            if (!str.empty())
             {
-                  std::basic_string_view<_Elem> new_view_str = Str.substr(find_print_symbol(Str, 0, Locale));
+                  string_view_t new_view_str = str.substr(find_graph_symbol(str, 0, loc));
                   return { new_view_str.data(), new_view_str.size() };
             }
-            return { Str.data(), Str.size() };
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::basic_string<_Elem> remove_first_spaces(T Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return remove_first_spaces(std::basic_string_view<_Elem>(Str), Locale);
+            return { str.data(), str.size() };
       }
 
       //////////////////////////////////////////////////////////////////////////////////
@@ -412,23 +400,22 @@ namespace tlib
       //    void remove_trailing_spaces( Str, const std::locale& Locale = tlib::locale::get_locale_program())
       //
 
-      template <typename _Elem>
-      inline std::basic_string<_Elem> remove_trailing_spaces(std::basic_string_view<_Elem> Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_t = std::basic_string<_Elem>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline string_t remove_trailing_spaces(T&& str_arg, const tl& loc = tl::get_locale_program())
       {
-            if (!Str.empty())
+            string_view_t str(std::forward<T>(str_arg));
+
+            if (!str.empty())
             {
-                  std::basic_string_view<_Elem> new_view_str = Str.substr(0, rfind_print_symbol(Str, Str.size(), Locale) + 1);
+                  string_view_t new_view_str = str.substr(0, rfind_graph_symbol(str, str.size(), loc) + 1);
                   return { new_view_str.data(), new_view_str.size() };
             }
-            return { Str.data(), Str.size() };
-      }
-
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::basic_string<_Elem> remove_trailing_spaces(T Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return remove_trailing_spaces(std::basic_string_view<_Elem>(Str), Locale);
+            return { str.data(), str.size() };
       }
 
       //////////////////////////////////////////////////////////////////////////////////
@@ -438,18 +425,17 @@ namespace tlib
       //    void remove_space( Str, const std::locale& Locale = tlib::locale::get_locale_program())
       //
 
-      template <typename _Elem>
-      inline std::basic_string<_Elem> remove_space(std::basic_string_view<_Elem> Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
+      template <class T,
+                class _Elem = get_underlying_char_t<T>,
+                class string_t = std::basic_string<_Elem>,
+                class string_view_t = std::basic_string_view<_Elem>,
+                class tl = tlib::locale
+      >
+      inline string_t remove_space(T&& str_arg, const tl& loc = tl::get_locale_program())
       {
-            return remove_trailing_spaces(remove_first_spaces(Str, Locale), Locale);
-      }
+            string_view_t str(std::forward<T>(str_arg));
 
-      template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::basic_string<_Elem> remove_space(T Str,
-          const std::locale& Locale = tlib::locale::get_locale_program())
-      {
-            return remove_space(std::basic_string_view<_Elem>(Str), Locale);
+            return remove_trailing_spaces(remove_first_spaces(str, loc), loc);
       }
 
 }

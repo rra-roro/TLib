@@ -324,13 +324,13 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       // Проверяем ф-ии поиска подстроки:
       tcout << Color(yellow);
-      tcout << _T("\n\nTest 8 <Tlocale.h>: поиск подстроки find_substr_i(), find_print_symbol, rfind_print_symbol");
+      tcout << _T("\n\nTest 8 <Tlocale.h>: поиск подстроки find_substr_i(), find_graph_symbol, rfind_graph_symbol");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
       tcout << _T("\nНайдем в \"Мама Мыла Раму\" подстроку \"МЫЛА\" без учета регистра: ") << find_substr_i(_T("Мама Мыла Раму"), _T("МЫЛА"));
-      tcout << _T("\nНайдем в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \" первый печатный символ: ") << find_print_symbol(_T("  \n \b \a \v \t \b Мама Мыла Раму  "));
-      tcout << _T("\nНайдем в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" последний печатный символ в конце строки: ") << rfind_print_symbol(_T("  Мама Мыла Раму  \n \b \a \v \t \b "));
+      tcout << _T("\nНайдем в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \" первый печатный символ: ") << find_graph_symbol(_T("  \n \b \a \v \t \b Мама Мыла Раму  "));
+      tcout << _T("\nНайдем в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" последний печатный символ в конце строки: ") << rfind_graph_symbol(_T("  Мама Мыла Раму  \n \b \a \v \t \b "));
 
       // Проверяем ф-ии удаления пробелов из строки:
       tcout << Color(yellow);

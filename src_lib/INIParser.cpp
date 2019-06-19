@@ -111,7 +111,7 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 				}
 				if (SeparatorPos!=npos && fileline[SeparatorPos]==_T(';'))
 				{
-					if(SeparatorPos!=find_print_symbol(fileline)) ErrorLineList.ErrorLine.push_back(fileline);
+					if(SeparatorPos!=find_graph_symbol(fileline)) ErrorLineList.ErrorLine.push_back(fileline);
 					continue;
 				}				
 				if (SeparatorPos!=npos && fileline[SeparatorPos]==_T('='))
