@@ -85,7 +85,7 @@ size_t INIParser::FindComment(const tstring& str)
 
 void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 {
-	RemovalSpace(prev_str);
+	remove_space(prev_str);
 	if(!prev_str.empty() && prev_str[0]==_T('[') && prev_str[prev_str.size()-1]==_T(']'))
 	{
 		// У нас начало новой секции
@@ -95,7 +95,7 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 		tstring fileline;
             while (getline(fs, fileline)) // Читаем параметры и их значения пока не встретим новую секцию
 		{
-			RemovalSpace(fileline); 
+			remove_space(fileline); 
 			// Если новая секция вызовем InternalParser рекурсивно.
 			if( fileline[0]==_T('[') && fileline[fileline.size()-1]==_T(']') ) {InternalParser(fs,fileline); break;}
 			else
@@ -105,25 +105,25 @@ void INIParser::InternalParser(tifstream& fs,tstring& prev_str)
 				size_t SeparatorPos = fileline.find_first_of(_T(";="));
 				if (SeparatorPos==npos)
 				{
-					RemovalSpace(fileline);
+					remove_space(fileline);
 					if(!fileline.empty())ErrorLineList.ErrorLine.push_back(fileline); 
 					continue;
 				}
 				if (SeparatorPos!=npos && fileline[SeparatorPos]==_T(';'))
 				{
-					if(SeparatorPos!=FindPrintSymbol(fileline)) ErrorLineList.ErrorLine.push_back(fileline);
+					if(SeparatorPos!=find_print_symbol(fileline)) ErrorLineList.ErrorLine.push_back(fileline);
 					continue;
 				}				
 				if (SeparatorPos!=npos && fileline[SeparatorPos]==_T('='))
 				{
 					tstring strParamName = fileline.substr(0,SeparatorPos);
-					RemovalSpace(strParamName);
+					remove_space(strParamName);
 					NewSection.ParamName.push_back(strParamName);
 					tstring strValue = fileline.substr(SeparatorPos+1);
-					RemovalSpace(strValue);
+					remove_space(strValue);
 					size_t pos = FindComment(strValue);
 					if(pos!=npos){ strValue=strValue.substr(0,pos);
-					RemovalSpace(strValue);}
+					remove_space(strValue);}
 
 					NewSection.Value.push_back(strValue);
 				}
@@ -157,7 +157,7 @@ const Section& SectionListClass::GetSectionByName(const tstring& SectionName)con
 	ItrSectionName = find_if(SectionList.begin(),SectionList.end(), 
 								[&](const Section& Sec)
 								{
-									return StrCmpI(Sec.SectionName, SectionName);
+									return strcmp_i(Sec.SectionName, SectionName);
 								});
 		
 	if(ItrSectionName==SectionList.end())return EmptySection;
@@ -172,7 +172,7 @@ const tstring& Section::GetValueByName(const tstring& argParamName)const
 	ItrParamName = find_if(ParamName.begin(),ParamName.end(),
 							[&](const tstring& Param)
 							{
-								return StrCmpI(Param, argParamName);
+								return strcmp_i(Param, argParamName);
 							});
 		
 	if(ItrParamName==ParamName.end())return EmptyString;

@@ -210,7 +210,7 @@ namespace tlib
       }
 
       //   String converter wchar_t <--> char  (UTF-16  <--> ProgramCodePage )
-      thread_local std::wstring_convert<codecvt_w_o> strconvert_w_codepage(new codecvt_w_o(GetLocaleNameProgram()));
+      thread_local std::wstring_convert<codecvt_w_o> strconvert_w_codepage(new codecvt_w_o(tlib::locale::get_locale_name_program()));
 
       //   String converter char16_t <--> char8_t  (UTF-16  <--> UTF-8)
       thread_local std::wstring_convert<codecvt_u16_u8, char16_t> strconvert_u16_u8(new codecvt_u16_u8(CodePageUTF8));
@@ -219,10 +219,9 @@ namespace tlib
       thread_local std::wstring_convert<codecvt_w_u8> strconvert_w_u8(new codecvt_w_u8(CodePageUTF8));
 
       // --------------------------------------
-      string loc_program = GetLocaleNameProgram();
-
+      string loc_program = tlib::locale::get_locale_name_program();
 #ifdef _WIN32
-      string loc_console = GetLocaleNameConsole();
+      string loc_console = tlib::locale::get_locale_name_console();
 #elif __linux__
       const char* loc_console = CodePageUTF8;
 #endif

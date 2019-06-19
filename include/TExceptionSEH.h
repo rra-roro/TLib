@@ -76,7 +76,7 @@ public:
 		   tlib::tstringstream Msg;
 		   Msg << tlib::showbase << tlib::uppercase << tlib::tsetfill(_T('0'));
 		   
-		   Msg << _T("Error code: ") << GetNameSEHCode() << tlib::setw(8) << _T(" (") << tlib::ConversionRadix(GetSEHCode(),16) << _T(") \n");
+		   Msg << _T("Error code: ") << GetNameSEHCode() << tlib::setw(8) << _T(" (") << tlib::put_intger_by_radix(GetSEHCode(),16) << _T(") \n");
 		   Msg << _T("Error message: ") << GetMsgOfErrorCode() << _T("\n");
 		   Msg << _T("ContextRecord: ") << GetContextRecordMsg() << _T("\n");
 		   return Msg.str();

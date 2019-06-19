@@ -170,11 +170,8 @@ class INIParser
       INIParser(const tlib::tstring& arg_ininame) : ini_filename(arg_ininame){};
 
       // Функция начала процесса разбора ini файла
-#if !(defined(__linux__))
-      void Parser(const std::locale& Locale = tlib::GetLocaleGUI());
-#else
-      void Parser(const std::locale& Locale = tlib::GetLocaleProgram());
-#endif
+      void Parser(const std::locale& Locale = tlib::locale::get_locale_GUI());
+
 };
 
 #if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))

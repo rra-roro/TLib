@@ -147,12 +147,23 @@ namespace tlib
 	//     Ф-ии для конвертации числа в строку в произвольной системе счисления
 	//
         template <typename D>
-        inline tlib::tstring GetStrOfDig (D val, int radix, bool UpShift=false)
+        inline tlib::tstring get_tstr_from(D val, int radix, bool UpShift=false)
         {
             tlib::tstring TempStr;
             if(!dig_to_tstr (val, TempStr,radix, UpShift)) return tlib::tstring();
             else return TempStr;
         }
+
+        template <class _Elem, typename D>
+        inline std::basic_string<_Elem> get_str_from(D val, int radix, bool UpShift = false)
+        {
+              std::basic_string<_Elem> TempStr;
+              if (!dig_to_tstr(val, TempStr, radix, UpShift))
+                    return std::basic_string<_Elem>();
+              else
+                    return TempStr;
+        }
+
 
 }
 

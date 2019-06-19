@@ -219,64 +219,64 @@ tstring EExceptionSEH::GetContextRecordMsg() const
 	tstringstream ContextRecordMsg;
 	ContextRecordMsg << showbase << uppercase << setfill(_T('0'));
 
-	ContextRecordMsg << _T("ContextFlags=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->ContextFlags,16) << _T("\n");
+	ContextRecordMsg << _T("ContextFlags=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->ContextFlags,16) << _T("\n");
 	if(m_pExcPointers->ContextRecord->ContextFlags & CONTEXT_DEBUG_REGISTERS)
 	{
-			ContextRecordMsg << _T("Dr0=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr0,16) << _T("\n");
-			ContextRecordMsg << _T("Dr1=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr1,16) << _T("\n");
-			ContextRecordMsg << _T("Dr2=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr2,16) << _T("\n");
-			ContextRecordMsg << _T("Dr3=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr3,16) << _T("\n");
-			ContextRecordMsg << _T("Dr6=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr6,16) << _T("\n");
-			ContextRecordMsg << _T("Dr7=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Dr7,16) << _T("\n");
+			ContextRecordMsg << _T("Dr0=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr0,16) << _T("\n");
+			ContextRecordMsg << _T("Dr1=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr1,16) << _T("\n");
+			ContextRecordMsg << _T("Dr2=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr2,16) << _T("\n");
+			ContextRecordMsg << _T("Dr3=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr3,16) << _T("\n");
+			ContextRecordMsg << _T("Dr6=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr6,16) << _T("\n");
+			ContextRecordMsg << _T("Dr7=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Dr7,16) << _T("\n");
 	}	
 #ifdef _M_IX86	
-	ContextRecordMsg << _T("Eax=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Eax,16) << _T("\n");
-	ContextRecordMsg << _T("Ebx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Ebx,16) << _T("\n");
-	ContextRecordMsg << _T("Ecx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Ecx,16) << _T("\n");
-	ContextRecordMsg << _T("Edx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Edx,16) << _T("\n");
-	ContextRecordMsg << _T("Edi=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Edi,16) << _T("\n");
-	ContextRecordMsg << _T("Esi=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Esi,16) << _T("\n");
-	ContextRecordMsg << _T("Ebp=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Ebp,16) << _T("\n");
-	ContextRecordMsg << _T("Esp=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Esp,16) << _T("\n");
-	ContextRecordMsg << _T("Eip=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Eip,16) << _T("\n");
-	ContextRecordMsg << _T("EFlags=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->EFlags,16) << _T("\n");
-	ContextRecordMsg << _T("SegCs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegCs,16) << _T("\n");				
-	ContextRecordMsg << _T("SegDs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegDs,16) << _T("\n");				
-	ContextRecordMsg << _T("SegEs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegEs,16) << _T("\n");
-	ContextRecordMsg << _T("SegFs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegFs,16) << _T("\n");
-	ContextRecordMsg << _T("SegGs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegGs,16) << _T("\n");
-	ContextRecordMsg << _T("SegSs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegSs,16) << _T("\n");
+	ContextRecordMsg << _T("Eax=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Eax,16) << _T("\n");
+	ContextRecordMsg << _T("Ebx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Ebx,16) << _T("\n");
+	ContextRecordMsg << _T("Ecx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Ecx,16) << _T("\n");
+	ContextRecordMsg << _T("Edx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Edx,16) << _T("\n");
+	ContextRecordMsg << _T("Edi=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Edi,16) << _T("\n");
+	ContextRecordMsg << _T("Esi=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Esi,16) << _T("\n");
+	ContextRecordMsg << _T("Ebp=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Ebp,16) << _T("\n");
+	ContextRecordMsg << _T("Esp=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Esp,16) << _T("\n");
+	ContextRecordMsg << _T("Eip=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Eip,16) << _T("\n");
+	ContextRecordMsg << _T("EFlags=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->EFlags,16) << _T("\n");
+	ContextRecordMsg << _T("SegCs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegCs,16) << _T("\n");				
+	ContextRecordMsg << _T("SegDs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegDs,16) << _T("\n");				
+	ContextRecordMsg << _T("SegEs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegEs,16) << _T("\n");
+	ContextRecordMsg << _T("SegFs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegFs,16) << _T("\n");
+	ContextRecordMsg << _T("SegGs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegGs,16) << _T("\n");
+	ContextRecordMsg << _T("SegSs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegSs,16) << _T("\n");
 
 	if(m_pExcPointers->ContextRecord->ContextFlags & CONTEXT_EXTENDED_REGISTERS)
-			ContextRecordMsg << _T("ExtendedRegisters1=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->ExtendedRegisters[0],16) << _T("\n");
+			ContextRecordMsg << _T("ExtendedRegisters1=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->ExtendedRegisters[0],16) << _T("\n");
 
 #elif defined(_M_AMD64)
-	ContextRecordMsg << _T("Rax=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rax,16) << _T("\n");
-	ContextRecordMsg << _T("Rbx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rbx,16) << _T("\n");
-	ContextRecordMsg << _T("Rcx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rcx,16) << _T("\n");
-	ContextRecordMsg << _T("Rdx=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rdx,16) << _T("\n");
-	ContextRecordMsg << _T("Rdi=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rdi,16) << _T("\n");
-	ContextRecordMsg << _T("Rsi=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rsi,16) << _T("\n");
-	ContextRecordMsg << _T("Rbp=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rbp,16) << _T("\n");
-	ContextRecordMsg << _T("Rsp=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rsp,16) << _T("\n");
-	ContextRecordMsg << _T("Rip=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->Rip,16) << _T("\n");
+	ContextRecordMsg << _T("Rax=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rax,16) << _T("\n");
+	ContextRecordMsg << _T("Rbx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rbx,16) << _T("\n");
+	ContextRecordMsg << _T("Rcx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rcx,16) << _T("\n");
+	ContextRecordMsg << _T("Rdx=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rdx,16) << _T("\n");
+	ContextRecordMsg << _T("Rdi=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rdi,16) << _T("\n");
+	ContextRecordMsg << _T("Rsi=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rsi,16) << _T("\n");
+	ContextRecordMsg << _T("Rbp=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rbp,16) << _T("\n");
+	ContextRecordMsg << _T("Rsp=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rsp,16) << _T("\n");
+	ContextRecordMsg << _T("Rip=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->Rip,16) << _T("\n");
 
-	ContextRecordMsg << _T("R8=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R8,16) << _T("\n");
-	ContextRecordMsg << _T("R9=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R9,16) << _T("\n");
-	ContextRecordMsg << _T("R10=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R10,16) << _T("\n");
-	ContextRecordMsg << _T("R11=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R11,16) << _T("\n");
-	ContextRecordMsg << _T("R12=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R12,16) << _T("\n");
-	ContextRecordMsg << _T("R13=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R13,16) << _T("\n");
-	ContextRecordMsg << _T("R14=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R14,16) << _T("\n");
-	ContextRecordMsg << _T("R15=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->R15,16) << _T("\n");
+	ContextRecordMsg << _T("R8=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R8,16) << _T("\n");
+	ContextRecordMsg << _T("R9=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R9,16) << _T("\n");
+	ContextRecordMsg << _T("R10=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R10,16) << _T("\n");
+	ContextRecordMsg << _T("R11=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R11,16) << _T("\n");
+	ContextRecordMsg << _T("R12=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R12,16) << _T("\n");
+	ContextRecordMsg << _T("R13=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R13,16) << _T("\n");
+	ContextRecordMsg << _T("R14=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R14,16) << _T("\n");
+	ContextRecordMsg << _T("R15=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->R15,16) << _T("\n");
 
-	ContextRecordMsg << _T("EFlags=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->EFlags,16) << _T("\n");
-	ContextRecordMsg << _T("SegCs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegCs,16) << _T("\n");				
-	ContextRecordMsg << _T("SegDs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegDs,16) << _T("\n");				
-	ContextRecordMsg << _T("SegEs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegEs,16) << _T("\n");
-	ContextRecordMsg << _T("SegFs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegFs,16) << _T("\n");
-	ContextRecordMsg << _T("SegGs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegGs,16) << _T("\n");
-	ContextRecordMsg << _T("SegSs=") << setw(8) << ConversionRadix(m_pExcPointers->ContextRecord->SegSs,16) << _T("\n");
+	ContextRecordMsg << _T("EFlags=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->EFlags,16) << _T("\n");
+	ContextRecordMsg << _T("SegCs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegCs,16) << _T("\n");				
+	ContextRecordMsg << _T("SegDs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegDs,16) << _T("\n");				
+	ContextRecordMsg << _T("SegEs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegEs,16) << _T("\n");
+	ContextRecordMsg << _T("SegFs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegFs,16) << _T("\n");
+	ContextRecordMsg << _T("SegGs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegGs,16) << _T("\n");
+	ContextRecordMsg << _T("SegSs=") << setw(8) << put_intger_by_radix(m_pExcPointers->ContextRecord->SegSs,16) << _T("\n");
 #else
 	#error It is necessary ContextRecord for this CPU 
 #endif

@@ -78,7 +78,7 @@ public:
 		   Msg << tlib::showbase << tlib::uppercase << tlib::tsetfill(_T('0'));
 		   		
 		   Msg << _T("Last Error: ");
-		   Msg << tlib::setw(8) << tlib::ConversionRadix(GetErrorCode(), 16) << _T("\n");
+		   Msg << tlib::setw(8) << tlib::put_intger_by_radix(GetErrorCode(), 16) << _T("\n");
 		   
 		   Msg << _T("Source FileName: ");
 		   Msg << m_FileName << _T(":(") << std::dec << m_lineNumber << _T(")") <<_T("\n");
@@ -203,7 +203,7 @@ public:
                   DWORD RetValue, 
                   DWORD LastError,
                   const tlib::tstring& Msg):
-              EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+              EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::get_str_from(RetValue,16) + _T("\"."), LastError){};
 
      EWinApiError(const TCHAR* FileName, 
                   int lineNumber, 
@@ -211,7 +211,7 @@ public:
                   PVOID RetValue, 
                   DWORD LastError,
                   const tlib::tstring& Msg):
-		      EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+		      EExceptionCPP(FileName,lineNumber, Msg + _T(" Function \"") + FnName + _T("\" has returned \"") + tlib::get_str_from(RetValue,16) + _T("\"."), LastError){};
 
 	EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
@@ -226,14 +226,14 @@ public:
                  const tlib::tstring& FnName, 
                  DWORD RetValue, 
                  DWORD LastError):
-              EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+              EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::get_str_from(RetValue,16) + _T("\"."), LastError){};
 
     EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 
                  const tlib::tstring& FnName, 
                  PVOID RetValue, 
                  DWORD LastError):
-		      EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::GetStrOfDig(RetValue,16) + _T("\"."), LastError){};
+		      EExceptionCPP(FileName,lineNumber, _T("Function \"") + FnName + _T("\" has returned \"") + tlib::get_str_from(RetValue,16) + _T("\"."), LastError){};
 
 	EWinApiError(const TCHAR* FileName, 
                  int lineNumber, 

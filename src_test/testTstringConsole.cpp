@@ -1,6 +1,11 @@
 ﻿// testTstringConsole.cpp : Defines the entry point for the console application.
 //
+
 //#include "stdafx.h"
+
+//#ifndef _WIN32_WINNT                   // Allow use of features specific to Windows XP or later.
+//#define _WIN32_WINNT _WIN32_WINNT_WIN8 // Change this to the appropriate value to target other versions of Windows.
+//#endif
 
 #include <Tstring.h>
 #include <Tlocale.h>
@@ -15,8 +20,11 @@
 #include <ctime>
 #include <iomanip>
 
+#include <map>
+
 using namespace tlib;
 using namespace std;
+
 
 void PrintTest11(int r, [[maybe_unused]] const TCHAR* Str_Std, [[maybe_unused]] streamsize Tab1, const tstring& Str_My, streamsize Tab2)
 {
@@ -70,7 +78,6 @@ void PrintBuildInfo()
       wcout << Color();
 }
 
-//basic_ostream<char>& qqq = cout.put('\0');
 
 #ifdef _WIN32
 int _tmain([[maybe_unused]] int argc, [[maybe_unused]] _TCHAR* argv[])
@@ -88,6 +95,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       PrintBuildInfo();
 
+      /*cout << "                                            строка:" << tab_right("fadsfad fasdf asd f asd f asdf asd f ds f asdf asd f sd f sdfsdf asdf asd fa sdf asd f asd fasd f asd f asdf asd fasd f sdaf sdf ") << endl;
+
+      string qqq = "fadsfad fasdf asd f asd f asdf asd f ds f asdf asd f sd f sdfsdf asdf asd fa sdf asd f asd fasd f asd f asdf asd fasd f sdaf sdf ";
+      cout << "                                                                     строка:" << tab_right(qqq) << endl;*/
+      
       // =============================================================================================
       // Тестируем функционал <Tlocale.h>
 
@@ -98,13 +110,13 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       cout << "\nGetConsoleOutputCP() -> " << GetConsoleOutputCP();
-      cout << "\nGetLocaleNameProgram() -> " << GetLocaleNameProgram() << "\n";
-      cout << "\nGetLocaleProgram() -> " << GetLocaleProgram().name() << "\n";
-      cout << "\nGetLocaleNameConsole() -> " << GetLocaleNameConsole();
-      cout << "\nGetLocaleConsole() -> " << GetLocaleConsole().name() << "\n";
+      cout << "\nGetLocaleNameProgram() -> " << tlib::locale::get_locale_name_program() << "\n";
+      cout << "\nGetLocaleProgram() -> " << tlib::locale::get_locale_program().name() << "\n";
+      cout << "\nGetLocaleNameConsole() -> " << tlib::locale::get_locale_name_console();
+      cout << "\nGetLocaleConsole() -> " << tlib::locale::get_locale_console().name() << "\n";
 #ifdef _WIN32
-      cout << "\nGetLocaleNameGUI() -> " << GetLocaleNameGUI();
-      cout << "\nGetLocaleGUI() -> " << GetLocaleGUI().name() << "\n";
+      cout << "\nGetLocaleNameGUI() -> " << tlib::locale::get_locale_name_GUI();
+      cout << "\nGetLocaleGUI() -> " << tlib::locale::get_locale_GUI().name() << "\n";
 #endif
       cout << "\nGet global locale: locale() -> \"" << std::locale().name() << "\"";
 
@@ -145,8 +157,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       // Тестируем отображение цифр
 
-      auto test_numbers = [](auto stream_name, auto& os)
-      {
+      auto test_numbers = [](auto stream_name, auto& os) {
             using char_type = typename std::remove_reference<decltype(os)>::type::char_type;
 
 #define _tt(str) TemplateTypeOfStr(str, char_type)
@@ -174,13 +185,19 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       test_numbers(u"ucout", ucout);
       test_numbers(_T("tcout"), tcout);
 
+      stringstream wss;
+      wss.imbue(tlib::locale("ar_EG.utf8"));
+      wss.clear();
+      test_numbers(_T("wss"), wss);
+      string wstr___ = wss.str();
+
       // Тестируем получение информации о глобальной локали:
       tcout << Color(yellow);
       tcout << _T("\n\nTest 3 <Tlocale.h>: get global locale info, after call InitConsolIO()");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
-      cout << "\nGet global locale. Shoud be:\n\"" << GetLocaleProgram().name() << "\"\nThere's locale() -> \n"
+      cout << "\nGet global locale. Shoud be:\n\"" << tlib::locale::get_locale_program().name() << "\"\nThere's locale() -> \n"
            << std::locale().name();
 
       // Проверяем ф-ии конвертации строк с учетом кодировки:
@@ -189,11 +206,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
-      cout << "\nstring " << GetLocaleNameProgram() << " -> wstring | ";
+      cout << "\nstring " << tlib::locale::get_locale_name_program() << " -> wstring | ";
       tcout << _T("cstr_wstr(\"Мама мыла раму\") -> ");
       wcout << cstr_wstr("Мама мыла раму");
 
-      cout << "\nwstring -> string " << GetLocaleNameProgram() << " | ";
+      cout << "\nwstring -> string " << tlib::locale::get_locale_name_program() << " | ";
       tcout << _T("wstr_cstr(L\"Мама мыла раму\") -> ");
       cout << wstr_cstr(L"Мама мыла раму");
 
@@ -259,61 +276,61 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       // Проверяем ф-ии сравнения строк и смена регистра:
       tcout << Color(yellow);
-      tcout << _T("\n\nTest 6 <Tlocale.h>: сравнение строк и смена регистра GetLowerStr, GetUpperStr, StrCmpI");
+      tcout << _T("\n\nTest 6 <Tlocale.h>: сравнение строк и смена регистра get_lower_str, get_upper_str, strcmp_i");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
       TCHAR const* str_char = _T("Мама Мыла Раму");
       tstring str_str = _T("Мама Мыла Раму");
 
-      tcout << _T("\nПреобразуем TCHAR * строку \"Мама Мыла Раму\" в нижний регистр: ") << GetLowerStr(str_char);
-      tcout << _T("\nПреобразуем tstring строку \"Мама Мыла Раму\" в нижний регистр: ") << GetLowerStr(str_str);
-      tcout << _T("\nПреобразуем строку _T(\"Мама Мыла Раму\") в нижний регистр: ") << GetLowerStr(_T("Мама Мыла Раму"));
-      tcout << _T("\n\nПреобразуем TCHAR * строку \"Мама Мыла Раму\" в верхний регистр: ") << GetUpperStr(str_char);
-      tcout << _T("\nПреобразуем tstring строку \"Мама Мыла Раму\" в верхний регистр: ") << GetUpperStr(str_str);
-      tcout << _T("\nПреобразуем строку _T(\"Мама Мыла Раму\") в верхний регистр: ") << GetUpperStr(_T("Мама Мыла Раму"));
+      tcout << _T("\nПреобразуем TCHAR * строку \"Мама Мыла Раму\" в нижний регистр: ") << get_lower_str(str_char);
+      tcout << _T("\nПреобразуем tstring строку \"Мама Мыла Раму\" в нижний регистр: ") << get_lower_str(str_str);
+      tcout << _T("\nПреобразуем строку _T(\"Мама Мыла Раму\") в нижний регистр: ") << get_lower_str(_T("Мама Мыла Раму"));
+      tcout << _T("\n\nПреобразуем TCHAR * строку \"Мама Мыла Раму\" в верхний регистр: ") << get_upper_str(str_char);
+      tcout << _T("\nПреобразуем tstring строку \"Мама Мыла Раму\" в верхний регистр: ") << get_upper_str(str_str);
+      tcout << _T("\nПреобразуем строку _T(\"Мама Мыла Раму\") в верхний регистр: ") << get_upper_str(_T("Мама Мыла Раму"));
 
-      tstring LoStr = GetLowerStr(str_char);
-      tstring UpStr = GetUpperStr(str_str);
+      tstring LoStr = get_lower_str(str_char);
+      tstring UpStr = get_upper_str(str_str);
 
       tcout << _T("\n\nРезультат сравнения: ");
-      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" без учета регистра. Строки равны?: ") << boolalpha << StrCmpI(LoStr, UpStr);
+      tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" без учета регистра. Строки равны?: ") << boolalpha << strcmp_i(LoStr, UpStr);
 
       tcout << _T("\nРезультат сравнения: ");
       tcout << _T("\n   \"") << LoStr << _T("\" и \"") << UpStr << _T("\" c учетом регистра. Строки равны?: ") << boolalpha << (LoStr == UpStr);
 
       // Проверяем ф-ии работы с пробельными символами данной локали:
-            tcout << Color(yellow);
+      tcout << Color(yellow);
       tcout << _T("\n\nTest 7 <Tlocale.h>: ф-ии детектироваения пробельных и управляющих символов локали");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
-      tcout << _T("\n Этот ' '  символ пробельный? isspace(): ") << isspace(' ', GetLocaleProgram());
-      tcout << _T("\n Этот '\\t' символ пробельный? isspace(): ") << isspace('\t', GetLocaleProgram());
-      tcout << _T("\n Этот '\\n' символ пробельный? isspace(): ") << isspace('\n', GetLocaleProgram());
-      tcout << _T("\n Этот '\\r' символ пробельный? isspace(): ") << isspace('\r', GetLocaleProgram());
-      tcout << _T("\n Этот '\\b' символ пробельный? isspace(): ") << isspace('\b', GetLocaleProgram());
-      tcout << _T("\n Этот '\\a' символ пробельный? isspace(): ") << isspace('\a', GetLocaleProgram());
+      tcout << _T("\n Этот ' '  символ пробельный? isspace(): ") << isspace(' ', tlib::locale::get_locale_program());
+      tcout << _T("\n Этот '\\t' символ пробельный? isspace(): ") << isspace('\t', tlib::locale::get_locale_program());
+      tcout << _T("\n Этот '\\n' символ пробельный? isspace(): ") << isspace('\n', tlib::locale::get_locale_program());
+      tcout << _T("\n Этот '\\r' символ пробельный? isspace(): ") << isspace('\r', tlib::locale::get_locale_program());
+      tcout << _T("\n Этот '\\b' символ пробельный? isspace(): ") << isspace('\b', tlib::locale::get_locale_program());
+      tcout << _T("\n Этот '\\a' символ пробельный? isspace(): ") << isspace('\a', tlib::locale::get_locale_program());
 
-      tcout << _T("\n\n Это ' '  управляющий символ? iscntrl(): ") << iscntrl(' ', GetLocaleProgram());
-      tcout << _T("\n Это '\\t' управляющий символ? iscntrl(): ") << iscntrl('\t', GetLocaleProgram());
-      tcout << _T("\n Это '\\n' управляющий символ? iscntrl(): ") << iscntrl('\n', GetLocaleProgram());
-      tcout << _T("\n Это '\\r' управляющий символ? iscntrl(): ") << iscntrl('\r', GetLocaleProgram());
-      tcout << _T("\n Это '\\b' управляющий символ? iscntrl(): ") << iscntrl('\b', GetLocaleProgram());
-      tcout << _T("\n Это '\\a' управляющий символ? iscntrl(): ") << iscntrl('\a', GetLocaleProgram());
+      tcout << _T("\n\n Это ' '  управляющий символ? iscntrl(): ") << iscntrl(' ', tlib::locale::get_locale_program());
+      tcout << _T("\n Это '\\t' управляющий символ? iscntrl(): ") << iscntrl('\t', tlib::locale::get_locale_program());
+      tcout << _T("\n Это '\\n' управляющий символ? iscntrl(): ") << iscntrl('\n', tlib::locale::get_locale_program());
+      tcout << _T("\n Это '\\r' управляющий символ? iscntrl(): ") << iscntrl('\r', tlib::locale::get_locale_program());
+      tcout << _T("\n Это '\\b' управляющий символ? iscntrl(): ") << iscntrl('\b', tlib::locale::get_locale_program());
+      tcout << _T("\n Это '\\a' управляющий символ? iscntrl(): ") << iscntrl('\a', tlib::locale::get_locale_program());
 
       tcout << _T("\n\n Этот '\\' символ слеш? isslash(): ") << isslash('\\');
       tcout << _T("\n Этот '/' символ слеш? isslash(): ") << isslash('/');
 
       // Проверяем ф-ии поиска подстроки:
       tcout << Color(yellow);
-      tcout << _T("\n\nTest 8 <Tlocale.h>: поиск подстроки FindSubStrI(), FindPrintSymbol, RFindPrintSymbol");
+      tcout << _T("\n\nTest 8 <Tlocale.h>: поиск подстроки find_substr_i(), find_print_symbol, rfind_print_symbol");
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
-      tcout << _T("\nНайдем в \"Мама Мыла Раму\" подстроку \"МЫЛА\" без учета регистра: ") << FindSubStrI(_T("Мама Мыла Раму"), _T("МЫЛА"));
-      tcout << _T("\nНайдем в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \" первый печатный символ: ") << FindPrintSymbol(_T("  \n \b \a \v \t \b Мама Мыла Раму  "));
-      tcout << _T("\nНайдем в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" последний печатный символ в конце строки: ") << RFindPrintSymbol(_T("  Мама Мыла Раму  \n \b \a \v \t \b "));
+      tcout << _T("\nНайдем в \"Мама Мыла Раму\" подстроку \"МЫЛА\" без учета регистра: ") << find_substr_i(_T("Мама Мыла Раму"), _T("МЫЛА"));
+      tcout << _T("\nНайдем в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \" первый печатный символ: ") << find_print_symbol(_T("  \n \b \a \v \t \b Мама Мыла Раму  "));
+      tcout << _T("\nНайдем в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" последний печатный символ в конце строки: ") << rfind_print_symbol(_T("  Мама Мыла Раму  \n \b \a \v \t \b "));
 
       // Проверяем ф-ии удаления пробелов из строки:
       tcout << Color(yellow);
@@ -321,9 +338,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 
-      tcout << _T("\nУдалим в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \"    лидирующие пробелы: ") << RemovalFirstSpaces(_T("  \n \b \a \v \t \b Мама Мыла Раму  ")) << _T("<-- end");
-      tcout << _T("\nУдалим в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \"   заверщающие пробелы: ") << RemovalTrailingSpaces(_T("  Мама Мыла Раму  \n \b \a \v \t \b ")) << _T("<-- end");
-      tcout << _T("\nУдалим в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" пробелы c двух сторон: ") << RemovalSpace(_T("  \n \b \a \v \t \b Мама Мыла Раму  \n \b \a \v \t \b ")) << _T("<-- end");
+      tcout << _T("\nУдалим в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \"    лидирующие пробелы: ") << remove_first_spaces(_T("  \n \b \a \v \t \b Мама Мыла Раму  ")) << _T("<-- end");
+      tcout << _T("\nУдалим в \"  Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \"   заверщающие пробелы: ") << remove_trailing_spaces(_T("  Мама Мыла Раму  \n \b \a \v \t \b ")) << _T("<-- end");
+      tcout << _T("\nУдалим в \"  \\n \\b \\a \\v \\t \\b Мама Мыла Раму  \\n \\b \\a \\v \\t \\b \" пробелы c двух сторон: ") << remove_space(_T("  \n \b \a \v \t \b Мама Мыла Раму  \n \b \a \v \t \b ")) << _T("<-- end");
 
       // Проверяем ф-ии фасета ctype<>:
       tcout << Color(yellow);
@@ -331,15 +348,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << _T("\n------------------------------------------------------------------------\n");
       tcout << Color();
 #ifdef _WIN32
-      cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
-      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
-      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
-      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));
+      cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(tlib::locale::get_locale_program()).toupper('б');
+      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(tlib::locale::get_locale_program()).toupper(L'б');
+      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(tlib::locale::get_locale_program()).toupper(u'б');
+      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(tlib::locale::get_locale_program()).toupper(_T('б'));
 #elif __linux__
-      //cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(GetLocaleProgram()).toupper('б');
-      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(GetLocaleProgram()).toupper(L'б');
-      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(GetLocaleProgram()).toupper(u'б');
-      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(GetLocaleProgram()).toupper(_T('б'));
+      //cout << "\nФункция установки верхнего регистра use_facet<ctype<char> >(loc).toupper('б'): " << use_facet<ctype<char>>(tlib::locale::get_locale_program()).toupper('б');
+      wcout << L"\nФункция установки верхнего регистра use_facet<ctype<wchar_t> >(loc).toupper(L'б'): " << use_facet<ctype<wchar_t>>(tlib::locale::get_locale_program()).toupper(L'б');
+      ucout << u"\nФункция установки верхнего регистра use_facet<ctype<char16_t> >(loc).toupper(u'б'): " << use_facet<ctype<char16_t>>(tlib::locale::get_locale_program()).toupper(u'б');
+      tcout << _T("\nФункция установки верхнего регистра use_facet<ctype<TCHAR> >(loc).toupper(_T('б')): ") << use_facet<ctype<TCHAR>>(tlib::locale::get_locale_program()).toupper(_T('б'));
 #endif
 
 
@@ -581,7 +598,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
             Str_My.clear();
       }
 
-      // Тестируем манипулятор ConversionRadix предназначенный для конвертирования числа
+      // Тестируем манипулятор put_intger_by_radix предназначенный для конвертирования числа
       // в текст в произвольной системе считления:
       tcout << Color(yellow);
       tcout << _T("\n\nTest 12 <Tiomanip.h>: вывод числа в поток, как текст, в заданной системе счисления");
@@ -598,19 +615,19 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       // Примечание 1: После того, как будет произведена запись в поток, поток сбросит ширину поля
       //               (поток вызовет iostr.width(0)), таким образом ширину поля нужно выставлять
-      //                 перед каждой записью числа в поток, в нашем случае перед каждым вызовом ConversionRadixULL().
+      //                 перед каждой записью числа в поток, в нашем случае перед каждым вызовом put_intger_by_radix().
       //               Таким образом, несмотря на: setw(2) << setfill('0')
       //               Следующий код не будет выставлять НОЛЬ для заполнения поля перед числом
 
       stringstream MemBuffer_WithoutZero;
-      MemBuffer_WithoutZero << setw(2) << tsetfill('0');
-      MemBuffer_WithoutZero << ConversionRadix(0xf, 2) << "\t|\t"
-                            << ConversionRadix(0xf, 10) << "\t|\t"
-                            << ConversionRadix(0xf, 16) << endl;
+      MemBuffer_WithoutZero << setw(2) << setfill('0');
+      MemBuffer_WithoutZero << put_intger_by_radix(0xf, 2) << "\t|\t"
+                            << put_intger_by_radix(0xf, 10) << "\t|\t"
+                            << put_intger_by_radix(0xf, 16) << endl;
       MemBuffer_WithoutZero << showbase;
-      MemBuffer_WithoutZero << ConversionRadix(0xf, 2) << "\t|\t"
-                            << ConversionRadix(0xf, 10) << "\t|\t"
-                            << ConversionRadix(0xf, 16) << endl;
+      MemBuffer_WithoutZero << put_intger_by_radix(0xf, 2) << "\t|\t"
+                            << put_intger_by_radix(0xf, 10) << "\t|\t"
+                            << put_intger_by_radix(0xf, 16) << endl;
       cout << MemBuffer_WithoutZero.str();
 
       // Выводим число 15 в char поток в системах счисления: BIN, DEC и HEX
@@ -622,14 +639,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       stringstream MemBuffer;
-      MemBuffer << tsetfill('0');
-      MemBuffer << setw(2) << ConversionRadix(0xf, 2) << "\t|\t"
-                << setw(2) << ConversionRadix(0xf, 10) << "\t|\t"
-                << setw(2) << ConversionRadix(0xf, 16) << endl;
+      MemBuffer << setfill('0');
+      MemBuffer << setw(2) << put_intger_by_radix(0xf, 2) << "\t|\t"
+                << setw(2) << put_intger_by_radix(0xf, 10) << "\t|\t"
+                << setw(2) << put_intger_by_radix(0xf, 16) << endl;
       MemBuffer << showbase;
-      MemBuffer << setw(2) << ConversionRadix(0xf, 2) << "\t|\t"
-                << setw(2) << ConversionRadix(0xf, 10) << "\t|\t"
-                << setw(2) << ConversionRadix(0xf, 16) << endl;
+      MemBuffer << setw(2) << put_intger_by_radix(0xf, 2) << "\t|\t"
+                << setw(2) << put_intger_by_radix(0xf, 10) << "\t|\t"
+                << setw(2) << put_intger_by_radix(0xf, 16) << endl;
       cout << MemBuffer.str();
 
       // Выводим число 15 в char поток в системах счисления: BIN, DEC и HEX
@@ -641,14 +658,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       wstringstream MemBufferW;
-      MemBufferW << tsetfill(L'0');
-      MemBufferW << setw(3) << ConversionRadix(0xf, 2) << L"\t|\t"
-                 << setw(3) << ConversionRadix(0xf, 10) << L"\t|\t"
-                 << setw(3) << ConversionRadix(0xf, 16) << endl;
+      MemBufferW << setfill(L'0');
+      MemBufferW << setw(3) << put_intger_by_radix(0xf, 2) << L"\t|\t"
+                 << setw(3) << put_intger_by_radix(0xf, 10) << L"\t|\t"
+                 << setw(3) << put_intger_by_radix(0xf, 16) << endl;
       MemBufferW << showbase;
-      MemBufferW << setw(3) << ConversionRadix(0xf, 2) << L"\t|\t"
-                 << setw(3) << ConversionRadix(0xf, 10) << L"\t|\t"
-                 << setw(3) << ConversionRadix(0xf, 16) << endl;
+      MemBufferW << setw(3) << put_intger_by_radix(0xf, 2) << L"\t|\t"
+                 << setw(3) << put_intger_by_radix(0xf, 10) << L"\t|\t"
+                 << setw(3) << put_intger_by_radix(0xf, 16) << endl;
       wcout << MemBufferW.str();
 
       // Выводим число 15 в TCHAR поток в системах счисления: BIN, DEC и HEX
@@ -660,14 +677,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       tstringstream MemBufferT;
-      MemBufferT << tsetfill(_T('0'));
-      MemBufferT << setw(4) << ConversionRadix(0xf, 2) << _T("\t|\t")
-                 << setw(4) << ConversionRadix(0xf, 10) << _T("\t|\t")
-                 << setw(4) << ConversionRadix(0xf, 16) << endl;
+      MemBufferT << setfill(_T('0'));
+      MemBufferT << setw(4) << put_intger_by_radix(0xf, 2) << _T("\t|\t")
+                 << setw(4) << put_intger_by_radix(0xf, 10) << _T("\t|\t")
+                 << setw(4) << put_intger_by_radix(0xf, 16) << endl;
       MemBufferT << showbase;
-      MemBufferT << setw(4) << ConversionRadix(0xf, 2) << _T("\t|\t")
-                 << setw(4) << ConversionRadix(0xf, 10) << _T("\t|\t")
-                 << setw(4) << ConversionRadix(0xf, 16) << endl;
+      MemBufferT << setw(4) << put_intger_by_radix(0xf, 2) << _T("\t|\t")
+                 << setw(4) << put_intger_by_radix(0xf, 10) << _T("\t|\t")
+                 << setw(4) << put_intger_by_radix(0xf, 16) << endl;
       tcout << MemBufferT.str();
 
       // Выводим число -10 в TCHAR поток в системах счисления: BIN, DEC и HEX
@@ -681,14 +698,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       tstringstream MemSBufferT;
-      MemSBufferT << tsetfill(_T('0'));
-      MemSBufferT << setw(4) << ConversionRadix(-10, 2) << _T("\t|\t")
-                  << setw(4) << ConversionRadix(-10, 10) << _T("\t|\t")
-                  << setw(4) << ConversionRadix(-10, 16) << endl;
+      MemSBufferT << setfill(_T('0'));
+      MemSBufferT << setw(4) << put_intger_by_radix(-10, 2) << _T("\t|\t")
+                  << setw(4) << put_intger_by_radix(-10, 10) << _T("\t|\t")
+                  << setw(4) << put_intger_by_radix(-10, 16) << endl;
       MemSBufferT << showbase;
-      MemSBufferT << setw(4) << ConversionRadix(-10, 2) << _T("\t|\t")
-                  << setw(4) << ConversionRadix(-10, 10) << _T("\t|\t")
-                  << setw(4) << ConversionRadix(-10, 16) << endl;
+      MemSBufferT << setw(4) << put_intger_by_radix(-10, 2) << _T("\t|\t")
+                  << setw(4) << put_intger_by_radix(-10, 10) << _T("\t|\t")
+                  << setw(4) << put_intger_by_radix(-10, 16) << endl;
       tcout << MemSBufferT.str();
 
       // Выводим число (char)-10 в TCHAR поток в системах счисления: BIN, DEC и HEX
@@ -702,14 +719,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       tstringstream MemScharBufferT;
-      MemScharBufferT << tsetfill(_T('0'));
-      MemScharBufferT << setw(4) << ConversionRadix((char)-10, 2) << _T("\t|\t")
-                      << setw(4) << ConversionRadix((char)-10, 10) << _T("\t|\t")
-                      << setw(4) << ConversionRadix((char)-10, 16) << endl;
+      MemScharBufferT << setfill(_T('0'));
+      MemScharBufferT << setw(4) << put_intger_by_radix((char)-10, 2) << _T("\t|\t")
+                      << setw(4) << put_intger_by_radix((char)-10, 10) << _T("\t|\t")
+                      << setw(4) << put_intger_by_radix((char)-10, 16) << endl;
       MemScharBufferT << showbase;
-      MemScharBufferT << setw(4) << ConversionRadix((char)-10, 2) << _T("\t|\t")
-                      << setw(4) << ConversionRadix((char)-10, 10) << _T("\t|\t")
-                      << setw(4) << ConversionRadix((char)-10, 16) << endl;
+      MemScharBufferT << setw(4) << put_intger_by_radix((char)-10, 2) << _T("\t|\t")
+                      << setw(4) << put_intger_by_radix((char)-10, 10) << _T("\t|\t")
+                      << setw(4) << put_intger_by_radix((char)-10, 16) << endl;
       tcout << MemScharBufferT.str();
 
 
@@ -719,14 +736,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       tcout << Color();
 
       tstringstream ArrayHEXdig;
-      ArrayHEXdig << tsetfill(_T('0'));
+      ArrayHEXdig << setfill(_T('0'));
       ArrayHEXdig << uppercase;
 
       unsigned int CountByte = 250;
       unsigned char* PtrMem = new unsigned char[CountByte];
       for (unsigned int i = 0; i < CountByte; i++)
       {
-            ArrayHEXdig << setw(2) << ConversionRadix(PtrMem[i], 16) << _T(" ");
+            ArrayHEXdig << setw(2) << put_intger_by_radix(PtrMem[i], 16) << _T(" ");
       }
       delete[] PtrMem;
       MemBufferT << endl;

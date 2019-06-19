@@ -163,7 +163,7 @@ namespace tlib
 #define TemplateTypeOfStr(str, type) ((is_wchar_v<type>) ? (type *)L##str : (is_char16_v<type>) ? (type *)u##str : (type *)str)
 #define TemplateTypeOfCh(str, type) ((is_wchar_v<type>) ? (type)L##str : (is_char16_v<type>) ? (type)u##str : (type)str)
 
-      template <class T, class _Elem = typename Type_Str<T>::type>
+      template <class T, class _Elem = get_underlying_char_t<T>>
       inline tstring TemplateStr2Tstr(T str)
       {
             if constexpr (is_wchar_v<_Elem>)
@@ -197,7 +197,7 @@ namespace tlib
             }
       }
 
-      template <class T, class _Elem = typename Type_Str<T>::type>
+      template <class T, class _Elem = get_underlying_char_t<T>>
       inline std::string TemplateStr2str(T str)
       {
             if constexpr (is_wchar_v<_Elem>)
