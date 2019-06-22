@@ -164,61 +164,92 @@ namespace tlib
 #define TemplateTypeOfCh(str, type) ((is_wchar_v<type>) ? (type)L##str : (is_char16_v<type>) ? (type)u##str : (type)str)
 
       template <class T, class _Elem = get_underlying_char_t<T>>
-      inline tstring TemplateStr2Tstr(T str)
+      inline tstring templateStr_tstr(T&& str)
       {
             if constexpr (is_wchar_v<_Elem>)
             {
-                  return wstr2tstr(str);
+                  return wstr2tstr(std::forward<T>(str));
             }
             else if constexpr (is_char16_v<_Elem>)
             {
-                  return ustr2tstr(str);
+                  return ustr2tstr(std::forward<T>(str));
             }
             else
             {
-                  return str2tstr(str);
+                  return str2tstr(std::forward<T>(str));
             }
       }
 
-      template <class _Elem>
-      inline std::basic_string<_Elem> Tstr2TemplateStr(const tstring& str)
+      template <class R, class T,
+                typename = std::enable_if_t<std::is_same_v<get_underlying_char_t<T>, TCHAR>>,
+                class string_r = std::basic_string<R>
+      >
+      inline string_r tstr_templateStr(T &&str)
       {
-            if constexpr (is_wchar_v<_Elem>)
+            if constexpr (is_wchar_v<R>)
             {
-                  return tstr2wstr(str);
+                  return tstr2wstr(std::forward<T>(str));
             }
-            else if constexpr (is_char16_v<_Elem>)
+            else if constexpr (is_char16_v<R>)
             {
-                  return tstr2ustr(str);
+                  return tstr2ustr(std::forward<T>(str));
             }
             else
             {
-                  return tstr2str(str);
+                  return tstr2str(std::forward<T>(str));
             }
       }
 
       template <class T, class _Elem = get_underlying_char_t<T>>
-      inline std::string TemplateStr2str(T str)
+      inline std::string templateStr_cstr(T&& str)
       {
             if constexpr (is_wchar_v<_Elem>)
             {
 #ifdef _WIN32
-                  return wstr_cstr(str);
+                  return wstr_cstr(std::forward<T>(str));
 #else
-                  return wstr_u8str(str);
+                  return wstr_u8str(std::forward<T>(str));
 #endif
             }
             else if constexpr (is_char16_v<_Elem>)
             {
 #ifdef _WIN32
-                  return wstr_cstr(u16str_wstr(str));
+                  return wstr_cstr(u16str_wstr(std::forward<T>(str)));
 #else
-                  return u16str_u8str(str);
+                  return u16str_u8str(std::forward<T>(str));
 #endif
             }
             else
             {
-                  return str;
+                  return std::forward<T>(str);
+            }
+      }
+
+      template <class R, class T,                               
+                typename = std::enable_if_t<std::is_same_v<get_underlying_char_t<T>, char>>,
+                class string_r = std::basic_string<R>       
+      >
+      inline string_r cstr_templateStr(T&& str)
+      {
+            if constexpr (is_wchar_v<R>)
+            {
+#ifdef _WIN32
+                  return cstr_wstr(std::forward<T>(str));                  
+#else
+                  return u8str_wstr(std::forward<T>(str));
+#endif
+            }
+            else if constexpr (is_char16_v<R>)
+            {
+#ifdef _WIN32
+                  return wstr_u16str(cstr_wstr(std::forward<T>(str)));                  
+#else
+                  return u8str_u16str(std::forward<T>(str));
+#endif
+            }
+            else
+            {
+                  return std::forward<T>(str);
             }
       }
 

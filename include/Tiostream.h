@@ -1,8 +1,6 @@
 ﻿/*
 */
-
-#ifndef TIOSTREAM
-#define TIOSTREAM
+#pragma once 
 
 #ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1
@@ -91,4 +89,3 @@ namespace tlib
 #endif // !(defined(_LIB) || defined(UNDER_CE) || defined(WINCE))
 
 
-#endif //TIOSTREAM

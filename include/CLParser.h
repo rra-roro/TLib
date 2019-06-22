@@ -10,9 +10,9 @@
 #ifndef CLPARSER_H
 #define CLPARSER_H
 
-#include  <Tstring.h>
-#include  <vector>
-#include  <algorithm>
+#include <Tstring.h>
+#include <vector>
+#include <algorithm>
 
 
 using std::vector;
@@ -84,9 +84,9 @@ using std::vector;
 
 enum _argtype
 {
-        no_argument,                //  (или 0), если опция без параметра,
-        required_argument,          //  (или 1), если опция требует параметр,
-        optional_argument           //  (или 2), если опция может быть с не обязательным параметром.
+      no_argument,       //  (или 0), если опция без параметра,
+      required_argument, //  (или 1), если опция требует параметр,
+      optional_argument  //  (или 2), если опция может быть с не обязательным параметром.
 };
 
 
@@ -95,15 +95,15 @@ enum _argtype
 // Где каждый элемент этого массива представляет из себя следующую структуру
 struct ErrorOpt
 {
-    enum    ErrorCode
-    {
-        unrecognized_opt,     //Опция не распознана
-        ambiguous_opt,        //Не однозначная опция
-        not_need_arg,         //Параметр для опции не нужен
-        requires_arg          //Параметр для опции нужен
-    };
-    ErrorCode  ErrorID;         // Код ошибки
-    tlib::tstring optopt; // Имя опции которая была не распознана
+      enum ErrorCode
+      {
+            unrecognized_opt, //Опция не распознана
+            ambiguous_opt,    //Не однозначная опция
+            not_need_arg,     //Параметр для опции не нужен
+            requires_arg      //Параметр для опции нужен
+      };
+      ErrorCode ErrorID;    // Код ошибки
+      tlib::tstring optopt; // Имя опции которая была не распознана
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,101 +113,104 @@ struct ErrorOpt
 class OptionArray;
 class ParserCommandLine;
 
-struct ItemArg                    //Пользовательское представление одной распознаной опции
+struct ItemArg //Пользовательское представление одной распознаной опции
 {
-        friend ParserCommandLine;
-        friend OptionArray;
+      friend ParserCommandLine;
+      friend OptionArray;
 
-private:
-        bool IsSet;
-        TCHAR NameOption;
-		ItemArg():IsSet(false),ParamOption(){};
-public:
-        vector<tlib::tstring> ParamOption;
-        operator bool()const
-        {
-                return IsSet;
-        }
-		TCHAR GetName()const
-		{
-			return NameOption;
-		}
+  private:
+      bool IsSet;
+      TCHAR NameOption;
+      ItemArg() : IsSet(false), ParamOption(){};
+
+  public:
+      vector<tlib::tstring> ParamOption;
+      operator bool() const
+      {
+            return IsSet;
+      }
+      TCHAR GetName() const
+      {
+            return NameOption;
+      }
 };
 
-class OptionArray          //Эмуляция массива представляющего список распознаных опций
+class OptionArray //Эмуляция массива представляющего список распознаных опций
 {
-        friend ParserCommandLine;
-        vector<ItemArg> ListArg;
-        ItemArg ItemArgEmpty;
-public:
-		auto begin()
-		{
-			return ListArg.cbegin();
-		}
+      friend ParserCommandLine;
+      vector<ItemArg> ListArg;
+      ItemArg ItemArgEmpty;
 
-		auto end()
-		{
-			return ListArg.cend();
-		}
+  public:
+      auto begin()
+      {
+            return ListArg.cbegin();
+      }
 
-        const ItemArg& operator[](TCHAR Ch)
-        {                
-                auto ItrListItemArg = find_if(ListArg.begin(),ListArg.end(), 
-												[=](const ItemArg& op)
-												{
-													return op.NameOption == Ch;
-												});
-					
-                if(ItrListItemArg != ListArg.end())
-                {
-                        return *ItrListItemArg;
-                }else
-                {
-                        ItemArgEmpty.NameOption = Ch;
-						ItemArgEmpty.ParamOption.push_back(_T(""));
-                        return ItemArgEmpty;
-                }
-        }
-        size_t size()const
-        {
-                return ListArg.size();
-        }
-        bool empty()const
-        {
+      auto end()
+      {
+            return ListArg.cend();
+      }
+
+      const ItemArg& operator[](TCHAR Ch)
+      {
+            auto ItrListItemArg = find_if(ListArg.begin(), ListArg.end(),
+                [=](const ItemArg& op) {
+                      return op.NameOption == Ch;
+                });
+
+            if (ItrListItemArg != ListArg.end())
+            {
+                  return *ItrListItemArg;
+            }
+            else
+            {
+                  ItemArgEmpty.NameOption = Ch;
+                  ItemArgEmpty.ParamOption.push_back(_T(""));
+                  return ItemArgEmpty;
+            }
+      }
+      size_t size() const
+      {
+            return ListArg.size();
+      }
+
+      bool empty() const
+      {
             return ListArg.empty();
-        }
-
+      }
 };
 
 
-template <class Type> class TOptionArray  //Шаблон обертка, для списка не распознаных и ошибочных опций
+template <class Type>
+class TOptionArray //Шаблон обертка, для списка не распознаных и ошибочных опций
 {
-        friend ParserCommandLine;
-        vector<Type> TOptionArg;
-public:
-        const Type& operator[](size_t Index)const
-        {
-                return TOptionArg[Index];
-        }
-        size_t size()const
-        {
-                return TOptionArg.size();
-        }
-        bool empty()const
-        {
+      friend ParserCommandLine;
+      vector<Type> TOptionArg;
+
+  public:
+      const Type& operator[](size_t Index) const
+      {
+            return TOptionArg[Index];
+      }
+      size_t size() const
+      {
+            return TOptionArg.size();
+      }
+      bool empty() const
+      {
             return TOptionArg.empty();
-        }
+      }
 
-		auto begin()
-		{
-			return TOptionArg.cbegin();
-		}
+      auto begin()
+      {
+            return TOptionArg.cbegin();
+      }
 
-		auto end()
-		{
-			return TOptionArg.cend();
-		}
-
+      auto end()
+      {
+            return TOptionArg.cend();
+      }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,46 +221,47 @@ public:
 class GetOpt;
 class ParserCommandLine
 {
-        GetOpt*  GetOptObject;
+      GetOpt* GetOptObject;
 
-public:
-        //Список неопций
-		TOptionArray<tlib::tstring>    NonOption;
-		//Список ошибочных опций
-		TOptionArray<ErrorOpt>   ErrorOption;
-		//Список опций
-		OptionArray Option;
+  public:
+      //Список неопций
+      TOptionArray<tlib::tstring> NonOption;
+      //Список ошибочных опций
+      TOptionArray<ErrorOpt> ErrorOption;
+      //Список опций
+      OptionArray Option;
 
-		//Конструктор и деструктор
-		ParserCommandLine(void);
-		~ParserCommandLine(void);
+      //Конструктор и деструктор
+      ParserCommandLine(void);
+      ~ParserCommandLine(void);
 
-		// Установим флаг вывода ошибок
-		void SetShowError(bool ShowErrorFl);
+      // Установим флаг вывода ошибок
+      void SetShowError(bool ShowErrorFl);
 
-		// Установим дополнительный символ разделитель опций
-		void SetSeparatorChar(TCHAR Ch);
+      // Установим дополнительный символ разделитель опций
+      void SetSeparatorChar(TCHAR Ch);
 
-		// Установим формат коротких опций
-		void SetShortFormatOfArg(tlib::tstring Str);
+      // Установим формат коротких опций
+      void SetShortFormatOfArg(tlib::tstring Str);
 
-		// Добавим формат для очердной длинной опции
-		void AddFormatOfArg(tlib::tstring name, _argtype has_arg, TCHAR val);
+      // Добавим формат для очердной длинной опции
+      void AddFormatOfArg(tlib::tstring name, _argtype has_arg, TCHAR val);
 
-		// Две функции Parser() с разными входными параметрами
-		template<class _Elem> void Parser(int argc, _Elem* argv[]);
+      // Две функции Parser() с разными входными параметрами
+      template <class _Elem>
+      void Parser(int argc, _Elem* argv[]);
 
-		void Parser(vector<tlib::tstring>& ArgV_p);
+      void Parser(vector<tlib::tstring>& ArgV_p);
 
-		// Еще одна функция Parser(), которая принимает для разбра строку
-		// bProgramName, этот параметр задает правила интерпритации первой опции в строке ArgV_str:
-		// Если  bProgramName == true, то первая опция в строке это имя программы,
-		//                             эта опция не будет проанализирована
-		// Если  bProgramName == false, то в начале строки отсутствует путь и имя программы,
-		//                              и первый аргумент строки будет включен в анализ опций
-		//void Parser(tlib::tstring& ArgV_str, bool bProgramName=true);
-		template<class _Elem> void Parser(const std::basic_string<_Elem>& ArgV_str, bool bProgramName=true);
-
+      // Еще одна функция Parser(), которая принимает для разбра строку
+      // bProgramName, этот параметр задает правила интерпритации первой опции в строке ArgV_str:
+      // Если  bProgramName == true, то первая опция в строке это имя программы,
+      //                             эта опция не будет проанализирована
+      // Если  bProgramName == false, то в начале строки отсутствует путь и имя программы,
+      //                              и первый аргумент строки будет включен в анализ опций
+      //void Parser(tlib::tstring& ArgV_str, bool bProgramName=true);
+      template <class _Elem>
+      void Parser(const std::basic_string<_Elem>& ArgV_str, bool bProgramName = true);
 };
 
 extern template void ParserCommandLine::Parser(int argc, char* argv[]);
@@ -277,5 +281,4 @@ extern template void ParserCommandLine::Parser(const std::wstring& ArgV_str, boo
 
 #endif //!(defined(_LIB))
 
-#endif   //CLPARSER_H
-
+#endif //CLPARSER_H

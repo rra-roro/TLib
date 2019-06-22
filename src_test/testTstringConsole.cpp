@@ -14,8 +14,11 @@
 #include <Tiostream.h>
 #include <Tcodecvt.h>
 #include <Tregex.h>
+#include <Tenvironment.h>
 #include <Tconsole.h>
+#include <Texception.h>
 #include <algorithm>
+
 
 #include <ctime>
 #include <iomanip>
@@ -99,7 +102,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
       string qqq = "fadsfad fasdf asd f asd f asdf asd f ds f asdf asd f sd f sdfsdf asdf asd fa sdf asd f asd fasd f asd f asdf asd fasd f sdaf sdf ";
       cout << "                                                                     строка:" << tab_right(qqq) << endl;*/
+
       
+
+
+
       // =============================================================================================
       // Тестируем функционал <Tlocale.h>
 
@@ -155,9 +162,31 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
       cout << "\ncout:  Next string shoud be show: "
            << "Мама мыла раму\n\n";
 
+      //
+      //v1::env::set_var(_T("roro"), _T("(WERWERTWER)"));
+      //v1::env::del_var(_T("roro"));
+      //tcout << v1::env::get_var(_T("roro")) << endl;
+
+      //try
+      //{
+      //      //FILE* qq = fopen("qwqwqwwq", "rt+");
+      //      //ex::throw_if_api_error(_SLE_) = errno;
+      //      HANDLE Handle = GetStdHandle(-13);
+      //      auto err = ex::make_win32_error_code();
+      //      ex::throw_if_winapi_error(_T("Привет"),_SLE_) = err;
+      //}
+      //catch (const std::system_error& ex)
+      //{
+      //      cout << "\n"
+      //           << ex.what();
+      //};
+
+
+
       // Тестируем отображение цифр
 
-      auto test_numbers = [](auto stream_name, auto& os) {
+      auto test_numbers = [](auto stream_name, auto& os)
+      {
             using char_type = typename std::remove_reference<decltype(os)>::type::char_type;
 
 #define _tt(str) TemplateTypeOfStr(str, char_type)

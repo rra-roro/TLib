@@ -123,9 +123,9 @@ template<class _Elem>
 void my_spawn(const _Elem *cmdname, const char *const argv[])
 {
 #ifdef _WIN32
-	_spawnve(_P_WAIT, TemplateStr2str(cmdname).c_str(), argv, 0);
+	_spawnve(_P_WAIT, templateStr_cstr(cmdname).c_str(), argv, 0);
 #else
-        string Cmd = TemplateStr2str(cmdname).c_str();
+        string Cmd = templateStr_cstr(cmdname).c_str();
         Cmd = Cmd + " " + string(argv[1]);
         char* chCmd = new char[Cmd.size()];
         Cmd.copy(chCmd,npos);

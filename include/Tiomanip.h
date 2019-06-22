@@ -20,13 +20,13 @@
 #include <Tlocale.h>
 #include <iomanip>
 
-#include <iomanip/iomanip_standart.h>
+#include <iomanip/Tiomanip_standart.h>
 
 #ifdef _WIN32
       #include <win/iomanip_win.h>
 #endif
 
-#include <iomanip/iomanip_extentions.h>
+#include <iomanip/Tiomanip_extentions.h>
 
 
 namespace tlib

@@ -700,7 +700,7 @@ void ParserCommandLine::Parser(int argc, _Elem* argv[])
 
         for(int i=0; i < argc; i++)
         {
-                ArgV_p[i] = TemplateStr2Tstr(argv[i]);
+                ArgV_p[i] = templateStr_tstr(argv[i]);
         }
 
         Parser(ArgV_p);
@@ -720,7 +720,7 @@ void ParserCommandLine::Parser(const std::basic_string<_Elem>& ArgV_str, bool bP
 	// 3) Из полученной подстроки уберем обрамляющие кавычки с помощью лямбды
 	// 4) И вставим результирующую строку в конец вектора ArgV_p
 
-	tstring TempStr = TemplateStr2Tstr(ArgV_str);
+	tstring TempStr = templateStr_tstr(ArgV_str);
 
 	vector<tstring> ArgV_p;
 

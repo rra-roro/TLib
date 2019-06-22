@@ -14,7 +14,10 @@ endif ()
 
 
 SET(TARGT_NAME_TLIB tlib)
-SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp Tcodecvt.cpp Tiomanip.cpp "./locale/locale_name.cpp" "./locale/Tlocale_class.cpp")
+SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp 
+                Tcodecvt.cpp Tiomanip.cpp Tenvironment.cpp 
+                "./locale/locale_name.cpp" 
+                "./locale/Tlocale_class.cpp")
 
 SET(TARGT_NAME_TPARSERS tlib_parsers)
 SET(SOURCE_TPARSERS INIParser.cpp CLParser.cpp)
@@ -35,7 +38,7 @@ if (MSVC)
 #    SET(TARGT_NAME_TEXCEPTIONS  ${TARGT_NAME_TEXCEPTIONS}${LIB_SUFFIX})
     SET(TARGT_NAME_TCHAR16     ${TARGT_NAME_TCHAR16}${LIB_SUFFIX})    
     
-    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB})    
+    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./win/exception_win.cpp")    
 
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})    
 #    add_library(${TARGT_NAME_TEXCEPTIONS} ${SOURCE_TEXCEPTIONS})    
