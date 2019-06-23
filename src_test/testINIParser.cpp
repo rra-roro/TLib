@@ -4,7 +4,7 @@
 //#include "stdafx.h"
 #include <Tstring.h>
 #include <Tlocale.h>
-#include <CLParser.h>
+#include <Tcl_parser.h>
 #include <INIParser.h>
 
 

@@ -11,7 +11,7 @@
 //
 
 #include "stdafx.h"
-#include <CLParser.h>
+#include <Tcl_parser.h>
 #include <Tstring.h>
 #include <Tiostream.h>
 #include <Tregex.h>

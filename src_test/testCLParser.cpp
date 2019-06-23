@@ -6,7 +6,7 @@
 #include <Tlocale.h>
 #include <Tiostream.h>
 #include <Tiomanip.h>
-#include <CLParser.h>
+#include <Tcl_parser.h>
 #include <stdio.h>
 
 #ifdef _WIN32
