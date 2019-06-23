@@ -170,57 +170,26 @@ namespace tlib::parser
               public:
                   using const_iterator = option_const_iter_t;
 
-                  auto begin() noexcept
-                  {
-                        return const_iterator(options_map.cbegin());
-                  }
+                  const_iterator begin() noexcept;
+                  const_iterator end() noexcept;
+                  const_iterator cbegin() const noexcept;
+                  const_iterator cend() const noexcept;
 
-                  auto end() noexcept
-                  {
-                        return const_iterator(options_map.cend());
-                  }
-
-                  auto cbegin() const noexcept
-                  {
-                        return const_iterator(options_map.cbegin());
-                  }
-
-                  auto cend() const noexcept
-                  {
-                        return const_iterator(options_map.cend());
-                  }
-
-                  const option_t& operator[](tlib::tstring_view str)
-                  {
-                        if (options_map.find(str.data()) != options_map.end())
-                        {
-                              return options_map[str.data()];
-                        }
-                        else
-                        {
-                              empty_option.name_option = str;
-                              //empty_option.params.args.push_back(_T(""));
-                              return empty_option;
-                        }
-                  }
-                  size_t size() const
-                  {
-                        return options_map.size();
-                  }
-
-                  bool empty() const
-                  {
-                        return options_map.empty();
-                  }
+                  const option_t& operator[](tlib::tstring_view str);
+                  
+                  size_t size() const;
+                  bool empty() const;
 
               private:
                   class option_t // Пользовательское представление одной распознаной опции
                   {
+                    private:
                         friend command_line_t;
                         friend options_t;
 
                         class args_of_option // Параметры опции
                         {
+                          private:
                               friend command_line_t;
                               friend options_t;
 
@@ -229,43 +198,15 @@ namespace tlib::parser
                               tlib::tstring empty_string = _T("");
 
                           public:
-                              auto begin() noexcept
-                              {
-                                    return args.cbegin();
-                              };
+                              using const_iterator = std::vector<tlib::tstring>::const_iterator;
+                              const_iterator begin() noexcept;
+                              const_iterator end() noexcept;
+                              const_iterator cbegin() const noexcept;
+                              const_iterator cend() const noexcept;
 
-                              auto end() noexcept
-                              {
-                                    return args.cend();
-                              };
-
-                              auto cbegin() const noexcept
-                              {
-                                    return args.cbegin();
-                              };
-
-                              auto cend() const noexcept
-                              {
-                                    return args.cend();
-                              };
-
-                              operator bool() const
-                              {
-                                    return args.size() != 0;
-                              }
-
-                              size_t size() const
-                              {
-                                    return args.size();
-                              };
-
-                              const tlib::tstring& operator[](size_t n) const
-                              {
-                                    if (n < size())
-                                          return args[n];
-                                    else
-                                          return empty_string;
-                              };
+                              operator bool() const;
+                              size_t size() const;
+                              const tlib::tstring& operator[](size_t n) const;
                         };
 
                         bool is_set = false;
@@ -274,15 +215,8 @@ namespace tlib::parser
                     public:
                         args_of_option params;
 
-                        operator bool() const
-                        {
-                              return is_set;
-                        }
-
-                        tlib::tstring name() const
-                        {
-                              return name_option;
-                        }
+                        operator bool() const;
+                        tlib::tstring name() const;
                   };
 
                   class option_const_iter_t
@@ -300,50 +234,14 @@ namespace tlib::parser
                         option_const_iter_t() noexcept : current_node() {}
                         option_const_iter_t(internal_iter_t node) noexcept : current_node(node) {}
                         option_const_iter_t(const option_const_iter_t& iter) noexcept : current_node(iter.current_node) {}
+                        option_const_iter_t& operator=(const option_const_iter_t& iter) noexcept;
 
-                        option_const_iter_t& operator=(const option_const_iter_t& iter) noexcept
-                        {
-                              if (this == &iter)
-                              {
-                                    return *this;
-                              }
-                              current_node = iter.current_node;
-                              return *this;
-                        }
-
-                        const option_t* operator->()
-                        {
-                              return &(current_node->second);
-                        }
-
-
-                        const option_t& operator*() noexcept
-                        {
-                              return current_node->second;
-                        }
-
-                        bool operator==(const option_const_iter_t& iter) const noexcept
-                        {
-                              return current_node == iter.current_node;
-                        }
-
-                        bool operator!=(const option_const_iter_t& iter) const noexcept
-                        {
-                              return current_node != iter.current_node;
-                        }
-
-                        option_const_iter_t& operator++() noexcept
-                        {
-                              current_node++;
-                              return *this;
-                        }
-
-                        option_const_iter_t operator++(int)
-                        {
-                              option_const_iter_t old_iter = *this;
-                              current_node++;
-                              return old_iter;
-                        }
+                        const option_t* operator->();
+                        const option_t& operator*() noexcept;
+                        bool operator==(const option_const_iter_t& iter) const noexcept;
+                        bool operator!=(const option_const_iter_t& iter) const noexcept;
+                        option_const_iter_t& operator++() noexcept;
+                        option_const_iter_t operator++(int);
                   };
               private:
                   options_map_t options_map;
@@ -366,16 +264,16 @@ namespace tlib::parser
             ~command_line_t(void);
 
             // Установим флаг вывода ошибок
-            void SetShowError(bool ShowErrorFl);
+            void set_show_error(bool ShowErrorFl);
 
             // Установим дополнительный символ разделитель опций
-            void SetSeparatorChar(TCHAR Ch);
+            void set_separator_char(TCHAR Ch);
 
             // Установим формат коротких опций
-            void SetShortFormatOfArg(tlib::tstring Str);
+            void set_short_format(tlib::tstring Str);
 
             // Добавим формат для очердной длинной опции
-            void AddFormatOfArg(tlib::tstring name, _argtype has_arg);
+            void add_format(tlib::tstring name, _argtype has_arg);
 
             // Две функции parse() с разными входными параметрами
             template <class _Elem>
@@ -394,8 +292,8 @@ namespace tlib::parser
             void parse(const std::basic_string<_Elem>& ArgV_str, bool bProgramName = true);
 
         private:
-            class GetOpt;
-            GetOpt* GetOptObject;
+            class get_option_t;
+            get_option_t* get_option;
       };
 
       extern template void command_line_t::parse(int argc, char* argv[]);

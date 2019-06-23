@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
 {
 	InitConsolIO();
 	command_line_t PCL;
-	PCL.AddFormatOfArg(_T("?"),no_argument);
-	PCL.AddFormatOfArg(_T("help"),no_argument);
+	PCL.add_format(_T("?"),no_argument);
+	PCL.add_format(_T("help"),no_argument);
 
 	// Отключим вывод ошибок парсером
-	PCL.SetShowError(false);
+      PCL.set_show_error(false);
 
 	//Начнем парсить аргументы
 #ifdef _WIN32

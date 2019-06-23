@@ -181,19 +181,19 @@ int main(int argc, char* argv[])
       }
 
       command_line_t PCL;
-      PCL.AddFormatOfArg(_T("?"), no_argument);
-      PCL.AddFormatOfArg(_T("help"), no_argument);
-      PCL.AddFormatOfArg(_T("a"), no_argument);
-      PCL.AddFormatOfArg(_T("b"), required_argument);
-      PCL.AddFormatOfArg(_T("j"), optional_argument);
-      PCL.AddFormatOfArg(_T("c"), optional_argument);
-      PCL.AddFormatOfArg(_T("e"), required_argument);
-      PCL.AddFormatOfArg(_T("f"), required_argument);
-      PCL.AddFormatOfArg(_T("x"), required_argument);
-      PCL.AddFormatOfArg(_T("z"), no_argument);
-      PCL.AddFormatOfArg(_T("option"), required_argument);
-      PCL.AddFormatOfArg(_T("ogogo"), required_argument);
-      PCL.SetShortFormatOfArg(_T("k::l::mqrs:t::u:"));
+      PCL.add_format(_T("?"), no_argument);
+      PCL.add_format(_T("help"), no_argument);
+      PCL.add_format(_T("a"), no_argument);
+      PCL.add_format(_T("b"), required_argument);
+      PCL.add_format(_T("j"), optional_argument);
+      PCL.add_format(_T("c"), optional_argument);
+      PCL.add_format(_T("e"), required_argument);
+      PCL.add_format(_T("f"), required_argument);
+      PCL.add_format(_T("x"), required_argument);
+      PCL.add_format(_T("z"), no_argument);
+      PCL.add_format(_T("option"), required_argument);
+      PCL.add_format(_T("ogogo"), required_argument);
+      PCL.set_short_format(_T("k::l::mqrs:t::u:"));
 
       tcout << _T("\nТаблица поддерживаемых опций:") << _T(R"(
 	PCL.AddFormatOfArg( "?",    no_argument,       '?')
@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
 )");
 
       // Отключим вывод ошибок парсером
-      PCL.SetShowError(false);
+      PCL.set_show_error(false);
 
       //Начнем парсить аргументы
 #ifdef _WIN32

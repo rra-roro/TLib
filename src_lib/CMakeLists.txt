@@ -20,7 +20,9 @@ SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp
                 "./locale/Tlocale_class.cpp")
 
 SET(TARGT_NAME_TPARSERS tlib_parsers)
-SET(SOURCE_TPARSERS INIParser.cpp Tcl_parser.cpp)
+SET(SOURCE_TPARSERS INIParser.cpp 
+                   "./clparser/Tcl_parser_impl.cpp"
+                   "./clparser/Tcl_parser_interface_impl.cpp")
 
 SET(TARGT_NAME_TCHAR16 tlib_char16)
 SET(SOURCE_TCHAR16 ./win/crt_facets_id_codecvt.cpp ./win/crt_facets_id.cpp)
