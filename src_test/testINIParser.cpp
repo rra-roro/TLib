@@ -10,6 +10,8 @@
 
 using namespace tlib;
 using namespace std;
+using namespace tlib::parser;
+
 void help()
 {
 	tcout << _T("testINIParse.exe [-help] ini_filename") << endl;
@@ -22,34 +24,34 @@ int main(int argc, char *argv[])
 #endif
 {
 	InitConsolIO();
-	ParserCommandLine PCL;
-	PCL.AddFormatOfArg(_T("?"),no_argument,_T('?'));
-	PCL.AddFormatOfArg(_T("help"),no_argument,_T('?'));
+	command_line_t PCL;
+	PCL.AddFormatOfArg(_T("?"),no_argument);
+	PCL.AddFormatOfArg(_T("help"),no_argument);
 
 	// Отключим вывод ошибок парсером
 	PCL.SetShowError(false);
 
 	//Начнем парсить аргументы
 #ifdef _WIN32
-	PCL.Parser((tstring)GetCommandLine());
+	PCL.parse((tstring)GetCommandLine());
 #else
-	PCL.Parser(argc, argv);
+	PCL.parse(argc, argv);
 #endif
 
 	//Если есть опция с ошибкой или запрошен хелп выходим 
-	if(PCL.Option[_T('?')] || PCL.ErrorOption.size()!=0 || PCL.NonOption.size()!=1)
+	if (PCL.options[_T("?")] || PCL.unknown_otions.size() != 0 || PCL.non_options.size() != 1)
 	{
-		for(size_t i = PCL.ErrorOption.size(); i > 0; i--)
+          for (size_t i = PCL.unknown_otions.size(); i > 0; i--)
 		{
 			tcout << _T("Error: ");
-			tcout << _T(" in otion ") << PCL.ErrorOption[i-1].optopt << endl;
+              tcout << _T(" in otion ") << PCL.unknown_otions[i - 1].name << endl;
 		}
 		help();
 		return 0;
 	}
 	
 	// Создадим объект для анализа INI файла, и укажем, какойфайл нужно анализировать
-  	INIParser ini(PCL.NonOption[0]);
+    INIParser ini(PCL.non_options[0]);
     
 	// Проанализируем файл
 	ini.Parser();

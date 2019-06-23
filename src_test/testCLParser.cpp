@@ -10,7 +10,7 @@
 #include <stdio.h>
 
 #ifdef _WIN32
-#include <process.h>  
+#include <process.h>
 #elif __linux__
 #include <spawn.h>
 #include <sys/wait.h>
@@ -18,11 +18,12 @@
 
 using namespace std;
 using namespace tlib;
+using namespace tlib::parser;
 
 void help()
 {
-	tcout << _T(R"(
-      ParserCommandLine работает с опциями заданными по следующим правилам:
+      tcout << _T(R"(
+      command_line_t работает с опциями заданными по следующим правилам:
 
       1)        Опции и не опции могут задаваться в любом порядке.
 
@@ -75,14 +76,14 @@ void help()
           формата опции этот символ не используется.
 
   Короткие опции задаются строкой следующего формата:
-  ParserCommandLine::SetShortFormatOfArg(“ab:c::”);
+  command_line_t::SetShortFormatOfArg(“ab:c::”);
 
   Где    а   – имя опции без параметра
          b:  – имя опции с обязательным параметром
          с:: – имя опции с не обязательным параметром
 
   Формат длинно-именованных опции задается функцией
-  ParserCommandLine::AddFormatOfArg(tstring name,              //- длинное имя опции
+  command_line_t::AddFormatOfArg(tstring name,              //- длинное имя опции
                                     _argtype has_arg,
                                     TCHAR val);                //-сокращенное имя опции из одного символа
 
@@ -98,8 +99,8 @@ enum _argtype
 };
 
 
-В случае если ParserCommandLine в процессе работы не смог распознать опцию
-Не распознаные опции помещаются в массив опций  ParserCommandLine::ErrorOption[];
+В случае если command_line_t в процессе работы не смог распознать опцию
+Не распознаные опции помещаются в массив опций  command_line_t::ErrorOption[];
 Где каждый элемент этого массива представляет из себя следующую структуру
 
 struct ErrorOpt
@@ -119,24 +120,24 @@ struct ErrorOpt
 }
 
 
-template<class _Elem>
-void my_spawn(const _Elem *cmdname, const char *const argv[])
+template <class _Elem>
+void my_spawn(const _Elem* cmdname, const char* const argv[])
 {
 #ifdef _WIN32
-	_spawnve(_P_WAIT, templateStr_cstr(cmdname).c_str(), argv, 0);
+      _spawnve(_P_WAIT, templateStr_cstr(cmdname).c_str(), argv, 0);
 #else
-        string Cmd = templateStr_cstr(cmdname).c_str();
-        Cmd = Cmd + " " + string(argv[1]);
-        char* chCmd = new char[Cmd.size()];
-        Cmd.copy(chCmd,npos);
+      string Cmd = templateStr_cstr(cmdname).c_str();
+      Cmd = Cmd + " " + string(argv[1]);
+      char* chCmd = new char[Cmd.size()];
+      Cmd.copy(chCmd, npos);
 
-        const char *const argv_sh[] = {"/bin/sh", "-c", chCmd, NULL};
-	int status;
-	pid_t child_pid = 0;
-	posix_spawn(&child_pid, argv_sh[0], 0, 0, (char *const*)argv_sh, 0);
-        waitpid(child_pid, &status, 0);
+      const char* const argv_sh[] = { "/bin/sh", "-c", chCmd, NULL };
+      int status;
+      pid_t child_pid = 0;
+      posix_spawn(&child_pid, argv_sh[0], 0, 0, (char* const*)argv_sh, 0);
+      waitpid(child_pid, &status, 0);
 
-        delete[] chCmd;
+      delete[] chCmd;
 #endif
 }
 
@@ -144,57 +145,57 @@ void my_spawn(const _Elem *cmdname, const char *const argv[])
 #ifdef _WIN32
 int _tmain(int argc, _TCHAR* argv[])
 #else
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 #endif
 {
 #ifdef _WIN32
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO scrBuffInfo = { 0 };
-	GetConsoleScreenBufferInfo(hConsole, &scrBuffInfo);
+      HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+      CONSOLE_SCREEN_BUFFER_INFO scrBuffInfo = { 0 };
+      GetConsoleScreenBufferInfo(hConsole, &scrBuffInfo);
 
-	scrBuffInfo.dwSize.X = 147;
-	scrBuffInfo.dwSize.Y = 600;
-	SetConsoleScreenBufferSize(hConsole, scrBuffInfo.dwSize);
+      scrBuffInfo.dwSize.X = 147;
+      scrBuffInfo.dwSize.Y = 600;
+      SetConsoleScreenBufferSize(hConsole, scrBuffInfo.dwSize);
 
-	scrBuffInfo.srWindow.Right = 146;
-	scrBuffInfo.srWindow.Bottom = 50;
-	SetConsoleWindowInfo(hConsole, true, &scrBuffInfo.srWindow);
+      scrBuffInfo.srWindow.Right = 146;
+      scrBuffInfo.srWindow.Bottom = 50;
+      SetConsoleWindowInfo(hConsole, true, &scrBuffInfo.srWindow);
 #endif
 
-	InitConsolIO();
-	if (argc == 1)
-	{
-		const char *const my_argv[] =
-		{
-			"testCLParser ",
-			"-t=лоло -u 'шшш' -qrs -z=ooo --x --o=zz -op=io -b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help",
-			NULL
-		};
+      InitConsolIO();
+      if (argc == 1)
+      {
+            const char* const my_argv[] = {
+                  "testCLParser ",
+                  "-t=лоло -u 'шшш' -qrs -z=ooo --x --o=zz -op=io -b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help",
+                  NULL
+            };
 
-		cout << "Запускаем тест "    << my_argv[0] << " со следующими параметрами:\n";
-		cout << "\n" << Color(green) << my_argv[0] << Color(yellow) << my_argv[1] << Color() << "\n";
+            cout << "Запускаем тест " << my_argv[0] << " со следующими параметрами:\n";
+            cout << "\n"
+                 << Color(green) << my_argv[0] << Color(yellow) << my_argv[1] << Color() << "\n";
 
-		my_spawn(argv[0], my_argv);
+            my_spawn(argv[0], my_argv);
 
-		return 0;
-	}
-	
-	ParserCommandLine PCL;
-	PCL.AddFormatOfArg(_T("?"), no_argument, _T('?'));
-	PCL.AddFormatOfArg(_T("help"), no_argument, _T('?'));
-	PCL.AddFormatOfArg(_T("a"), no_argument, _T('a'));
-	PCL.AddFormatOfArg(_T("b"), required_argument, _T('b'));
-	PCL.AddFormatOfArg(_T("j"), optional_argument, _T('j'));
-	PCL.AddFormatOfArg(_T("c"), optional_argument, _T('c'));
-	PCL.AddFormatOfArg(_T("e"), required_argument, _T('e'));
-	PCL.AddFormatOfArg(_T("f"), required_argument, _T('f'));
-	PCL.AddFormatOfArg(_T("x"), required_argument, _T('x'));
-	PCL.AddFormatOfArg(_T("z"), no_argument, _T('z'));
-	PCL.AddFormatOfArg(_T("option"), required_argument, _T('o'));
-	PCL.AddFormatOfArg(_T("ogogo"), required_argument, _T('g'));
-	PCL.SetShortFormatOfArg(_T("k::l::mqrs:t::u:"));
+            return 0;
+      }
 
-	tcout << _T("\nТаблица поддерживаемых опций:") << _T(R"(
+      command_line_t PCL;
+      PCL.AddFormatOfArg(_T("?"), no_argument);
+      PCL.AddFormatOfArg(_T("help"), no_argument);
+      PCL.AddFormatOfArg(_T("a"), no_argument);
+      PCL.AddFormatOfArg(_T("b"), required_argument);
+      PCL.AddFormatOfArg(_T("j"), optional_argument);
+      PCL.AddFormatOfArg(_T("c"), optional_argument);
+      PCL.AddFormatOfArg(_T("e"), required_argument);
+      PCL.AddFormatOfArg(_T("f"), required_argument);
+      PCL.AddFormatOfArg(_T("x"), required_argument);
+      PCL.AddFormatOfArg(_T("z"), no_argument);
+      PCL.AddFormatOfArg(_T("option"), required_argument);
+      PCL.AddFormatOfArg(_T("ogogo"), required_argument);
+      PCL.SetShortFormatOfArg(_T("k::l::mqrs:t::u:"));
+
+      tcout << _T("\nТаблица поддерживаемых опций:") << _T(R"(
 	PCL.AddFormatOfArg( "?",    no_argument,       '?')
 	PCL.AddFormatOfArg( "help", no_argument,       '?')
 	PCL.AddFormatOfArg( "a",    no_argument,       'a')
@@ -210,88 +211,105 @@ int main(int argc, char *argv[])
 	PCL.SetShortFormatOfArg("k::l::mqrs:t::u:")
 )");
 
-	// Отключим вывод ошибок парсером
-	PCL.SetShowError(false);
+      // Отключим вывод ошибок парсером
+      PCL.SetShowError(false);
 
-	//Начнем парсить аргументы
+      //Начнем парсить аргументы
 #ifdef _WIN32
-	PCL.Parser((tstring)GetCommandLine());
+      PCL.parse((tstring)GetCommandLine());
 #else
-	PCL.Parser(argc, argv);
+      PCL.parse(argc, argv);
 #endif
 
-	//Если есть опция с ошибкой или запрошен хелп выходим 
-	if (PCL.Option[_T('?')])
-	{
-		help();
-		return 0;
-	}
+      //Если есть опция с ошибкой или запрошен хелп выходим
+      if (PCL.options[_T("?")])
+      {
+            help();
+            return 0;
+      }
 
-	tcout << _T("\nЧисло распознанных опций: ") << PCL.Option.size();
-	tcout << _T("\n Это опции: {");
-	for (auto& op : PCL.Option)
-	{
-		tcout << "-" << op.GetName() << " ";
-	}
-	tcout << _T("}");
+      tcout << _T("\nЧисло распознанных опций: ") << PCL.options.size();
+      tcout << _T("\n Это опции: {");
+      for (auto& op : PCL.options)
+      {
+            tcout << "-" << op.name() << " ";
+      }
+      tcout << _T("}");
 
-	tcout << _T("\n Список распознанных опций с параметрами:");
-	if (PCL.Option[_T('?')]) tcout << _T("\n -") << PCL.Option[_T('?')].GetName() << _T(" ") << PCL.Option[_T('?')].ParamOption[0];
-	if (PCL.Option[_T('a')]) tcout << _T("\n -") << PCL.Option[_T('a')].GetName() << _T(" ") << PCL.Option[_T('a')].ParamOption[0];
-	if (PCL.Option[_T('b')]) tcout << _T("\n -") << PCL.Option[_T('b')].GetName() << _T(" ") << PCL.Option[_T('b')].ParamOption[0];
-	if (PCL.Option[_T('j')]) tcout << _T("\n -") << PCL.Option[_T('j')].GetName() << _T(" ") << PCL.Option[_T('j')].ParamOption[0];
-	if (PCL.Option[_T('c')]) tcout << _T("\n -") << PCL.Option[_T('c')].GetName() << _T(" ") << PCL.Option[_T('c')].ParamOption[0];
-	if (PCL.Option[_T('e')]) tcout << _T("\n -") << PCL.Option[_T('e')].GetName() << _T(" ") << PCL.Option[_T('e')].ParamOption[0];
-	if (PCL.Option[_T('f')]) tcout << _T("\n -") << PCL.Option[_T('f')].GetName() << _T(" ") << PCL.Option[_T('f')].ParamOption[0];
-	if (PCL.Option[_T('x')]) tcout << _T("\n -") << PCL.Option[_T('x')].GetName() << _T(" ") << PCL.Option[_T('x')].ParamOption[0];
-	if (PCL.Option[_T('z')]) tcout << _T("\n -") << PCL.Option[_T('z')].GetName() << _T(" ") << PCL.Option[_T('z')].ParamOption[0];
+      tcout << _T("\n Список распознанных опций с параметрами:");
+      if (PCL.options[_T("?")])
+            tcout << _T("\n -") << PCL.options[_T("?")].name() << _T(" ") << PCL.options[_T("?")].params[0];
+      if (PCL.options[_T("a")])
+            tcout << _T("\n -") << PCL.options[_T("a")].name() << _T(" ") << PCL.options[_T("a")].params[0];
+      if (PCL.options[_T("b")])
+            tcout << _T("\n -") << PCL.options[_T("b")].name() << _T(" ") << PCL.options[_T("b")].params[0];
+      if (PCL.options[_T("j")])
+            tcout << _T("\n -") << PCL.options[_T("j")].name() << _T(" ") << PCL.options[_T("j")].params[0];
+      if (PCL.options[_T("c")])
+            tcout << _T("\n -") << PCL.options[_T("c")].name() << _T(" ") << PCL.options[_T("c")].params[0];
+      if (PCL.options[_T("e")])
+            tcout << _T("\n -") << PCL.options[_T("e")].name() << _T(" ") << PCL.options[_T("e")].params[0];
+      if (PCL.options[_T("f")])
+            tcout << _T("\n -") << PCL.options[_T("f")].name() << _T(" ") << PCL.options[_T("f")].params[0];
+      if (PCL.options[_T("x")])
+            tcout << _T("\n -") << PCL.options[_T("x")].name() << _T(" ") << PCL.options[_T("x")].params[0];
+      if (PCL.options[_T("z")])
+            tcout << _T("\n -") << PCL.options[_T("z")].name() << _T(" ") << PCL.options[_T("z")].params[0];
 
-	if (PCL.Option[_T('o')]) tcout << _T("\n -") << PCL.Option[_T('o')].GetName() << _T(" ") << PCL.Option[_T('o')].ParamOption[0];
-	if (PCL.Option[_T('g')]) tcout << _T("\n -") << PCL.Option[_T('g')].GetName() << _T(" ") << PCL.Option[_T('g')].ParamOption[0];
+      if (PCL.options[_T("o")])
+            tcout << _T("\n -") << PCL.options[_T("o")].name() << _T(" ") << PCL.options[_T("o")].params[0];
+      if (PCL.options[_T("g")])
+            tcout << _T("\n -") << PCL.options[_T("g")].name() << _T(" ") << PCL.options[_T("g")].params[0];
 
-	if (PCL.Option[_T('t')]) tcout << _T("\n -") << PCL.Option[_T('t')].GetName() << _T(" ") << PCL.Option[_T('t')].ParamOption[0];
-	if (PCL.Option[_T('u')]) tcout << _T("\n -") << PCL.Option[_T('u')].GetName() << _T(" ") << PCL.Option[_T('u')].ParamOption[0];
+      if (PCL.options[_T("t")])
+            tcout << _T("\n -") << PCL.options[_T("t")].name() << _T(" ") << PCL.options[_T("t")].params[0];
+      if (PCL.options[_T("u")])
+            tcout << _T("\n -") << PCL.options[_T("u")].name() << _T(" ") << PCL.options[_T("u")].params[0];
 
 
-	if (PCL.Option[_T('k')]) tcout << _T("\n -") << PCL.Option[_T('k')].GetName() << _T(" ") << PCL.Option[_T('k')].ParamOption[0];
-	if (PCL.Option[_T('l')]) tcout << _T("\n -") << PCL.Option[_T('l')].GetName() << _T(" ") << PCL.Option[_T('l')].ParamOption[0];
-	if (PCL.Option[_T('m')]) tcout << _T("\n -") << PCL.Option[_T('m')].GetName() << _T(" ") << PCL.Option[_T('m')].ParamOption[0];
+      if (PCL.options[_T("k")])
+            tcout << _T("\n -") << PCL.options[_T("k")].name() << _T(" ") << PCL.options[_T("k")].params[0];
+      if (PCL.options[_T("l")])
+            tcout << _T("\n -") << PCL.options[_T("l")].name() << _T(" ") << PCL.options[_T("l")].params[0];
+      if (PCL.options[_T("m")])
+            tcout << _T("\n -") << PCL.options[_T("m")].name() << _T(" ") << PCL.options[_T("m")].params[0];
 
-	if (PCL.Option[_T('q')]) tcout << _T("\n -") << PCL.Option[_T('q')].GetName() << _T(" ") << PCL.Option[_T('q')].ParamOption[0];
-	if (PCL.Option[_T('r')]) tcout << _T("\n -") << PCL.Option[_T('r')].GetName() << _T(" ") << PCL.Option[_T('r')].ParamOption[0];
-	if (PCL.Option[_T('s')]) tcout << _T("\n -") << PCL.Option[_T('s')].GetName() << _T(" ") << PCL.Option[_T('s')].ParamOption[0];
+      if (PCL.options[_T("q")])
+            tcout << _T("\n -") << PCL.options[_T("q")].name() << _T(" ") << PCL.options[_T("q")].params[0];
+      if (PCL.options[_T("r")])
+            tcout << _T("\n -") << PCL.options[_T("r")].name() << _T(" ") << PCL.options[_T("r")].params[0];
+      if (PCL.options[_T("s")])
+            tcout << _T("\n -") << PCL.options[_T("s")].name() << _T(" ") << PCL.options[_T("s")].params[0];
 
-	tcout << _T("\n\nЧисло не опций: ") << PCL.NonOption.size();
-	for (size_t i = PCL.NonOption.size(); i > 0; i--)
-	{
-		tcout << _T("\n НЕ опция: ") << PCL.NonOption[i - 1];
-	}
+      tcout << _T("\n\nЧисло не опций: ") << PCL.non_options.size();
+      for (size_t i = PCL.non_options.size(); i > 0; i--)
+      {
+            tcout << _T("\n НЕ опция: ") << PCL.non_options[i - 1];
+      }
 
-	tcout << _T("\n\nЧисло ошибочных опций: ") << PCL.ErrorOption.size();
-	for( auto& ErrorOption: PCL.ErrorOption)
-	{
-		tcout << _T("\n В опции: ") << Color(red) << ErrorOption.optopt << Color();
-		tcout << _T(" Error: ");
-		switch (ErrorOption.ErrorID)
-		{
-			case ErrorOpt::unrecognized_opt:
-				tcout << _T("Опция не распознана. ");
-				break;
-			case ErrorOpt::ambiguous_opt:
-				tcout << _T("Неоднозначная опция. ");
-				break;
-			case ErrorOpt::not_need_arg:
-				tcout << _T("Параметр для опции не нужен. ");
-				break;
-			case ErrorOpt::requires_arg:
-				tcout << _T("Для опции нужен параметр. ");
-				break;
-		}	
-		
-	}
+      tcout << _T("\n\nЧисло ошибочных опций: ") << PCL.unknown_otions.size();
+      for (auto& unknown_otion: PCL.unknown_otions)
+      {
+            tcout << _T("\n В опции: ") << Color(red) << unknown_otion.name << Color();
+            tcout << _T(" Error: ");
+            switch (unknown_otion.id)
+            {
+            case command_line_t::unrecognized_opt:
+                  tcout << _T("Опция не распознана. ");
+                  break;
+            case command_line_t::ambiguous_opt:
+                  tcout << _T("Неоднозначная опция. ");
+                  break;
+            case command_line_t::not_need_arg:
+                  tcout << _T("Параметр для опции не нужен. ");
+                  break;
+            case command_line_t::requires_arg:
+                  tcout << _T("Для опции нужен параметр. ");
+                  break;
+            }
+      }
 
-	tcout << _T("\n");
+      tcout << _T("\n");
 
-    return 0;
+      return 0;
 }
-
