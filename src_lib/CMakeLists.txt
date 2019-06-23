@@ -15,7 +15,7 @@ endif ()
 
 SET(TARGT_NAME_TLIB tlib)
 SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp 
-                Tcodecvt.cpp Tiomanip.cpp Tenvironment.cpp 
+                Tcodecvt.cpp Tiomanip.cpp Tenvironment.cpp Tlib_version.cpp
                 "./locale/locale_name.cpp" 
                 "./locale/Tlocale_class.cpp")
 

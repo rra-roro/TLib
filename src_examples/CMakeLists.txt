@@ -21,17 +21,28 @@ find_package(GTest REQUIRED)
 
 message(STATUS "GTest include: ${GTEST_INCLUDE_DIR}")
 
-SET(TARGT_NAME test_tlib)
-add_executable(${TARGT_NAME}  test_tlib.cpp)
+SET(TARGT_NAME_TLIB examples_tlib)
+add_executable(${TARGT_NAME_TLIB}  testTstringConsole.cpp)
 
-target_include_directories(${TARGT_NAME}  PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." ${GTEST_INCLUDE_DIR})
+SET(TARGT_NAME_TCLPARSER examples_clparsers)
+add_executable(${TARGT_NAME_TCLPARSER}  testCLParser.cpp)
 
+SET(TARGT_NAME_TINIPARSER examples_iniparsers)
+add_executable(${TARGT_NAME_TINIPARSER}  testINIParser.cpp)
+
+#SET(TARGT_NAME_TEXCEPTIONS examples_exceptions)
+#add_executable(${TARGT_NAME_TEXCEPTIONS}  testTException.cpp)
+
+target_include_directories(${TARGT_NAME_TLIB}  PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." ${GTEST_INCLUDE_DIR})
+target_include_directories(${TARGT_NAME_TCLPARSER}  PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." ${GTEST_INCLUDE_DIR})
+target_include_directories(${TARGT_NAME_TINIPARSER}  PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." ${GTEST_INCLUDE_DIR})
+#target_include_directories(${TARGT_NAME_TEXCEPTIONS}  PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." ${GTEST_INCLUDE_DIR})
 
 if (MSVC)
         get_lib_suffix() 
         SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers${LIB_SUFFIX} tlib${LIB_SUFFIX} tlib_char16${LIB_SUFFIX})
 
-        set_target_properties(${TARGT_NAME}  PROPERTIES
+        set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TCLPARSER} ${TARGT_NAME_TINIPARSER} PROPERTIES
           CXX_STANDARD 17
           CXX_STANDARD_REQUIRED ON
           COMPILE_OPTIONS "/permissive-;/Zc:wchar_t"
@@ -42,21 +53,18 @@ if (MSVC)
         add_compile_definitions(_UNICODE)
         add_compile_definitions(UNICODE)
 
-
 else()
-
         SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers tlib)
-        #SET(Linux_LIBS pthread stdc++fs)
 
-        set_target_properties(${TARGT_NAME}  PROPERTIES
+        set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TCLPARSER} ${TARGT_NAME_TINIPARSER} PROPERTIES
                   CXX_STANDARD 17
                   CXX_STANDARD_REQUIRED ON
                   COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
         )
-
         add_compile_definitions(__linux__)
-
 endif ()
 
-target_link_libraries(${TARGT_NAME} ${ALL_LIBS})
+target_link_libraries(${TARGT_NAME_TLIB} ${ALL_LIBS})
+target_link_libraries(${TARGT_NAME_TCLPARSER} ${ALL_LIBS})
+target_link_libraries(${TARGT_NAME_TINIPARSER} ${ALL_LIBS})
 

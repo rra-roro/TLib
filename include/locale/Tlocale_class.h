@@ -250,18 +250,34 @@ namespace tlib
             static std::string try_get_locname(std::string_view str)
             {
 #ifdef _WIN32
+                  if (str == "POSIX") return "C";
+
+                  // Предпологаем, что нам передали кроткое имя:
                   auto iter = all_locale_names.map_short_long.find(str.data());
-                  if (iter != all_locale_names.map_short_long.end())
-                        return (*iter).second;
+                  if (iter != all_locale_names.map_short_long.end()) 
+                        return (*iter).second;                    // окажемся тут, если имя ru-RU, сконвертируем его в Russian_Russia
                   else
-                  {
-                        if (str.find("_") != npos)
-                        {
-                              auto iter = all_locale_names.map_short_long.find(std::string(str).replace(str.find("_"), 1, "-"));
-                              if (iter != all_locale_names.map_short_long.end())
-                                    return (*iter).second;
-                        }
+                  if (str.find("_") != npos)                
+                  {                  
+                        auto iter = all_locale_names.map_short_long.find(std::string(str).replace(str.find("_"), 1, "-"));
+                        if (iter != all_locale_names.map_short_long.end())
+                              return (*iter).second;        // окажемся тут, если имя ru_RU, сконвертируем его в Russian_Russia
                   }
+                 
+                  // Если нам передали не короткое имя, проверим его как длинное
+                  iter = all_locale_names.map_long_short.find(str.data());
+                  if (iter != all_locale_names.map_long_short.end())
+                        return str.data();                               // окажемся тут, если нам передали корректное длинное имя Russian_Russia. вернем его
+                  else
+                  if (str.find("-") != npos)
+                  {
+                        std::string tmp_str = str.data();
+                        tmp_str.replace(str.find("-"), 1, "_");
+                        auto iter = all_locale_names.map_long_short.find(tmp_str);
+                        if (iter != all_locale_names.map_long_short.end())
+                              return tmp_str;                     // окажемся тут, если нам передали НЕ корректное длинное имя Russian-Russia.
+                  }                                               // сконвертируем его в Russian_Russia
+
                   return str.data();
 #elif __linux__
 

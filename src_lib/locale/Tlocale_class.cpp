@@ -23,7 +23,7 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
 
       if (!regex_match(loc_name.data(), match_str, reg_exp))
       {
-            return loc_name.data();
+            return try_get_locname(loc_name);
       }
       {
             string language = match_str.str(1);
@@ -32,7 +32,7 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
 
             string code_page = match_str.str(2);
 
-            if (code_page.find("-") != npos)
+            if (code_page.find("-") == npos)
             {
                   string low_tmp_str = code_page;
                   std::use_facet<std::ctype<char>>(std::locale()).tolower(low_tmp_str.data(), low_tmp_str.data() + low_tmp_str.size());

@@ -12,6 +12,7 @@ include(./functions.cmake)
 
 add_subdirectory(src_lib)
 add_subdirectory(src_test)
+add_subdirectory(src_examples)
 
 set(CNCC_PATH $ENV{CNCC_PATH})
 
@@ -39,5 +40,5 @@ set(CPACK_PACKAGE_CONTACT rra.roro@gmail.com)
 
 include(CPack)
 
-#enable_testing()
-#add_test(test_async src_test/test_async)
+enable_testing()
+add_test(test_tlib src_test/test_tlib)
