@@ -22,9 +22,6 @@ SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp
 SET(TARGT_NAME_TPARSERS tlib_parsers)
 SET(SOURCE_TPARSERS INIParser.cpp CLParser.cpp)
 
-#SET(TARGT_NAME_TEXCEPTIONS tlib_exceptions)
-#SET(SOURCE_TEXCEPTIONS TException.cpp)
-
 SET(TARGT_NAME_TCHAR16 tlib_char16)
 SET(SOURCE_TCHAR16 ./win/crt_facets_id_codecvt.cpp ./win/crt_facets_id.cpp)
 
@@ -35,19 +32,14 @@ if (MSVC)
     get_lib_suffix()    
     SET(TARGT_NAME_TLIB         ${TARGT_NAME_TLIB}${LIB_SUFFIX})
     SET(TARGT_NAME_TPARSERS     ${TARGT_NAME_TPARSERS}${LIB_SUFFIX})
-#    SET(TARGT_NAME_TEXCEPTIONS  ${TARGT_NAME_TEXCEPTIONS}${LIB_SUFFIX})
     SET(TARGT_NAME_TCHAR16     ${TARGT_NAME_TCHAR16}${LIB_SUFFIX})    
     
     add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./win/exception_win.cpp")    
-
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})    
-#    add_library(${TARGT_NAME_TEXCEPTIONS} ${SOURCE_TEXCEPTIONS})    
     add_library(${TARGT_NAME_TCHAR16} ${SHARED_LIB} ${SOURCE_TCHAR16})    
-
         
     target_include_directories(${TARGT_NAME_TLIB} PUBLIC "./win/" )
     target_include_directories(${TARGT_NAME_TPARSERS} PUBLIC "./win/" )
-#    target_include_directories(${TARGT_NAME_TEXCEPTIONS} PUBLIC "./win/" )
     target_include_directories(${TARGT_NAME_TCHAR16} PUBLIC  "./win/" "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." )
 
 	set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TPARSERS} ${TARGT_NAME_TCHAR16} PROPERTIES
@@ -65,11 +57,9 @@ else()
 
     add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./linux/locale_facets_linux.cpp")
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})      
-    #add_library(${TARGT_NAME_TEXCEPTIONS} ${SOURCE_TEXCEPTIONS})    
 
     target_include_directories(${TARGT_NAME_TLIB} PUBLIC "./linux/" )    
     target_include_directories(${TARGT_NAME_TPARSERS} PUBLIC "./linux/" )    
-    #target_include_directories(${TARGT_NAME_TEXCEPTIONS} PUBLIC "./linux/" )    
 
 	set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TPARSERS} PROPERTIES
 		  CXX_STANDARD 17
@@ -86,8 +76,6 @@ endif ()
 
 target_include_directories(${TARGT_NAME_TLIB} PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." )
 target_include_directories(${TARGT_NAME_TPARSERS} PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." )
-#target_include_directories(${TARGT_NAME_TEXCEPTIONS} PUBLIC "../include/" "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/.." )
-
 
 
 #set_target_properties(${TARGT_NAME} PROPERTIES PUBLIC_HEADER "async.h;shared_EXPORTS.h;../include/exception_list.h")

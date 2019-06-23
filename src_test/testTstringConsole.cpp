@@ -14,10 +14,11 @@
 #include <Tiostream.h>
 #include <Tcodecvt.h>
 #include <Tregex.h>
+#include <Texception.h>
 #include <Tenvironment.h>
 #include <Tconsole.h>
-#include <Texception.h>
 #include <algorithm>
+
 
 
 #include <ctime>
