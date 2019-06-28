@@ -45,7 +45,7 @@ if (MSVC)
 
 else()
 
-        SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers tlib)
+        SET(ALL_LIBS GTest::GTest GTest::Main tlib_parsers tlib pthread)
         #SET(Linux_LIBS pthread stdc++fs)
 
         set_target_properties(${TARGT_NAME}  PROPERTIES

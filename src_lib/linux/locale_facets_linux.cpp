@@ -69,14 +69,14 @@ namespace std
                         string __src = nl_langinfo_l(GROUPING, __cloc);
                         if (__src.size())
                         {
-                              __try
+                              try
                               {
                                     char* __dst = new char[__src.size() + 1];
                                     __src.copy(__dst, __src.size());
                                     __dst[__src.size()] = '\0';
                                     _M_data->_M_grouping = __dst;
                               }
-                              __catch(...)
+                              catch (...)
                               {
                                     delete _M_data;
                                     _M_data = 0;
@@ -123,18 +123,50 @@ namespace std
             __s[__len] = u'\0';
       }
 
-#define CHAR16_LANGINFO(M, FMT)                                    \
-      holder = tlib::u8str_u16str(nl_langinfo_l(FMT, (locale_t)__cloc)); \
-      langstring = new char16_t[holder.size() + 1];                \
-      holder.copy(langstring, holder.size());                      \
-      langstring[holder.size()] = u'\0';                           \
-      _M_data->M = langstring;
+
+
+#define CHAR16_LANGINFO(M, FMT) \
+      _M_data->M = nl_langinfo_char16(FMT, (locale_t)__cloc);
 
       template <>
       void __timepunct<char16_t>::_M_initialize_timepunct(__c_locale __cloc)
       {
+            auto to_char16 = [&](string str) {
+                  u16string tmp;
+
+                  string_view encoding = nl_langinfo_l(CODESET, (locale_t)__cloc);
+                  if (encoding.find("utf") != string_view::npos || encoding.find("UTF") != string_view::npos)
+                  {
+                        tmp = tlib::u8str_u16str(str);
+                  }else
+                  {
+                        mbstate_t __state = {};
+                        wchar_t* __wcs = new wchar_t[str.size() + 1];
+                        const char* __ccurr = str.data();
+                        size_t ret = mbsrtowcs(__wcs, &__ccurr, str.size() + 1, &__state);
+                        __wcs[ret] = L'\0';
+                        tmp = tlib::wstr_u16str(__wcs);
+                        delete[] __wcs;
+                  }
+
+                  return tmp;
+            };
+
+            auto nl_langinfo_char16 = [&](nl_item FMT, locale_t __cloc) {
+                  string tmp_langinfo = nl_langinfo_l(FMT, (locale_t)__cloc);
+                  u16string holder = to_char16(tmp_langinfo);
+
+                  char16_t* langstring = new char16_t[holder.size() + 1];
+                  holder.copy(langstring, holder.size());
+                  langstring[holder.size()] = u'\0';
+
+                  return langstring;
+            };
+
+
             if (!_M_data)
                   _M_data = new __timepunct_cache<char16_t>;
+
             if (!__cloc)
             {
                   // "C" locale
@@ -193,8 +225,7 @@ namespace std
             }
             else
             {
-                  char16_t* langstring = 0;
-                  u16string holder;
+                  __c_locale __old = uselocale(__cloc);
                   _M_c_locale_timepunct = _S_clone_c_locale(__cloc);
                   CHAR16_LANGINFO(_M_date_format, D_FMT)
                   CHAR16_LANGINFO(_M_date_era_format, ERA_D_FMT)
@@ -247,6 +278,7 @@ namespace std
                   CHAR16_LANGINFO(_M_amonth10, ABMON_10)
                   CHAR16_LANGINFO(_M_amonth11, ABMON_11)
                   CHAR16_LANGINFO(_M_amonth12, ABMON_12)
+                  uselocale(__old);
             }
       }
       template <>
@@ -366,7 +398,7 @@ namespace std
                   char16_t* __wcs_ns = 0;
 
                   const char __nposn = *(nl_langinfo_l(__INT_N_SIGN_POSN, __cloc));
-                  __try
+                  try
                   {
                         // Check for NULL, which implies no grouping.
                         if (_M_data->_M_thousands_sep == u'\0')
@@ -438,7 +470,7 @@ namespace std
                               _M_data->_M_curr_symbol_size = 0;
                         }
                   }
-                  __catch(...)
+                  catch (...)
                   {
                         delete _M_data;
                         _M_data = 0;
@@ -466,6 +498,28 @@ namespace std
       template <>
       void moneypunct<char16_t, false>::_M_initialize_moneypunct(__c_locale __cloc, const char*)
       {
+            auto to_char16 = [&](string str) {
+                  u16string tmp;
+
+                  string_view encoding = nl_langinfo_l(CODESET, (locale_t)__cloc);
+                  if (encoding.find("utf") != string_view::npos || encoding.find("UTF") != string_view::npos)
+                  {
+                        tmp = tlib::u8str_u16str(str);
+                  }
+                  else                  
+                  {
+                        mbstate_t __state = {};
+                        wchar_t* __wcs = new wchar_t[str.size() + 1];
+                        const char* __ccurr = str.data();
+                        size_t ret = mbsrtowcs(__wcs, &__ccurr, str.size() + 1, &__state);
+                        __wcs[ret] = L'\0';
+                        tmp = tlib::wstr_u16str(__wcs);
+                        delete[] __wcs;
+                  }
+
+                  return tmp;
+            };
+
             if (!_M_data)
                   _M_data = new __moneypunct_cache<char16_t, false>;
             if (!__cloc)
@@ -523,7 +577,7 @@ namespace std
                   char16_t* __wcs_ns = 0;
 
                   const char __nposn = *(nl_langinfo_l(__INT_N_SIGN_POSN, __cloc));
-                  __try
+                  try
                   {
                         // Check for NULL, which implies no grouping.
                         if (_M_data->_M_thousands_sep == u'\0')
@@ -583,10 +637,12 @@ namespace std
                         // _Intl == true.
                         if (__ccurr.size())
                         {
-                              u16string tmp = tlib::u8str_u16str(__ccurr);
-                              char16_t* __wcs = new char16_t[tmp.size() + 1];
-                              tmp.copy(__wcs, tmp.size() + 1);
-                              _M_data->_M_curr_symbol = __wcs;
+                              u16string tmp = to_char16(__ccurr);
+                              char16_t* __ucs = new char16_t[tmp.size() + 1];
+                              tmp.copy(__ucs, tmp.size());
+                              __ucs[tmp.size()] = u'\0';
+
+                              _M_data->_M_curr_symbol = __ucs;
                               _M_data->_M_curr_symbol_size = tmp.size();
                         }
                         else
@@ -595,7 +651,7 @@ namespace std
                               _M_data->_M_curr_symbol_size = 0;
                         }
                   }
-                  __catch(...)
+                  catch (...)
                   {
                         delete _M_data;
                         _M_data = 0;
@@ -648,5 +704,3 @@ namespace std
       }
       ///////////////
 }
-
-

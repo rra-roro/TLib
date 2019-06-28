@@ -253,6 +253,42 @@ namespace tlib
             }
       }
 
+      template <class T, class _Elem = get_underlying_char_t<T>>
+      inline std::wstring templateStr_wstr(T &&str)
+      {
+            if constexpr (is_wchar_v<_Elem>)
+            {
+                  return std::forward<T>(str);
+            }
+            else if constexpr (is_char16_v<_Elem>)
+            {
+                  return u16str_wstr(std::forward<T>(str));
+            }
+            else
+            {
+                  return cstr_wstr(std::forward<T>(str));
+            }
+      }
+
+      template <class R, class T,
+                typename = std::enable_if_t<std::is_same_v<get_underlying_char_t<T>, wchar_t>>,
+                class string_r = std::basic_string<R>>
+      inline string_r wstr_templateStr(T &&str)
+      {
+            if constexpr (is_wchar_v<R>)
+            {
+                  return std::forward<T>(str);
+            }
+            else if constexpr (is_char16_v<R>)
+            {
+                  return wstr_u16str(std::forward<T>(str));
+            }
+            else
+            {
+                  return wstr_cstr(std::forward<T>(str));
+            }
+      }
+
 }
 
 

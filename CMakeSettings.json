@@ -73,7 +73,8 @@
         {
             "name": "Linux-Debug",
             "generator": "Unix Makefiles",
-            "remoteMachineName": "${defaultRemoteMachineName}",
+            "___remoteMachineName": "${defaultRemoteMachineName}",
+            "remoteMachineName": "192.168.100.71",
             "configurationType": "Debug",
             "remoteCMakeListsRoot": "/var/tmp/src/${workspaceHash}/${name}",
             "cmakeExecutable": "/home/roro/cmake/bin/cmake",

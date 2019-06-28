@@ -6,7 +6,7 @@ namespace tlib
 {
       //////////////////////////////////////////////////////////
       template <class CharT>
-      class numpunct_by_cfg : public std::numpunct<CharT>
+      class numpunct_cfg : public std::numpunct<CharT>
       {
         public:
             using char_type = CharT;
@@ -14,7 +14,7 @@ namespace tlib
             using base = std::numpunct<char_type>;
 
             template <class... Args>
-            numpunct_by_cfg(Args&&... args) : base(std::forward<Args>(args)...)
+            numpunct_cfg(Args&&... args) : base(std::forward<Args>(args)...)
             {
             }
 
@@ -44,14 +44,27 @@ namespace tlib
                   return l_cfg_numbers.falsename;
             }
 
-            ~numpunct_by_cfg(){};
+            ~numpunct_cfg(){};
 
         private:
             locale_cfg_numbers<char_type> l_cfg_numbers;
       };
 
       template <class CharT>
-      class moneypunct_by_cfg : public std::moneypunct<CharT>
+      class numpunct_cfg_byname : public numpunct_cfg<CharT>
+      {
+        public:
+#ifdef _WIN32
+            numpunct_cfg_byname(std::string_view sw) : numpunct_cfg<CharT>(std::_Locinfo(sw.data())){};
+#elif __linux__
+            numpunct_cfg_byname(std::string_view sw) : numpunct_cfg<CharT>(newlocale(LC_ALL_MASK, sw.data(), (locale_t)0)){};              
+#endif
+      };  
+
+
+
+      template <class CharT>
+      class moneypunct_cfg : public std::moneypunct<CharT>
       {
         public:
             using char_type = CharT;
@@ -59,7 +72,7 @@ namespace tlib
             using base = std::moneypunct<char_type>;
 
             template <class... Args>
-            moneypunct_by_cfg(Args&&... args) : base(std::forward<Args>(args)...)
+            moneypunct_cfg(Args&&... args) : base(std::forward<Args>(args)...)
             {
             }
 
@@ -109,10 +122,21 @@ namespace tlib
                   return l_cfg_moneys.neg_format;
             }
 
-            ~moneypunct_by_cfg(){};
+            ~moneypunct_cfg(){};
 
         private:
             locale_cfg_moneys<char_type> l_cfg_moneys;
       };
+
+      template <class CharT>
+      class moneypunct_cfg_byname : public moneypunct_cfg<CharT>
+      {
+        public:
+#ifdef _WIN32
+            moneypunct_cfg_byname(std::string_view sw) : moneypunct_cfg<CharT>(std::_Locinfo(sw.data())){};
+#elif __linux__
+            moneypunct_cfg_byname(std::string_view sw) : moneypunct_cfg<CharT>(newlocale(LC_ALL_MASK, sw.data(), (locale_t)0), sw.data()){};
+#endif
+      };  
 
 }

@@ -13,6 +13,7 @@
 
 #include <map>
 #include <sstream>
+#include <Ttype.h>
 
 extern const char* lang_name[][2];
 
@@ -188,25 +189,34 @@ namespace tlib
             template <class _Facet>
             void add_facet()
             {
-#ifdef _WIN32
-                  // Добавим в переданную локаль Фасет заданный в параметре шаблона
-                  internal_locale = std::locale(internal_locale, new _Facet(std::_Locinfo(name_locale.c_str())));
-#elif __linux__
-                  if constexpr (std::is_same_v<_Facet, tlib::inner_impl::ctype<char16_t>> ||
-                                std::is_same_v<_Facet, std::numpunct<char16_t>> ||
-                                std::is_same_v<_Facet, tlib::inner_impl::numpunct<char>>)
+                  if constexpr (is_only_constructible_v<_Facet, std::string_view>)
                   {
-                        internal_locale = std::locale(internal_locale, new _Facet(newlocale(LC_ALL_MASK, name_locale.c_str(), (locale_t)0)));
+                        // Добавим наши фасеты по имени локали
+                        internal_locale = std::locale(internal_locale, new _Facet(name_locale));
+                        return;
                   }
-                  else if constexpr (std::is_same_v<_Facet, std::moneypunct<char16_t>> ||
-                                     std::is_same_v<_Facet, std::__timepunct<char16_t>> ||
-                                     std::is_same_v<_Facet, tlib::inner_impl::moneypunct<char>>)
+#ifdef _WIN32                 
+                  else
                   {
+                        // Добавим стандартые фасеты
+                        internal_locale = std::locale(internal_locale, new _Facet(std::_Locinfo(name_locale.c_str())));
+                  }
+#elif __linux__
+                  else if constexpr (is_only_constructible_v<_Facet, locale_t, size_t>)
+                  {
+                        // Добавим стандартые фасеты
+                        internal_locale = std::locale(internal_locale, new _Facet(newlocale(LC_ALL_MASK, name_locale.c_str(), (locale_t)0)));
+                        return;
+                  }
+                  else if constexpr (is_only_constructible_v<_Facet, locale_t, const char*, size_t>)
+                  {
+                        // Добавим стандартые фасеты
                         internal_locale = std::locale(internal_locale, new _Facet(newlocale(LC_ALL_MASK, name_locale.c_str(), (locale_t)0), name_locale.c_str()));
+                        return;
                   }
                   else
                   {
-                        // Добавим в переданную локаль Фасет заданный в параметре шаблона
+                        // Добавим стандартые фасеты
                         internal_locale = std::locale(internal_locale, new _Facet());
                   }
 #endif
@@ -281,20 +291,39 @@ namespace tlib
                   return str.data();
 #elif __linux__
 
-                  auto pos = str.find("-");
-                  if (pos != npos)
-                        return std::string(str).replace(pos, 1, "_");
-
                   auto iter = all_locale_names.map_long_short.find(str.data());
                   if (iter != all_locale_names.map_long_short.end())
                   {
                         auto pos = std::string((*iter).second).find("-");
                         if (pos != npos)
                         {
-                              return std::string((*iter).second).replace(pos, 1, "_");
+                              return std::string((*iter).second).replace(pos, 1, "_");   // окажемся тут, если имя Russian_Russia, сконвертируем его в ru_RU
                         }
-                        else return (*iter).second;
+                  }else
+                  {
+                        auto pos = std::string(str).find("-");
+                        if (pos != npos)
+                        {
+                              auto iter = all_locale_names.map_long_short.find(std::string(str).replace(pos, 1, "_"));
+                              if (iter != all_locale_names.map_long_short.end())
+                              {
+                                    auto pos = std::string((*iter).second).find("-");
+                                    if (pos != npos)
+                                    {
+                                          return std::string((*iter).second).replace(pos, 1, "_"); // окажемся тут, если имя Russian-Russia, сконвертируем его в ru_RU
+                                    }
+                              }
+                        }
                   }
+
+                  auto iter1 = all_locale_names.map_short_long.find(str.data());
+                  if (iter1 != all_locale_names.map_short_long.end())
+                  {
+                        auto pos = str.find("-");
+                        if (pos != npos)
+                              return std::string(str).replace(pos, 1, "_");   // окажемся тут, если имя ru-RU, сконвертируем его в ru_RU
+                  }
+
                   return str.data();
 #endif
             };
@@ -302,14 +331,16 @@ namespace tlib
             void add_support_char16()
             {
                   add_facet<std::collate<char16_t>>();
-                  add_facet<tlib::inner_impl::ctype<char16_t>>();
+                  add_facet<tlib::inner_impl::ctype_byname<char16_t>>();
 #ifdef _WIN32
-                  add_facet<tlib::inner_impl::numpunct<char16_t>>();
-                  add_facet<tlib::inner_impl::moneypunct<char16_t>>();
-                  add_facet<tlib::inner_impl::time_put<char16_t>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<char16_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char16_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char16_t, true>>();
+                  add_facet<tlib::inner_impl::time_put_byname<char16_t>>();
 #elif __linux__
-                  add_facet<std::numpunct<char16_t>>();
-                  add_facet<std::moneypunct<char16_t>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<char16_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char16_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char16_t, true>>();
                   add_facet<std::__timepunct<char16_t>>();
                   add_facet<std::time_put<char16_t>>();
 #endif
@@ -318,16 +349,25 @@ namespace tlib
                   add_facet<std::money_get<char16_t>>();
                   add_facet<std::money_put<char16_t>>();
                   //add_facet<std::time_get<char16_t>>();
-            }
+            }            
 
             void add_fix_other_facets()
             {
 #ifdef _WIN32
-                  add_facet<tlib::inner_impl::moneypunct<wchar_t>>();
-                  add_facet<tlib::inner_impl::moneypunct<char, false>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<char>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<wchar_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char, true>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t>>();                  
+                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t, true>>();
+
 #elif __linux__
-                  add_facet<tlib::inner_impl::numpunct<char>>();
-                  add_facet<tlib::inner_impl::moneypunct<char, false>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<char>>();
+                  add_facet<tlib::inner_impl::numpunct_byname<wchar_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<char, true>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t>>();
+                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t, true>>();
 #endif
             }
 
@@ -335,16 +375,16 @@ namespace tlib
             {
                   if (tp == num_punct_cfg || tp == num_money_punct_cfg)
                   {
-                        add_facet<numpunct_by_cfg<char>>();
-                        add_facet<numpunct_by_cfg<char16_t>>();
-                        add_facet<numpunct_by_cfg<wchar_t>>();
+                        add_facet<numpunct_cfg_byname<char>>();
+                        add_facet<numpunct_cfg_byname<char16_t>>();
+                        add_facet<numpunct_cfg_byname<wchar_t>>();
                   };
 
                   if (tp == money_punct_cfg || tp == num_money_punct_cfg)
                   {
-                        add_facet<moneypunct_by_cfg<char>>();
-                        add_facet<moneypunct_by_cfg<char16_t>>();
-                        add_facet<moneypunct_by_cfg<wchar_t>>();
+                        add_facet<moneypunct_cfg_byname<char>>();
+                        add_facet<moneypunct_cfg_byname<char16_t>>();
+                        add_facet<moneypunct_cfg_byname<wchar_t>>();
                   }
             }
       };

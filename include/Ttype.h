@@ -263,8 +263,31 @@ struct get_underlying_char<T,
 template <class T>
 using get_underlying_char_t = typename get_underlying_char<T>::type;
 
+////////////////////////////////////////////
+//
+//    стандартный type_trait - std::is_constructible проверяет не только наличие у класса нужно конструктора, 
+//    но требует, чтобы проверяемый класс имел публичный деструктор!!!
+//    Это зачастую излишнее и слишком строгое ограничение, если нам нужно проверить только наличие конструктора.
+//    Следующий класс лишен этого недостатка:
 
+template <typename T, typename... Args>
+class is_only_constructible
+{
+      template <typename, typename = void>
+      struct test : std::false_type
+      {
+      };
+      template <typename U>
+      struct test<U, decltype(void(new U(std::declval<Args>()...)))> : std::true_type
+      {
+      };
 
+  public:
+      static constexpr bool value = test<T>::value;
+};
+
+template <class T, typename... Args>
+constexpr bool is_only_constructible_v = is_only_constructible<T, Args...>::value;
 
 
 #endif //TTYPE

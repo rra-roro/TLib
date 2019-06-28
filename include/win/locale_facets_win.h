@@ -107,18 +107,19 @@ namespace tlib
                   };
             };
 
+            template <class CharT>
+            class ctype_byname : public ctype<CharT>
+            {
+              public:
+                  ctype_byname(std::string_view sw) : ctype<CharT>(std::_Locinfo(sw.data())){};
+            };
+
             // --------------------------------------------------------------------------
             template <class CharT>
             class numpunct : public std::numpunct<CharT>
             {
-                  static_assert(true, "implementation of this class is missing");
-            };
-
-            template <>
-            class numpunct<char16_t> : public std::numpunct<char16_t>
-            {
               public:
-                  using char_type = char16_t;
+                  using char_type = CharT;
                   using string_type = std::basic_string<char_type>;
                   using base = std::numpunct<char_type>;
 
@@ -157,16 +158,43 @@ namespace tlib
                   ~numpunct(){};
 
               private:
-                  locale_cfg_numbers<char_type> l_cfg_numbers;
+                  locale_cfg_numbers<char_type> l_cfg_numbers;                 
 
                   void init()
                   {
-                        const lconv *ptr_lconv = localeconv();
-                        l_cfg_numbers.decimal_point = (char_type)*ptr_lconv->_W_decimal_point;
-                        l_cfg_numbers.thousands_sep = (char_type)*ptr_lconv->_W_thousands_sep;
-                        l_cfg_numbers.grouping = ptr_lconv->grouping;
+                        if constexpr (std::is_same_v<CharT, char>)
+                        {
+                              const lconv *ptr_lconv = localeconv();
+                              l_cfg_numbers.decimal_point = (char_type)*ptr_lconv->decimal_point;
+
+                              std::string thousands_sep_tmp = ptr_lconv->thousands_sep;
+
+                              if (thousands_sep_tmp == "\xc2\xA0") // неразрывный пробел в UTF-8 - 2 байта
+                                    l_cfg_numbers.thousands_sep = '\xa0'; // неразрывный пробел ASCII  - 1 байт
+                              else if (thousands_sep_tmp[0] != 0xC2)
+                                    l_cfg_numbers.thousands_sep = thousands_sep_tmp[0];
+                              else
+                                    l_cfg_numbers.thousands_sep = ' ';                              
+
+                              l_cfg_numbers.grouping = ptr_lconv->grouping;
+                        }
+                        else
+                        {
+                              const lconv *ptr_lconv = localeconv();
+                              l_cfg_numbers.decimal_point = (char_type)*ptr_lconv->_W_decimal_point;
+                              l_cfg_numbers.thousands_sep = (char_type)*ptr_lconv->_W_thousands_sep;
+                              l_cfg_numbers.grouping = ptr_lconv->grouping;
+                        }
                   }
             };
+
+            template <class CharT>
+            class numpunct_byname : public numpunct<CharT>
+            {
+              public:
+                  numpunct_byname(std::string_view sw) : numpunct<CharT>(std::_Locinfo(sw.data())){};
+            };
+
 
             // --------------------------------------------------------------------------
 
@@ -176,10 +204,10 @@ namespace tlib
               public:
                   using char_type = CharT;
                   using string_type = std::basic_string<char_type>;
-                  using base = std::moneypunct<char_type>;
+                  using base = std::moneypunct<char_type, _Intl>;
 
-                  template <class... Args>
-                  moneypunct(Args &&... args) : base(std::forward<Args>(args)...)
+                  template <class L, class... Args>
+                  moneypunct(L loc, Args &&... args) : base(loc, std::forward<Args>(args)...)
                   {
                         init();
                   }
@@ -243,9 +271,28 @@ namespace tlib
                         if constexpr (std::is_same_v<char_type, char>)
                         {
                               l_cfg_moneys.decimal_point = *ptr_lconv->mon_decimal_point;
-                              l_cfg_moneys.thousands_sep = *ptr_lconv->mon_thousands_sep;
+
+                              std::string thousands_sep_tmp = ptr_lconv->mon_thousands_sep;
+
+                              if (thousands_sep_tmp == "\xc2\xA0")        // неразрывный пробел в UTF-8 - 2 байта
+                                    l_cfg_moneys.thousands_sep = '\xa0'; // неразрывный пробел ASCII  - 1 байт
+                              else if (thousands_sep_tmp[0] != 0xC2)
+                                    l_cfg_moneys.thousands_sep = thousands_sep_tmp[0];
+                              else
+                                    l_cfg_moneys.thousands_sep = ' ';        
+
                               l_cfg_moneys.grouping = ptr_lconv->mon_grouping;
-                              l_cfg_moneys.curr_symbol = (*ptr_lconv->_W_currency_symbol == 0x20bd) ? TemplateTypeOfStr("p.", char_type) : (*ptr_lconv->_W_currency_symbol == 0x20ac) ? TemplateTypeOfStr("euro", char_type) : ptr_lconv->currency_symbol;
+                              if (_Intl)
+                              {
+                                    l_cfg_moneys.curr_symbol = ptr_lconv->int_curr_symbol;
+                              }
+                              else
+                              {
+                                    l_cfg_moneys.curr_symbol = (*ptr_lconv->_W_currency_symbol == 0x20bd) ? TemplateTypeOfStr("руб.", char_type) :
+                                          (*ptr_lconv->_W_currency_symbol == 0x20ac) ? TemplateTypeOfStr("euro", char_type) :
+                                                                                        ptr_lconv->currency_symbol;
+                              }
+                                 
                               l_cfg_moneys.positive_sign = ptr_lconv->positive_sign;
                               l_cfg_moneys.negative_sign = ptr_lconv->negative_sign;
                               l_cfg_moneys.frac_digits = ptr_lconv->frac_digits;
@@ -255,13 +302,30 @@ namespace tlib
                               l_cfg_moneys.decimal_point = (char_type)*ptr_lconv->_W_mon_decimal_point;
                               l_cfg_moneys.thousands_sep = (char_type)*ptr_lconv->_W_mon_thousands_sep;
                               l_cfg_moneys.grouping = ptr_lconv->mon_grouping;
-                              l_cfg_moneys.curr_symbol = (*ptr_lconv->_W_currency_symbol == 0x20bd) ? TemplateTypeOfStr("p.", char_type) : (*ptr_lconv->_W_currency_symbol == 0x20ac) ? TemplateTypeOfStr("euro", char_type) : (char_type *)ptr_lconv->_W_currency_symbol;
+                              if (_Intl)
+                              {
+                                    l_cfg_moneys.curr_symbol = (char_type *)ptr_lconv->_W_int_curr_symbol;
+                              }
+                              else
+                              {
+                                    l_cfg_moneys.curr_symbol = (*ptr_lconv->_W_currency_symbol == 0x20bd) ? TemplateTypeOfStr("руб.", char_type) :
+                                          (*ptr_lconv->_W_currency_symbol == 0x20ac) ? TemplateTypeOfStr("euro", char_type) :
+                                                                                       (char_type *)ptr_lconv->_W_currency_symbol;
+                              }                              
                               l_cfg_moneys.positive_sign = (char_type *)ptr_lconv->_W_positive_sign;
                               l_cfg_moneys.negative_sign = (char_type *)ptr_lconv->_W_negative_sign;
                               l_cfg_moneys.frac_digits = ptr_lconv->frac_digits;
                         }
                   }
             };
+
+            template <class CharT, bool _Intl = false>
+            class moneypunct_byname : public moneypunct<CharT, _Intl>
+            {
+              public:
+                  moneypunct_byname(std::string_view sw) : moneypunct<CharT, _Intl>(std::_Locinfo(sw.data())){};
+            };
+
 
             // ----------------------------------------------------------------------------------------------
             template <class CharT, class OutputIt = std::ostreambuf_iterator<CharT>>
@@ -321,6 +385,13 @@ namespace tlib
 
               private:
                   std::_Locinfo::_Timevec _Tnames; // locale-specific stuff for _Wcsftime
+            };
+
+            template <class CharT, class OutputIt = std::ostreambuf_iterator<CharT>>
+            class time_put_byname : public time_put<CharT, OutputIt>
+            {
+              public:
+                  time_put_byname(std::string_view sw) : time_put<CharT, OutputIt>(std::_Locinfo(sw.data())){};
             };
 
       }
