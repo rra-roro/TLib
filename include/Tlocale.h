@@ -19,6 +19,8 @@
 #endif
 
 #include <locale>
+#include <vector>
+#include <string>
 
 #ifdef _WIN32
 #include <win/locale_facets_win.h>
@@ -82,6 +84,14 @@ namespace tlib
       //             Судя по комментариям скоро поддержку utf-8 они все же добавят.
 
       int InitConsolIO(void);
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////
+      //
+      //
+
+      std::vector<std::string> get_available_locale_names();
+
+
 
 #ifdef _WIN32
       //////////////////////////////////////////////////////////////////////////////////////////////////////////

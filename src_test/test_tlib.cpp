@@ -3,6 +3,7 @@
 
 #include "Tlib_version.h"
 #include <string_view>
+#include <algorithm>
 //#include <unistd.h>
 //#include <io.h>
 #include <fcntl.h>
@@ -40,24 +41,48 @@ namespace tlib
 
             try
             {
+                  auto locnames = tlib::get_available_locale_names();
+                  if (locnames.empty())
+                        std::cout << "locales not found\n";
+                  else
+                        std::copy(locnames.begin(), locnames.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
+
+                  //auto end_ru_locale = std::partition(locnames.begin(), locnames.end(), [](auto& lcn) { return lcn.find("en_") != npos; });
+                  
+
+                  
+
                   tlib::locale("C");
                   tlib::locale("POSIX");
-                  tlib::locale("ru_RU");
-                  tlib::locale("ru-RU");
-                  tlib::locale("Russian_Russia");
-                  tlib::locale("Russian-Russia");
+                  //tlib::locale("ru_RU");
+                  //std::cout << "3\n";
+                  //tlib::locale("ru-RU");
+                  //std::cout << "4\n";
+                  //tlib::locale("Russian_Russia");
+                  //std::cout << "5\n";
+                  //tlib::locale("Russian-Russia");
 
                   tlib::locale(".utf-8");
+                  std::cout << "6\n";
                   tlib::locale("ru_RU.Utf-8");
+                  std::cout << "7\n";
                   tlib::locale("ru_RU.uTf-8");
+                  std::cout << "8\n";
                   tlib::locale("ru_RU.uTf8");
-                  tlib::locale("ru_RU.cp1251");
-                  tlib::locale("ru_RU.koi8-r");
+                  std::cout << "9\n";
+                  //tlib::locale("ru_RU.cp1251");
+                  //std::cout << "10\n";
+                  //tlib::locale("ru_RU.koi8-r");
+                  //std::cout << "10.a\n";
 
                   tlib::locale("ru_RU.utf-8");
+                  std::cout << "11\n";
                   tlib::locale("ru-RU.utf-8");
+                  std::cout << "12\n";
                   tlib::locale("Russian_Russia.utf-8");
+                  std::cout << "13\n";
                   tlib::locale("Russian-Russia.utf-8");
+                  std::cout << "13.a\n";
             }
             catch (...)
             {
@@ -91,17 +116,27 @@ namespace tlib
             ASSERT_TRUE(std::use_facet<std::numpunct<char16_t>>(loc).truename() == u"true");
             ASSERT_TRUE(std::use_facet<std::numpunct<TCHAR>>(loc).truename() == _T("true"));
 
-#ifdef _WIN32
-            ASSERT_TRUE(std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == "руб.");
-            ASSERT_TRUE(std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"руб.");
-            ASSERT_TRUE(std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"руб.");
-            ASSERT_TRUE(std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("руб."));
-#elif __linux__
-            ASSERT_TRUE(std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == u8"\u20bd"); // Unicode символ рубля
-            ASSERT_TRUE(std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"\u20bd");
-            ASSERT_TRUE(std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"\u20bd");
-            ASSERT_TRUE(std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("\u20bd"));
-#endif
+
+            ASSERT_TRUE(std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == u8"\u20bd" ||   // Unicode символ рубля
+                        std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == "руб."     ||
+                        std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == "руб"      ||
+                        std::use_facet<std::moneypunct<char>>(loc).curr_symbol() == "RUB");
+
+            ASSERT_TRUE(std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"\u20bd" ||
+                        std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"руб."   ||
+                        std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"руб"    ||
+                        std::use_facet<std::moneypunct<wchar_t>>(loc).curr_symbol() == L"RUB");
+
+            ASSERT_TRUE(std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"\u20bd" ||
+                        std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"руб."   ||
+                        std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"руб"    ||
+                        std::use_facet<std::moneypunct<char16_t>>(loc).curr_symbol() == u"RUB");
+
+            ASSERT_TRUE(std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("\u20bd") || 
+                        std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("руб.")   ||
+                        std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("руб")    ||
+                        std::use_facet<std::moneypunct<TCHAR>>(loc).curr_symbol() == _T("RUB"));
+
 
             ASSERT_TRUE((std::use_facet<std::moneypunct<char, true>>(loc).curr_symbol() == "RUB"));
             ASSERT_TRUE((std::use_facet<std::moneypunct<wchar_t, true>>(loc).curr_symbol() == L"RUB"));
@@ -109,50 +144,39 @@ namespace tlib
             ASSERT_TRUE((std::use_facet<std::moneypunct<TCHAR, true>>(loc).curr_symbol() == _T("RUB")));
 
             auto test_numbers = [](auto& os) -> bool {
-                  auto get_test_str = [](auto _Elem) -> std::basic_string<decltype(_Elem)> {
+                  auto get_test_str = [&](auto _Elem) -> std::basic_string<decltype(_Elem)>
+                  {                        
                         using char_type = decltype(_Elem);
+                        using string_type = std::basic_string<char_type>;
+
+                        char_type decimal_point = std::use_facet<std::moneypunct<char_type>>(os.getloc()).decimal_point();
+                        char_type thousands_sep = std::use_facet<std::moneypunct<char_type>>(os.getloc()).thousands_sep();
+                        string_type curr_symbol = std::use_facet<std::moneypunct<char_type>>(os.getloc()).curr_symbol();
+
 #ifdef _WIN32
-                        return TemplateTypeOfStr("\nbool : 1 0"
-                                                 "\nboolalpha: true false"
-                                                 "\ninteger: 10\240000"
-                                                 "\ndouble: 10\240000,1"
-                                                 "\n\nscientific double: 1,000012e+04"
-                                                 "\nfixed double: 10\240000,123400"
-                                                 "\nhexfloat double: 0x1,3880fdp+13"
-                                                 "\ndefaultfloat double: 10\240000,1"
-                                                 "\n\nсколько денег: 12\240345\240678,91 руб."
-                                                 "\n\nвремя: четверг 27.06.2019 16:51:09",
-                            char_type);
-#elif __linux__
-                        if constexpr (std::is_same_v<char_type, char>)
-                        {
-                              return TemplateTypeOfStr("\nbool : 1 0"
-                                                       "\nboolalpha: true false"
-                                                       "\ninteger: 10 000"
-                                                       "\ndouble: 10 000,1"
-                                                       "\n\nscientific double: 1,000012e+04"
-                                                       "\nfixed double: 10 000,123400"
-                                                       "\nhexfloat double: 0x1,3880fcb923a2ap+13"
-                                                       "\ndefaultfloat double: 10 000,1"
-                                                       "\n\nсколько денег: 12 345 678,91 \u20bd"
-                                                       "\n\nвремя: Четверг Чт 27 июн 2019 09:51:09",
-                                  char_type);
-                        }
-                        else
-                        {
-                              return TemplateTypeOfStr("\nbool : 1 0"
-                                                       "\nboolalpha: true false"
-                                                       "\ninteger: 10\240000"
-                                                       "\ndouble: 10\240000,1"
-                                                       "\n\nscientific double: 1,000012e+04"
-                                                       "\nfixed double: 10\240000,123400"
-                                                       "\nhexfloat double: 0x1,3880fcb923a2ap+13"
-                                                       "\ndefaultfloat double: 10\240000,1"
-                                                       "\n\nсколько денег: 12\240345\240678,91 \u20bd"
-                                                       "\n\nвремя: Четверг Чт 27 июн 2019 09:51:09",
-                                  char_type);
-                        }
+   #define __hexfloat__ "\nhexfloat double: 0x1,3880fdp+13"
+#else
+   #define __hexfloat__ "\nhexfloat double: 0x1,3880fcb923a2ap+13"
 #endif
+                        string_type result = TemplateTypeOfStr("\nbool : 1 0"
+                                                               "\nboolalpha: true false"
+                                                               "\ninteger: 10\240000"
+                                                               "\ndouble: 10\240000,1"
+                                                               "\n\nscientific double: 1,000012e+04"
+                                                               "\nfixed double: 10\240000,123400"
+                                                               __hexfloat__
+                                                               "\ndefaultfloat double: 10\240000,1"
+                                                               "\n\nсколько денег: 12\240345\240678,91 руб", char_type);
+                                                              // "\n\nвремя: Четверг Чт 27 июн 2019 09:51:09", char_type);
+
+                        std::replace(result.begin(), result.end(), TemplateTypeOfCh('\240', char_type), thousands_sep);
+
+                        result.replace(result.find(TemplateTypeOfStr("руб", char_type)),
+                                       string_type(TemplateTypeOfStr("руб", char_type)).size(),  curr_symbol);
+
+                        result.replace(result.find(TemplateTypeOfStr("8,9", char_type)), 3, TemplateTypeOfStr("8", char_type) + string_type(1, decimal_point) + TemplateTypeOfStr("9", char_type));
+
+                        return result;
                   };
 
                   using char_type = typename std::remove_reference<decltype(os)>::type::char_type;
@@ -171,8 +195,8 @@ namespace tlib
 
                   os << _tt("\n\n") << _tt("сколько денег: ") << std::showbase << std::put_money(1234567891);
 
-                  std::time_t t = 0x000000005d14c9cd;
-                  os << _tt("\n\n") << _tt("время: ") << std::put_time<char_type>(std::localtime(&t), _tt("%A %c"));
+                  //std::time_t t = 0x000000005d14c9cd;
+                  //os << _tt("\n\n") << _tt("время: ") << std::put_time<char_type>(std::localtime(&t), _tt("%A %c"));
 
                   return os.str() == get_test_str(TemplateTypeOfCh('\0', char_type));
 #undef _tt
@@ -197,7 +221,7 @@ namespace tlib
 
       TEST(Tlocale_alg, IsSymbol)
       {
-            auto test_symbols_true = [](auto _Elem, tlib::locale loc) -> bool
+             auto test_symbols_true = [](auto _Elem, tlib::locale loc) -> bool
             {
                   using char_type = decltype(_Elem);
 

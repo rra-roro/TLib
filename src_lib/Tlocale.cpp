@@ -1,6 +1,9 @@
 ﻿#include "stdafx.h"
 #include <Tlocale.h>
 #include <Tiostream.h>
+#include <vector>
+#include <string>
+#include <filesystem>
 
 using namespace tlib;
 using namespace std;
@@ -55,7 +58,7 @@ int tlib::InitConsolIO(void)
 #endif
 
       // Установим локаль соответствующую текущей кодировке консоли
-      // для всех консольных потоков ввода/вывода      
+      // для всех консольных потоков ввода/вывода
       set_locale(wcout, loc);
       set_locale(ucout, loc);
       set_locale(wcin, loc);
@@ -67,6 +70,25 @@ int tlib::InitConsolIO(void)
 
       return 0;
 }
+
+/////////////////////////////////////////////////////////
+vector<string> tlib::get_available_locale_names()
+{
+      namespace fs = std::filesystem;
+      vector<string> locales;
+
+      string path = "/usr/lib/locale";
+      for (const auto& entry : fs::directory_iterator(path))
+      {
+            if (entry.is_directory())
+            {
+                  locales.push_back(entry.path().filename());
+            }
+      }
+
+      return locales;
+}
+
 
 #ifdef _WIN32
 int tlib::InitIO(void)

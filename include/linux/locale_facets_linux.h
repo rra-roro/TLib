@@ -12,6 +12,7 @@
 #include <string_view>
 #include <algorithm>
 #include <wctype.h>
+#include <iostream>
 
 namespace tlib
 {
@@ -198,9 +199,9 @@ namespace tlib
                                                 char* __s;
                                                 char_type __w;
                                           } __u;
-                                          __u.__s = nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
+                                          __u.__s = nl_langinfo_l(_NL_NUMERIC_DECIMAL_POINT_WC, __cloc);
                                           decimal_point = __u.__w;
-                                          __u.__s = nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
+                                          __u.__s = nl_langinfo_l(_NL_NUMERIC_THOUSANDS_SEP_WC, __cloc);
                                           thousands_sep = __u.__w;
 
                                           if (thousands_sep == 0x202f) // неразрывный пробел в UTF-8 - 3 байта

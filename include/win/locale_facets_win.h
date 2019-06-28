@@ -359,7 +359,7 @@ namespace tlib
                   {
                         string_type _Fmt = TemplateTypeOfStr("!%x\0", char_type); // '!' for nonzero count, null for modifier
                         size_t _Count, _Num;
-                        string_type _Str;
+                        std::wstring tmp;
 
                         if (modifier == '\0')
                               _Fmt[2] = (char_type)format;
@@ -370,15 +370,18 @@ namespace tlib
                         }
 
                         for (_Num = 16;; _Num *= 2)
-                        { // convert into ever larger string buffer until success
-                              _Str.append(_Num, TemplateTypeOfCh('\0', char_type));
-                              if (0 < (_Count = _Wcsftime((wchar_t *)&*_Str.begin(), _Str.size(), (const wchar_t *)_Fmt.c_str(), ptm, _Tnames._Getptr())))
+                        {
+                              // convert into ever larger string buffer until success
+
+                              tmp.append(_Num, TemplateTypeOfCh('\0', char_type));
+
+                              if (0 < (_Count = _Wcsftime(tmp.data(), tmp.size(), (const wchar_t *)_Fmt.c_str(), ptm, _Tnames._Getptr())))
                               {
                                     break;
                               }
                         }
 
-                        return copy(&_Str[1], &_Str[_Count], out);
+                        return copy(&tmp[1], &tmp[_Count], out);
                   }
 
                   virtual ~time_put(){};
