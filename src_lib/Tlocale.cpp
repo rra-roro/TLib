@@ -21,6 +21,7 @@ int tlib::InitConsolIO(void)
       // откомпилированной программе, заданной при ее компиляции
       tlib::locale loc_prg = tlib::locale::get_locale_program();
       std::locale::global(loc_prg);
+      setlocale(LC_ALL, loc_prg.name().c_str());
 
       // Создадим локаль соответствующую текущей кодировке консоли
       tlib::locale loc = tlib::locale::get_locale_console();
@@ -72,20 +73,40 @@ int tlib::InitConsolIO(void)
 }
 
 /////////////////////////////////////////////////////////
+#ifdef _WIN32
+BOOL CALLBACK MyFuncLocaleEx(LPWSTR pStr, DWORD dwFlags, LPARAM lparam)
+{
+      std::string locname = wstr_cstr(pStr);
+      size_t pos = locname.find("-");
+      if (pos != npos)
+            locname.replace(pos, 1, "_");      
+      if (IsValidLocaleName(pStr))
+      {
+            vector<string>& locales = *(vector<string>*)lparam;
+            locales.push_back(locname);
+      }
+      return TRUE;
+}
+#endif
+
 vector<string> tlib::get_available_locale_names()
 {
-      namespace fs = std::filesystem;
       vector<string> locales;
+
+#ifdef _WIN32
+
+      EnumSystemLocalesEx(MyFuncLocaleEx, LOCALE_SPECIFICDATA, (LPARAM)&locales, NULL);
+
+#else
+      namespace fs = std::filesystem;
 
       string path = "/usr/lib/locale";
       for (const auto& entry : fs::directory_iterator(path))
       {
             if (entry.is_directory())
-            {
                   locales.push_back(entry.path().filename());
-            }
       }
-
+#endif
       return locales;
 }
 

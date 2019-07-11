@@ -13,9 +13,11 @@
 
 #include <map>
 #include <sstream>
+#include <algorithm>
 #include <Ttype.h>
 
 extern const char* lang_name[][2];
+extern const char* code_page[][3];
 
 namespace tlib
 {
@@ -34,7 +36,8 @@ namespace tlib
 
             locale() noexcept : name_locale(std::locale().name()),
                                 internal_locale(),
-                                support_char16(true)
+                                support_char16(true),
+                                is_multibyte_codepage(detect_multibyte_codepage(name_locale))
             {
                   add_support_char16();
                   add_fix_other_facets();
@@ -42,21 +45,24 @@ namespace tlib
             };
 
             locale(const tlib::locale& other) noexcept : name_locale(other.name_locale),
-                                                         internal_locale(other.internal_locale)
+                                                         internal_locale(other.internal_locale),
+                                                         is_multibyte_codepage(detect_multibyte_codepage(name_locale))
             {
                   add_support_char16();
                   add_fix_other_facets();
             };
 
             locale(const std::locale& other) noexcept : name_locale(other.name()),
-                                                        internal_locale(other)
+                                                        internal_locale(other),
+                                                        is_multibyte_codepage(detect_multibyte_codepage(name_locale))
             {
                   add_support_char16();
                   add_fix_other_facets();
             };
 
             explicit locale(std::string_view loc_name, type_punct tp = num_money_punct_sys) : name_locale(locale_name_fix_codepage(loc_name)),
-                                                                                              internal_locale(name_locale)
+                                                                                              internal_locale(name_locale),
+                                                                                              is_multibyte_codepage(detect_multibyte_codepage(name_locale))
             {
                   add_support_char16();
                   add_fix_other_facets();
@@ -74,9 +80,14 @@ namespace tlib
             }
 
 
-            std::string name() const
+            const std::string& name() const
             {
                   return name_locale;
+            }
+
+            bool is_mb_codepage() const
+            {
+                  return is_multibyte_codepage;
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +206,7 @@ namespace tlib
                         internal_locale = std::locale(internal_locale, new _Facet(name_locale));
                         return;
                   }
-#ifdef _WIN32                 
+#ifdef _WIN32
                   else
                   {
                         // Добавим стандартые фасеты
@@ -225,6 +236,8 @@ namespace tlib
         private:
             struct lang_names
             {
+                  const std::ctype<char>& facet = std::use_facet<std::ctype<char>>(std::locale());
+
                   std::map<std::string, const char*> map_short_long;
                   std::map<std::string, const char*> map_long_short;
 
@@ -232,16 +245,113 @@ namespace tlib
                   {
                         for (size_t i = 0; lang_name[i][0][0] != '\0'; i++)
                         {
-                              map_short_long[lang_name[i][0]] = lang_name[i][1];
-                              map_long_short[lang_name[i][1]] = lang_name[i][0];
+                              std::string short_name_key = lang_name[i][0];
+
+                              facet.tolower(short_name_key.data(), short_name_key.data() + short_name_key.size());
+
+                              short_name_key.erase(std::remove_if(short_name_key.begin(), short_name_key.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                                  short_name_key.end());
+
+                              map_short_long[short_name_key] = lang_name[i][1];
+
+                              std::string long_name_key = lang_name[i][1];
+
+                              facet.tolower(long_name_key.data(), long_name_key.data() + long_name_key.size());
+
+                              long_name_key.erase(std::remove_if(long_name_key.begin(), long_name_key.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                                  long_name_key.end());
+
+                              map_long_short[long_name_key] = lang_name[i][0];
                         }
+                  }
+
+                  std::string find_long(std::string short_locname)
+                  {
+                        facet.tolower(short_locname.data(), short_locname.data() + short_locname.size());
+
+                        short_locname.erase(std::remove_if(short_locname.begin(), short_locname.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                            short_locname.end());
+
+                        auto it = map_short_long.find(short_locname);
+
+                        if (it != map_short_long.end())
+                              return (*it).second;
+                        else
+                              return {};
+                  }
+
+                  std::string find_short(std::string long_locname)
+                  {
+                        facet.tolower(long_locname.data(), long_locname.data() + long_locname.size());
+
+                        long_locname.erase(std::remove_if(long_locname.begin(), long_locname.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                            long_locname.end());
+
+                        auto it = map_long_short.find(long_locname);
+
+                        if (it != map_long_short.end())
+                              return (*it).second;
+                        else
+                              return {};
+                  }
+            };
+
+            struct code_pages
+            {
+                  std::multimap<std::string, std::pair<const char*, bool>> map_name_cp;
+                  std::multimap<std::string, std::pair<const char*, bool>> map_cp_name;
+
+                  code_pages()
+                  {
+                        for (size_t i = 0; code_page[i][0][0] != '\0'; i++)
+                        {
+                              std::string code_page_key = code_page[i][1];
+
+                              code_page_key.erase(std::remove_if(code_page_key.begin(), code_page_key.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                                                  code_page_key.end());
+
+                              map_name_cp.emplace(std::make_pair(code_page_key, std::make_pair(code_page[i][0], code_page[i][2][0] == 't' ? true : false)));
+
+                              map_cp_name.emplace(std::make_pair(code_page[i][0], std::make_pair(code_page[i][1], code_page[i][2][0] == 't' ? true : false)));
+                        }
+                  }
+
+                  auto get_cp(std::string_view cp)
+                  {
+#ifdef _WIN32
+                        return map_name_cp.equal_range(cp.data());
+#elif __linux__
+                        return map_cp_name.equal_range(cp.data());
+#endif
+                  }
+
+                  bool is_mb(std::string codepage)
+                  {
+                        std::use_facet<std::ctype<char>>(std::locale()).tolower(codepage.data(), codepage.data() + codepage.size());
+                        codepage.erase(std::remove_if(codepage.begin(), codepage.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                            codepage.end());
+                        auto map_name_cp_ret = map_name_cp.find(codepage.data());
+                        auto map_cp_name_ret = map_cp_name.find(codepage.data());
+
+                        if (map_name_cp_ret != map_name_cp.end())
+                              return map_name_cp_ret->second.second;
+                        else if (map_cp_name_ret != map_cp_name.end())
+                              return map_cp_name_ret->second.second;
+                        else
+                              return true;
                   }
             };
 
             static lang_names all_locale_names;
+            static code_pages all_code_pages;
+
             std::string name_locale;
             std::locale internal_locale;
             bool support_char16;
+            bool is_multibyte_codepage;
+
+            bool detect_multibyte_codepage(std::string_view loc_name);
+
 
             //  Имена локалей имеют формат: "", "C", "POSIX" или "language[_area[.codepage]]" или ".codepage"
             //  Например: "Russian_Russia.866", "", "C", ".1251"
@@ -250,83 +360,60 @@ namespace tlib
 
             static std::string get_locname(std::string_view str)
             {
-                  auto iter = all_locale_names.map_short_long.find(str.data());
-                  if (iter != all_locale_names.map_short_long.end())
-                        return (*iter).second;
+                  auto long_name = all_locale_names.find_long(str.data());
+                  if (!long_name.empty())
+                        return long_name;
                   else
                         throw std::runtime_error("locale name not found");
             };
 
             static std::string try_get_locname(std::string_view str)
             {
+                  if (str == "") return "";
 #ifdef _WIN32
-                  if (str == "POSIX") return "C";
+                  if (str == "POSIX" || str == "C") return "C";
 
-                  // Предпологаем, что нам передали кроткое имя:
-                  auto iter = all_locale_names.map_short_long.find(str.data());
-                  if (iter != all_locale_names.map_short_long.end()) 
-                        return (*iter).second;                    // окажемся тут, если имя ru-RU, сконвертируем его в Russian_Russia
-                  else
-                  if (str.find("_") != npos)                
-                  {                  
-                        auto iter = all_locale_names.map_short_long.find(std::string(str).replace(str.find("_"), 1, "-"));
-                        if (iter != all_locale_names.map_short_long.end())
-                              return (*iter).second;        // окажемся тут, если имя ru_RU, сконвертируем его в Russian_Russia
-                  }
-                 
-                  // Если нам передали не короткое имя, проверим его как длинное
-                  iter = all_locale_names.map_long_short.find(str.data());
-                  if (iter != all_locale_names.map_long_short.end())
-                        return str.data();                               // окажемся тут, если нам передали корректное длинное имя Russian_Russia. вернем его
-                  else
-                  if (str.find("-") != npos)
-                  {
-                        std::string tmp_str = str.data();
-                        tmp_str.replace(str.find("-"), 1, "_");
-                        auto iter = all_locale_names.map_long_short.find(tmp_str);
-                        if (iter != all_locale_names.map_long_short.end())
-                              return tmp_str;                     // окажемся тут, если нам передали НЕ корректное длинное имя Russian-Russia.
-                  }                                               // сконвертируем его в Russian_Russia
+                  // Предпологаем, что нам передали кроткое имя, получим из него длинное:
+                  auto long_name = all_locale_names.find_long(str.data());
+                  if (!long_name.empty())
+                        return long_name; // окажемся тут, если имя ru-RU или ru_RU, сконвертируем его в Russian_Russia
+
+                  // Если нам передали не короткое имя, найдем короткое,
+                  // а из него длинное в нормализованном виде
+                  auto short_name = all_locale_names.find_short(str.data());
+                  long_name = all_locale_names.find_long(short_name);
+                  if (!long_name.empty())
+                        return long_name; // окажемся тут, если нам передали корректное длинное имя
+                                          // вернем нормализованное имя вида Russian_Russia
 
                   return str.data();
 #elif __linux__
+                  if (str == "POSIX" || str == "C") return str.data();
 
-                  auto iter = all_locale_names.map_long_short.find(str.data());
-                  if (iter != all_locale_names.map_long_short.end())
+                  // Предпологаем, что нам передали длинное имя, получим из него короткое:
+                  auto short_name = all_locale_names.find_short(str.data());
+                  if (!short_name.empty())
                   {
-                        auto pos = std::string((*iter).second).find("-");
-                        if (pos != npos)
-                        {
-                              return std::string((*iter).second).replace(pos, 1, "_");   // окажемся тут, если имя Russian_Russia, сконвертируем его в ru_RU
-                        }
-                  }else
-                  {
-                        auto pos = std::string(str).find("-");
-                        if (pos != npos)
-                        {
-                              auto iter = all_locale_names.map_long_short.find(std::string(str).replace(pos, 1, "_"));
-                              if (iter != all_locale_names.map_long_short.end())
-                              {
-                                    auto pos = std::string((*iter).second).find("-");
-                                    if (pos != npos)
-                                    {
-                                          return std::string((*iter).second).replace(pos, 1, "_"); // окажемся тут, если имя Russian-Russia, сконвертируем его в ru_RU
-                                    }
-                              }
-                        }
+                        std::replace(short_name.begin(), short_name.end(), '-', '_');
+                        return short_name;  // окажемся тут, если имя Russian_Russia или Russian-Russia, сконвертируем его в ru_RU
                   }
 
-                  auto iter1 = all_locale_names.map_short_long.find(str.data());
-                  if (iter1 != all_locale_names.map_short_long.end())
+                  // Если нам передали короткое имя, найдем длинное,
+                  // а из него короткое в нормализованном виде
+
+                  auto long_name = all_locale_names.find_long(str.data());
+                  short_name = all_locale_names.find_short(long_name);
+                  if (!short_name.empty())
                   {
-                        auto pos = str.find("-");
-                        if (pos != npos)
-                              return std::string(str).replace(pos, 1, "_");   // окажемся тут, если имя ru-RU, сконвертируем его в ru_RU
+                        std::replace(short_name.begin(), short_name.end(), '-', '_');
+                        return short_name; // окажемся тут, если нам передали корректное короткое имя
+                                           // вернем его в нормализованное виде ru_RU
                   }
 
                   return str.data();
 #endif
             };
+
 
             void add_support_char16()
             {
@@ -349,7 +436,7 @@ namespace tlib
                   add_facet<std::money_get<char16_t>>();
                   add_facet<std::money_put<char16_t>>();
                   //add_facet<std::time_get<char16_t>>();
-            }            
+            }
 
             void add_fix_other_facets()
             {
@@ -358,7 +445,7 @@ namespace tlib
                   add_facet<tlib::inner_impl::numpunct_byname<wchar_t>>();
                   add_facet<tlib::inner_impl::moneypunct_byname<char>>();
                   add_facet<tlib::inner_impl::moneypunct_byname<char, true>>();
-                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t>>();                  
+                  add_facet<tlib::inner_impl::moneypunct_byname<wchar_t>>();
                   add_facet<tlib::inner_impl::moneypunct_byname<wchar_t, true>>();
 
 #elif __linux__

@@ -12,23 +12,126 @@ using namespace std;
 /////////////////////////////////////
 
 tlib::locale::lang_names tlib::locale::all_locale_names;
+tlib::locale::code_pages tlib::locale::all_code_pages;
 
+using name_l = string;
+using codepage_l = string;
+
+optional<pair<name_l, codepage_l>> split_locale_name(std::string_view loc_name)
+{
+      cmatch match_str;
+      regex reg_exp("(.*)[.](.*)", std::regex_constants::icase);
+
+      if (!regex_match(loc_name.data(), match_str, reg_exp))
+      {
+            return {};
+      }
+      else
+      {
+            return pair<name_l, codepage_l>(match_str.str(1), match_str.str(2));
+      }
+}
+
+std::optional<std::string> checkup_locale(std::string language, std::string_view codepage)
+{
+      auto toupper = [](char ch) { return std::use_facet<std::ctype<char>>(std::locale()).toupper(ch); };
+
+      const auto try_set_locale = [](std::string_view loc_name_a) -> std::optional<std::string> {
+            try
+            {
+                  std::locale loc(loc_name_a.data());
+                  return loc_name_a.data();
+            }
+            catch (...)
+            {
+                  return {};
+            }
+      };
+
+      std::string cp[8];
+      cp[2] = cp[1] = cp[0] = codepage;
+      cp[1].erase(std::remove(cp[1].begin(), cp[1].end(), '-'), cp[1].end());
+      cp[2].erase(std::remove(cp[2].begin(), cp[2].end(), '_'), cp[2].end());
+      cp[3] = cp[0];
+      cp[4] = cp[1];
+      cp[5] = cp[2];
+      std::transform(cp[3].begin(), cp[3].end(), cp[3].begin(), toupper);
+      std::transform(cp[4].begin(), cp[4].end(), cp[4].begin(), toupper);
+      std::transform(cp[5].begin(), cp[5].end(), cp[5].begin(), toupper);
+      cp[6] = "cp" + cp[0];
+      cp[7] = "CP" + cp[0];
+
+      for (size_t i = 0; i < 8; i++)
+      {
+            if (auto ret = try_set_locale(language + "." + cp[i]))
+                  return *ret;
+      }
+
+      return {};
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool tlib::locale::detect_multibyte_codepage(std::string_view loc_name)
+{
+      auto [language_ref, code_page_ref] = *split_locale_name(loc_name);
+      string language = language_ref;
+      string code_page = code_page_ref;
+
+#ifdef _WIN32
+      if (code_page.empty())
+      {
+            auto short_name = all_locale_names.find_short(loc_name.data());
+            if (!short_name.empty())
+                  language = short_name;
+            else
+            {
+                  auto long_name = all_locale_names.find_long(loc_name.data());
+                  short_name = all_locale_names.find_short(long_name);
+                  if (!short_name.empty())
+                        language = short_name;
+            }
+
+            wstring locale_name_w = cstr_wstr(language);
+
+            int size_data = 256;
+            wstring lc_data(size_data, '\0');
+
+            int ret = GetLocaleInfoEx(locale_name_w.c_str(),
+                                      LOCALE_IDEFAULTANSICODEPAGE,
+                                      lc_data.data(), size_data);
+            if (ret == 0)
+                  return true;
+
+            lc_data.erase(ret - 1);
+
+            if (ret == 2 && lc_data == L"0")
+                  return true;
+
+            code_page = wstr_cstr(lc_data.c_str());
+      }
+#elif __linux__
+      if (code_page.empty())
+      {
+            code_page = nl_langinfo_l(CODESET, (locale_t)newlocale(LC_ALL_MASK, loc_name.data(), (locale_t)0));
+      }
+#endif
+      return all_code_pages.is_mb(code_page);
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 
 std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
 {
-
-      cmatch match_str;
-      regex reg_exp("(.*)([.].*)", std::regex_constants::icase);
-
-      if (!regex_match(loc_name.data(), match_str, reg_exp))
+      auto split_ln = split_locale_name(loc_name);
+      if (!split_ln)
       {
             return try_get_locname(loc_name);
       }
       else
       {
-            string language = match_str.str(1);
+            auto [language, code_page] = *split_ln;
 
             language = try_get_locname(language);
 
@@ -36,90 +139,31 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
             if (language.empty())
                   language = "C";
 #endif
-            
-            string codepage = match_str.str(2);
+            string codepage = code_page;
 
             std::use_facet<std::ctype<char>>(std::locale()).tolower(codepage.data(), codepage.data() + codepage.size());
-            codepage.erase(std::remove(codepage.begin(), codepage.end(), '-'), codepage.end());
+            codepage.erase(std::remove_if(codepage.begin(), codepage.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
+                codepage.end());
 
-#ifdef _WIN32
-            if (codepage.find("utf7") != npos)
-                  codepage = ".65000";
-            else if (codepage.find("utf8") != npos)
-                  codepage = ".65001";
-            else if (codepage.find("utf16") != npos)
-                  codepage = ".1200";
-            else if (codepage.find("utf32") != npos)
-                  codepage = ".12000";
-            else if (codepage.find("utf32be") != npos)
-                  codepage = ".12001";
-            else if (codepage.find("koi8r") != npos)
-                  codepage = ".20866";
-            else if (codepage.find("koi8u") != npos)
-                  codepage = ".21866";
+            auto [it_cp_begin, it_cp_end] = all_code_pages.get_cp(codepage);
+            if (it_cp_begin == it_cp_end)
+            {
+                  if (auto ret = checkup_locale(language, code_page))
+                        return *ret;
+            }
             else
             {
-                  regex reg_exp("^[.][^[:d:]]*([[:d:]]+).*$", std::regex_constants::icase);
 
-                  if (regex_match(codepage.data(), match_str, reg_exp))
+                  if (auto ret = checkup_locale(language, code_page))
+                        return *ret;
+
+                  for (; it_cp_begin != it_cp_end; it_cp_begin++)
                   {
-                        codepage = "." + match_str.str(1);
+                        if (auto ret = checkup_locale(language, it_cp_begin->second.first))
+                              return *ret;
                   }
             }
-            
-            try
-            {
-                  std::locale loc((language + codepage).c_str());
-                  return language + codepage;
-            }
-            catch (...)
-            {
-                  return {};
-            }
-
-#elif __linux__
-
-            string code_page = codepage;
-            size_t pos_utf = code_page.find("utf");
-            if (pos_utf != npos)
-            {
-                  code_page.replace(pos_utf, 3, "utf-");
-            }
-            size_t pos_koi8 = code_page.find("koi8");
-            if (pos_koi8 != npos)
-            {
-                  code_page.replace(pos_koi8, 4, "koi8-");
-            }
- 
-            auto toupper = [](char ch) { return std::use_facet<std::ctype<char>>(std::locale()).toupper(ch); };
-
-            string code_page_up = code_page;
-            std::transform(code_page_up.begin(), code_page_up.end(), code_page_up.begin(), toupper);
-            string codepage_up = codepage;
-            std::transform(codepage_up.begin(), codepage_up.end(), codepage_up.begin(), toupper);
-
-            const auto try_call_fn = [](std::string_view loc_name_a) -> std::optional<std::string> {
-                  try
-                  {
-                        std::locale loc(loc_name_a.data());
-                        return loc_name_a.data();
-                  }
-                  catch (...)
-                  {
-                        return {};
-                  }
-            };
-
-            if (auto ret = try_call_fn(language + code_page))
-                  return *ret;
-            if (auto ret = try_call_fn(language + codepage))
-                  return *ret;
-            if (auto ret = try_call_fn(language + code_page_up))
-                  return *ret;
-            if (auto ret = try_call_fn(language + codepage_up))
-                  return *ret;
 
             throw std::runtime_error("locale name not found");
-#endif
       }
 }

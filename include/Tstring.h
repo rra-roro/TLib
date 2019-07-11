@@ -83,6 +83,23 @@ namespace tlib
             return strconvert_w_codepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
       }
 
+      inline std::wstring cstr_wstr(std::string_view str, std::string_view loc_name)
+      {
+            std::wstring_convert<codecvt_w_o> strconvert_w_codepage(new codecvt_w_o(loc_name.data()));
+
+            const char *_first_symbol = str.data();
+            return strconvert_w_codepage.from_bytes(_first_symbol, _first_symbol + str.size());
+      }
+
+      inline std::string wstr_cstr(std::wstring_view wstr, std::string_view loc_name)
+      {
+            std::wstring_convert<codecvt_w_o> strconvert_w_codepage(new codecvt_w_o(loc_name.data()));
+
+            const wchar_t *_first_symbol = wstr.data();
+            return strconvert_w_codepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
+      }
+
+
       //   u8string <--> u16string
 
       inline std::u16string u8str_u16str(std::u8string_view u8str)
@@ -134,27 +151,33 @@ namespace tlib
 
 #ifdef _WIN32
       #ifdef _UNICODE
-            #define str2tstr(str)  tlib::cstr_wstr(str)
-            #define wstr2tstr(str) str
-            #define ustr2tstr(str) tlib::u16str_wstr(str)
-            #define tstr2str(str)  tlib::wstr_cstr(str)
-            #define tstr2wstr(str) str
-            #define tstr2ustr(str) tlib::wstr_u16str(str)
+            #define str2tstr(str)   tlib::cstr_wstr(str)
+            #define wstr2tstr(str)  str
+            #define ustr2tstr(str)  tlib::u16str_wstr(str)
+            #define u8str2tstr(str) tlib::u8str_wstr(str) 
+            #define tstr2str(str)   tlib::wstr_cstr(str)
+            #define tstr2wstr(str)  str
+            #define tstr2ustr(str)  tlib::wstr_u16str(str)
+            #define tstr2u8str(str) tlib::wstr_u8str(str) 
       #else
-            #define str2tstr(str)  str
-            #define wstr2tstr(str) tlib::wstr_cstr(str)
-            #define ustr2tstr(str) tlib::wstr_cstr(u16str_wstr(str))
-            #define tstr2str(str)  str
-            #define tstr2wstr(str) tlib::cstr_wstr(str)
-            #define tstr2ustr(str) tlib::wstr_u16str(cstr_wstr(str))
+            #define str2tstr(str)   str
+            #define wstr2tstr(str)  tlib::wstr_cstr(str)
+            #define ustr2tstr(str)  tlib::wstr_cstr(u16str_wstr(str))
+            #define u8str2tstr(str) tlib::wstr_cstr(tlib::u8str_wstr(str))
+            #define tstr2str(str)   str
+            #define tstr2wstr(str)  tlib::cstr_wstr(str)
+            #define tstr2ustr(str)  tlib::wstr_u16str(cstr_wstr(str))
+            #define tstr2u8str(str) tlib::wstr_u8str(cstr_wstr(str)) 
       #endif
 #elif __linux__
-      #define str2tstr(str)  tlib::u8str_u16str(str)
-      #define wstr2tstr(str) tlib::wstr_u16str(str)
-      #define ustr2tstr(str) str
-      #define tstr2str(str)  tlib::u16str_u8str(str)
-      #define tstr2wstr(str) tlib::u16str_wstr(str)
-      #define tstr2ustr(str) str
+      #define str2tstr(str)   tlib::u8str_u16str(str)
+      #define wstr2tstr(str)  tlib::wstr_u16str(str)
+      #define ustr2tstr(str)  str
+      #define u8str2tstr(str) tlib::u8str_u16str(str) 
+      #define tstr2str(str)   tlib::u16str_u8str(str)
+      #define tstr2wstr(str)  tlib::u16str_wstr(str)
+      #define tstr2ustr(str)  str
+      #define tstr2u8str(str) tlib::u16str_u8str(str)
 #endif
       //=======================================================================
       //  Вводим макросы, которые позволяют задавать в явном виде тип char и wchar_t строки и символа

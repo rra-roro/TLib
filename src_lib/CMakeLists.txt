@@ -16,7 +16,8 @@ endif ()
 SET(TARGT_NAME_TLIB tlib)
 SET(SOURCE_TLIB Tstring.cpp Tiostream.cpp Tlocale.cpp 
                 Tcodecvt.cpp Tiomanip.cpp Tenvironment.cpp Tlib_version.cpp
-                "./locale/locale_name.cpp" 
+                "./locale/locale_name.cpp"
+                "./locale/code_page.cpp"
                 "./locale/Tlocale_class.cpp")
 
 SET(TARGT_NAME_TPARSERS tlib_parsers)
@@ -36,7 +37,7 @@ if (MSVC)
     SET(TARGT_NAME_TPARSERS     ${TARGT_NAME_TPARSERS}${LIB_SUFFIX})
     SET(TARGT_NAME_TCHAR16     ${TARGT_NAME_TCHAR16}${LIB_SUFFIX})    
     
-    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./win/exception_win.cpp")    
+    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./win/exception_win.cpp" "./win/locale_mbrlen_win.cpp")    
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})    
     add_library(${TARGT_NAME_TCHAR16} ${SHARED_LIB} ${SOURCE_TCHAR16})    
         
@@ -57,7 +58,7 @@ if (MSVC)
 
 else()
 
-    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./linux/locale_facets_linux.cpp")
+    add_library(${TARGT_NAME_TLIB}        ${SOURCE_TLIB} "./linux/locale_facets_linux.cpp" "./linux/locale_mbrlen_linux.cpp")
     add_library(${TARGT_NAME_TPARSERS}    ${SOURCE_TPARSERS})      
 
     target_include_directories(${TARGT_NAME_TLIB} PUBLIC "./linux/" )    

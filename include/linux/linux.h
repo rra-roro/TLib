@@ -1,7 +1,7 @@
-﻿
-
-#ifndef __LINUX_H
+﻿#ifndef __LINUX_H
 #define __LINUX_H
+
+#include <locale.h>
 
 inline char* GetConsoleOutputCP(void)
 {

@@ -37,7 +37,16 @@ extern template std::locale::id std::money_put<char16_t>::id;
 #include <Tlocale_config.h>
 #include <locale/Tlocale_facets.h>
 #include <locale/Tlocale_class.h>
+
+#ifdef _WIN32
+#include <win/locale_mbrlen_win.h>
+#elif __linux__
+#include <linux/locale_mbrlen_linux.h>
+#endif
+
 #include <locale/Tlocale_alg.h>
+
+
 
 namespace tlib
 {
