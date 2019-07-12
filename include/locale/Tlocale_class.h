@@ -388,7 +388,10 @@ namespace tlib
 
                   return str.data();
 #elif __linux__
-                  if (str == "POSIX" || str == "C") return str.data();
+                  if (str == "POSIX" || str == "C")
+                  {
+                        return str.data();
+                  }                        
 
                   // Предпологаем, что нам передали длинное имя, получим из него короткое:
                   auto short_name = all_locale_names.find_short(str.data());

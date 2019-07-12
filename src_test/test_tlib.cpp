@@ -56,7 +56,7 @@ namespace tlib
                   tlib::locale l8 ("ru-RU.utf-8");
                   tlib::locale l9 ("Russian_Russia.utf-8");
                   tlib::locale l10 ("Russian-Russia.utf-8");
-
+                  
                   auto locnames = tlib::get_available_locale_names();
 
                   auto end_en_locale = std::partition(locnames.begin(), locnames.end(),
@@ -412,8 +412,8 @@ namespace tlib
 
             InitConsolIO();
 
-            ASSERT_TRUE(std::locale().name() == "*");
-            ASSERT_TRUE(setlocale(LC_ALL, NULL) == tlib::locale::get_locale_name_program());
+            ASSERT_TRUE(std::locale().name() == "*");            
+            ASSERT_TRUE(setlocale(LC_ALL, NULL) != std::string("C"));
 
 
             int pipePair[2];

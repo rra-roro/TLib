@@ -61,7 +61,7 @@ namespace tlib
       size_t
       __mbrtowc(wchar_t *pwc, const char *s, size_t n, mbstate_t *ps, locale_t loc)
       {
-            wchar_t buf[1];
+            alignas(wchar_t) wchar_t buf[1];
             struct __gconv_step_data data;
             int status;
             size_t result;
@@ -109,7 +109,22 @@ namespace tlib
             if (fcts->towc->__shlib_handle != NULL)
                   PTR_DEMANGLE(fct);
 #endif
-            status = DL_CALL_FCT(fct, (fcts->towc, &data, &inbuf, endbuf, NULL, &dummy, 0, 1));
+            // следующая строка кода на самом деле вызывает ф-ию glib: __gconv_transform_utf8_internal(...)
+            // эта ф-ия определена в файле glibc/iconv/skeleton.c - где ее имя представляет собой макрос FUNCTION_NAME
+            // т.е. в зависемости от заданых макросов FUNCTION_NAME будет генерировать несколько разных ф-ий 
+            // с разными именами.
+            // Посмотреть код FUNCTION_NAME, а в нашем случае __gconv_transform_utf8_internal, можно тут:
+            // https://code.woboq.org/userspace/glibc/iconv/skeleton.c.html#507
+
+            // Cтранная история! В оригинальной ф-ии __mbrtowc (там откуда я брал ее исходный код)
+            // следующий вызов __gconv_transform_utf8_internal() осуществляется
+            // с NULL вместо &outbuf (в 5-м параметре вызова ф-ии)
+            // это привоит к Segmentation fault, по идее выходной буфер должен быть взят из структуры data
+            // но видимо это зависит от версии библиотеки glib.
+            // Передача вместо NULL адреса &outbuf - решает проблему
+            // Ну и на всякий случай адрес буффера на который указывает outbuf - я выровнял.
+
+            status = DL_CALL_FCT(fct, (fcts->towc, &data, &inbuf, endbuf, &outbuf, &dummy, 0, 1));
 
             /* There must not be any problems with the conversion but illegal input
      characters.  The output buffer must be large enough, otherwise the
@@ -162,6 +177,7 @@ namespace tlib
             {
                   memset(state, '\0', sizeof *state);
                   result = __mbrtowc(NULL, s, n, state, c_loc);
+
                   /* The `mbrtowc' functions tell us more than we need.  Fold the -1 and -2 result into -1.  */
                   if (result < 0)
                         result = -1;

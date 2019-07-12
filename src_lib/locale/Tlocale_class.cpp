@@ -75,9 +75,16 @@ std::optional<std::string> checkup_locale(std::string language, std::string_view
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool tlib::locale::detect_multibyte_codepage(std::string_view loc_name)
 {
-      auto [language_ref, code_page_ref] = *split_locale_name(loc_name);
-      string language = language_ref;
-      string code_page = code_page_ref;
+      string language;
+      string code_page;
+      auto split_name = split_locale_name(loc_name);
+
+      if(split_name)
+      {
+            auto [language_ref, code_page_ref] = *split_name;
+            language = language_ref;
+            code_page = code_page_ref;
+      }
 
 #ifdef _WIN32
       if (code_page.empty())
@@ -140,7 +147,6 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
                   language = "C";
 #endif
             string codepage = code_page;
-
             std::use_facet<std::ctype<char>>(std::locale()).tolower(codepage.data(), codepage.data() + codepage.size());
             codepage.erase(std::remove_if(codepage.begin(), codepage.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
                 codepage.end());
@@ -153,7 +159,6 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
             }
             else
             {
-
                   if (auto ret = checkup_locale(language, code_page))
                         return *ret;
 

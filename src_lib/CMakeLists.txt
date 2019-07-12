@@ -67,7 +67,7 @@ else()
 	set_target_properties(${TARGT_NAME_TLIB} ${TARGT_NAME_TPARSERS} PROPERTIES
 		  CXX_STANDARD 17
 		  CXX_STANDARD_REQUIRED ON
-		  COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
+		  COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra;-g;-o0"
 	)
 
     add_compile_definitions(_LIB)

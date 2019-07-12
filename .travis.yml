@@ -16,6 +16,8 @@ addons:
       - doxygen
 
 install:
+  - sudo apt-get install -y gdb  # install gdb
+
   - DEPS_DIR="${HOME}/deps"
   - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
   - |
@@ -27,8 +29,9 @@ install:
   - cd -
 
 before_script:
-- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
-- sudo apt-get update -qq
+- ulimit -c unlimited -S       # enable core dumps
+#- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+#- sudo apt-get update -qq
 - sudo apt-get install graphviz
 #- sudo apt-get install libboost-all-dev -y
 
@@ -43,11 +46,15 @@ before_script:
 - sudo cp -a googlemock/gtest/libgtest.a /usr/lib/
 - cd -
 
+after_failure:
+- COREFILE=$(find . -maxdepth 1 -name "core*" | head -n 1) # find core file
+- if [[ -f "$COREFILE" ]]; then gdb -c "$COREFILE" /home/travis/build/rra-roro/TLib/src_test/test_tlib -ex "thread apply all bt" -ex "set pagination 0" -batch; fi
+
 script:
 - CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8
 - cmake -DSTATIC_LINK_LIBS=ON .
 - cmake --build .
-#- cmake --build . --target test
+- cmake --build . --target test
 - cmake --build . --target package
 #- cd ./src_lib_shared
 - /home/travis/build/rra-roro/TLib/src_test/test_tlib

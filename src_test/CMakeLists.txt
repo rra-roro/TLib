@@ -51,7 +51,7 @@ else()
         set_target_properties(${TARGT_NAME}  PROPERTIES
                   CXX_STANDARD 17
                   CXX_STANDARD_REQUIRED ON
-                  COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
+                  COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra;-g;-o0"
         )
 
         add_compile_definitions(__linux__)
