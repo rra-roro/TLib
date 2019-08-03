@@ -99,6 +99,24 @@ namespace tlib
             return strconvert_w_codepage.to_bytes(_first_symbol, _first_symbol + wstr.size());
       }
 
+      //   string <--> u16string
+
+      inline std::u16string cstr_ustr(std::string_view str, std::string_view loc_name)
+      {
+            std::wstring_convert<codecvt_u16_o, char16_t> strconvert_u16_codepage(new codecvt_u16_o(loc_name.data()));
+
+            const char *_first_symbol = str.data();
+            return strconvert_u16_codepage.from_bytes(_first_symbol, _first_symbol + str.size());
+      }
+
+      inline std::string ustr_cstr(std::u16string_view ustr, std::string_view loc_name)
+      {
+            std::wstring_convert<codecvt_u16_o, char16_t> strconvert_u16_codepage(new codecvt_u16_o(loc_name.data()));
+
+            const char16_t *_first_symbol = ustr.data();
+            return strconvert_u16_codepage.to_bytes(_first_symbol, _first_symbol + ustr.size());
+      }
+
 
       //   u8string <--> u16string
 
