@@ -4,15 +4,14 @@
 #include "Tlib_version.h"
 #include <string_view>
 #include <algorithm>
-//#include <unistd.h>
-//#include <io.h>
 #include <fcntl.h>
-//#include <langinfo.h>
+#include <thread>
 
 #define PRIVATE_TEST 1
 
 #include <Tlocale.h>
 #include <Tiostream.h>
+#include <Tstdlib.h>
 
 
 TEST(version, test1)
@@ -43,20 +42,20 @@ namespace tlib
 
             try
             {
-                  tlib::locale l1 ("C");
-                  tlib::locale l2 ("POSIX");                  
+                  tlib::locale l1("C");
+                  tlib::locale l2("POSIX");
 
-                  tlib::locale l3 (".utf-8");
-                  
-                  tlib::locale l4 ("ru_RU.Utf-8");
-                  tlib::locale l5 ("ru_RU.uTf-8");
-                  tlib::locale l6 ("ru_RU.uTf8");
+                  tlib::locale l3(".utf-8");
 
-                  tlib::locale l7 ("ru_RU.utf-8");
-                  tlib::locale l8 ("ru-RU.utf-8");
-                  tlib::locale l9 ("Russian_Russia.utf-8");
-                  tlib::locale l10 ("Russian-Russia.utf-8");
-                  
+                  tlib::locale l4("ru_RU.Utf-8");
+                  tlib::locale l5("ru_RU.uTf-8");
+                  tlib::locale l6("ru_RU.uTf8");
+
+                  tlib::locale l7("ru_RU.utf-8");
+                  tlib::locale l8("ru-RU.utf-8");
+                  tlib::locale l9("Russian_Russia.utf-8");
+                  tlib::locale l10("Russian-Russia.utf-8");
+
                   auto locnames = tlib::get_available_locale_names();
 
                   auto end_en_locale = std::partition(locnames.begin(), locnames.end(),
@@ -403,63 +402,314 @@ namespace tlib
             ASSERT_TRUE(tstr2u8str(_T("Мама мыла раму")) == u8"Мама мыла раму");
       }
 
+      TEST(Tstdlib, NumberToString)
+      {
+            tlib::tstring str;
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 16) && str == _T("fffffffffffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 15) && str == _T("2c1d56b648c6cd106"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 14) && str == _T("8681049adb03db166"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 13) && str == _T("219505a9511a867b66"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 12) && str == _T("839365134a2a240706"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 11) && str == _T("335500516a429071276"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 9) && str == _T("145808576354216723746"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 8) && str == _T("1777777777777777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 7) && str == _T("45012021522523134134556"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 6) && str == _T("3520522010102100444244410"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 5) && str == _T("2214220303114400424121122411"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 4) && str == _T("33333333333333333333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 3) && str == _T("11112220022122120101211020120210210211120"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10LL, str, 2) && str == _T("1111111111111111111111111111111111111111111111111111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 16) && str == _T("fffffffffffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 15) && str == _T("2c1d56b648c6cd106"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 14) && str == _T("8681049adb03db166"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 13) && str == _T("219505a9511a867b66"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 12) && str == _T("839365134a2a240706"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 11) && str == _T("335500516a429071276"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 10) && str == _T("18446744073709551606"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 9) && str == _T("145808576354216723746"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 8) && str == _T("1777777777777777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 7) && str == _T("45012021522523134134556"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 6) && str == _T("3520522010102100444244410"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 5) && str == _T("2214220303114400424121122411"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 4) && str == _T("33333333333333333333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 3) && str == _T("11112220022122120101211020120210210211120"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long long)-10LL, str, 2) && str == _T("1111111111111111111111111111111111111111111111111111111111110110"));
+
+#ifdef __linux__
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 16) && str == _T("fffffffffffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 15) && str == _T("2c1d56b648c6cd106"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 14) && str == _T("8681049adb03db166"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 13) && str == _T("219505a9511a867b66"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 12) && str == _T("839365134a2a240706"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 11) && str == _T("335500516a429071276"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 9) && str == _T("145808576354216723746"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 8) && str == _T("1777777777777777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 7) && str == _T("45012021522523134134556"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 6) && str == _T("3520522010102100444244410"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 5) && str == _T("2214220303114400424121122411"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 4) && str == _T("33333333333333333333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 3) && str == _T("11112220022122120101211020120210210211120"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 2) && str == _T("1111111111111111111111111111111111111111111111111111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 16) && str == _T("fffffffffffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 15) && str == _T("2c1d56b648c6cd106"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 14) && str == _T("8681049adb03db166"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 13) && str == _T("219505a9511a867b66"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 12) && str == _T("839365134a2a240706"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 11) && str == _T("335500516a429071276"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 10) && str == _T("18446744073709551606"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 9) && str == _T("145808576354216723746"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 8) && str == _T("1777777777777777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 7) && str == _T("45012021522523134134556"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 6) && str == _T("3520522010102100444244410"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 5) && str == _T("2214220303114400424121122411"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 4) && str == _T("33333333333333333333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 3) && str == _T("11112220022122120101211020120210210211120"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10LL, str, 2) && str == _T("1111111111111111111111111111111111111111111111111111111111110110"));
+#elif _WIN32
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 16) && str == _T("fffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 15) && str == _T("1a20dcd76"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 14) && str == _T("2ca5b7458"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 13) && str == _T("535a7987c"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 12) && str == _T("9ba461586"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 11) && str == _T("1904440545"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 9) && str == _T("12068657443"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 8) && str == _T("37777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 7) && str == _T("211301422341"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 6) && str == _T("1550104015450"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 5) && str == _T("32244002423121"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 4) && str == _T("3333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 3) && str == _T("102002022201221111110"));
+            ASSERT_TRUE(tlib::dig_to_tstr(-10L, str, 2) && str == _T("11111111111111111111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 16) && str == _T("fffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 15) && str == _T("1a20dcd76"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 14) && str == _T("2ca5b7458"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 13) && str == _T("535a7987c"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 12) && str == _T("9ba461586"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 11) && str == _T("1904440545"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 10) && str == _T("4294967286"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 9) && str == _T("12068657443"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 8) && str == _T("37777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 7) && str == _T("211301422341"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 6) && str == _T("1550104015450"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 5) && str == _T("32244002423121"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 4) && str == _T("3333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 3) && str == _T("102002022201221111110"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned long)-10L, str, 2) && str == _T("11111111111111111111111111110110"));
+#endif
+
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 16) && str == _T("fff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 15) && str == _T("14636"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 14) && str == _T("19c46"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 13) && str == _T("23a96"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 12) && str == _T("31b06"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 11) && str == _T("4525a"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 9) && str == _T("108786"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 8) && str == _T("177766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 7) && str == _T("362016"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 6) && str == _T("1223210"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 5) && str == _T("4044101"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 4) && str == _T("33333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 3) && str == _T("10022212220"));
+            ASSERT_TRUE(tlib::dig_to_tstr((short)-10L, str, 2) && str == _T("1111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 16) && str == _T("fff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 15) && str == _T("14636"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 14) && str == _T("19c46"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 13) && str == _T("23a96"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 12) && str == _T("31b06"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 11) && str == _T("4525a"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 10) && str == _T("65526"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 9) && str == _T("108786"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 8) && str == _T("177766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 7) && str == _T("362016"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 6) && str == _T("1223210"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 5) && str == _T("4044101"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 4) && str == _T("33333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 3) && str == _T("10022212220"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned short)-10L, str, 2) && str == _T("1111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 16) && str == _T("fffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 15) && str == _T("1a20dcd76"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 14) && str == _T("2ca5b7458"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 13) && str == _T("535a7987c"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 12) && str == _T("9ba461586"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 11) && str == _T("1904440545"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 9) && str == _T("12068657443"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 8) && str == _T("37777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 7) && str == _T("211301422341"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 6) && str == _T("1550104015450"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 5) && str == _T("32244002423121"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 4) && str == _T("3333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 3) && str == _T("102002022201221111110"));
+            ASSERT_TRUE(tlib::dig_to_tstr((int)-10L, str, 2) && str == _T("11111111111111111111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 16) && str == _T("fffffff6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 15) && str == _T("1a20dcd76"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 14) && str == _T("2ca5b7458"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 13) && str == _T("535a7987c"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 12) && str == _T("9ba461586"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 11) && str == _T("1904440545"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 10) && str == _T("4294967286"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 9) && str == _T("12068657443"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 8) && str == _T("37777777766"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 7) && str == _T("211301422341"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 6) && str == _T("1550104015450"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 5) && str == _T("32244002423121"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 4) && str == _T("3333333333333312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 3) && str == _T("102002022201221111110"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned int)-10L, str, 2) && str == _T("11111111111111111111111111110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 16) && str == _T("f6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 15) && str == _T("116"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 14) && str == _T("138"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 13) && str == _T("15c"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 12) && str == _T("186"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 11) && str == _T("204"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 10) && str == _T("-10"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 9) && str == _T("303"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 8) && str == _T("366"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 7) && str == _T("501"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 6) && str == _T("1050"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 5) && str == _T("1441"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 4) && str == _T("3312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 3) && str == _T("100010"));
+            ASSERT_TRUE(tlib::dig_to_tstr((char)-10L, str, 2) && str == _T("11110110"));
+
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 16) && str == _T("f6"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 15) && str == _T("116"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 14) && str == _T("138"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 13) && str == _T("15c"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 12) && str == _T("186"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 11) && str == _T("204"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 10) && str == _T("246"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 9) && str == _T("303"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 8) && str == _T("366"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 7) && str == _T("501"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 6) && str == _T("1050"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 5) && str == _T("1441"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 4) && str == _T("3312"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 3) && str == _T("100010"));
+            ASSERT_TRUE(tlib::dig_to_tstr((unsigned char)-10L, str, 2) && str == _T("11110110"));
+      }
 
 
-      TEST(Tiostream, set_locale)
+      TEST(Tiostream, SetIostreamLocale)
       {
             // Проверяем всевозможные форматы задание имени локали
             // Формат имени локали не должен зависеть от платформы
 
             InitConsolIO();
 
-            ASSERT_TRUE(std::locale().name() == "*");            
+            ASSERT_TRUE(std::locale().name() == "*");
             ASSERT_TRUE(setlocale(LC_ALL, NULL) != std::string("C"));
 
+            auto print_out = [&](std::string_view io_name, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos)
+            {
+                  os << "[          ] :  " << io_name << " : 'Мама мыла раму'" << std::endl;
+                  wos << L"[          ] : w" << cstr_wstr(io_name) << L" : 'Мама мыла раму'" << std::endl;
+                  uos << u"[          ] : u" << cstr_ustr(io_name, tlib::locale::get_locale_name_program()) << u" : 'Мама мыла раму'" << std::endl;                  
+                  tos << _T("[          ] : t") << str2tstr(io_name) << _T(" : 'Мама мыла раму'") << std::endl;                  
+            };
+
+            print_out("cout", std::cout, std::wcout, tlib::ucout, tlib::tcout);
+            print_out("cerr", std::cerr, std::wcerr, tlib::ucerr, tlib::tcerr);
+            print_out("clog", std::clog, std::wclog, tlib::uclog, tlib::tclog);
 
             int pipePair[2];
+            int pipePair_stderr[2];
 #ifdef _WIN32
             auto saved_stdout = _dup(_fileno(stdout));
             _pipe(pipePair, 256, _O_BINARY);
             _dup2(pipePair[1], _fileno(stdout));
+
+            auto saved_stderr = _dup(_fileno(stderr)); // сохраним связь терминала и stdout
+            _pipe(pipePair_stderr, 256, _O_BINARY);
+            _dup2(pipePair_stderr[1], _fileno(stderr));
 #elif __linux__
             auto saved_stdout = dup(STDOUT_FILENO); // сохраним связь терминала и stdout
             pipe(pipePair);
-            dup2(pipePair[1], STDOUT_FILENO);       // свяжем stdout с pipe 
-            #define _read read
+            dup2(pipePair[1], STDOUT_FILENO); // свяжем stdout с pipe
+
+            auto saved_stderr = dup(STDERR_FILENO); // сохраним связь терминала и stdout
+            pipe(pipePair_stderr);
+            dup2(pipePair_stderr[1], STDERR_FILENO); // свяжем stdout с pipe
+#define _read read
 #endif
 
-            auto get_cout = [&]()
-            {
+            auto get_stdout = [&](int* pipePair) {
                   fflush(NULL);
                   std::string buf(100, '\0');
                   _read(pipePair[0], &buf[0], 99);
                   return std::string(buf.c_str());
             };
 
-            std::cout << "Мама мыла раму" << std::endl;
-            ASSERT_TRUE(get_cout() == wstr_cstr(L"Мама мыла раму\n", tlib::locale::get_locale_name_console()));
+            auto test_out = [&](int* pipePair, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos)
+            {
+                  InitConsolIO();
 
-            std::wcout << L"мама Мыла раму" << std::endl;
-            ASSERT_TRUE(get_cout() == wstr_cstr(L"мама Мыла раму\n", tlib::locale::get_locale_name_console()));
+                  os << "Мама мыла раму" << std::endl;
+                  ASSERT_TRUE(get_stdout(pipePair) == "Мама мыла раму\n");
 
-            tlib::ucout << u"мама мыла Раму" << std::endl;
-            ASSERT_TRUE(get_cout() == wstr_cstr(L"мама мыла Раму\n", tlib::locale::get_locale_name_console()));
+                  wos << L"мама Мыла раму" << std::endl;
+                  ASSERT_TRUE(get_stdout(pipePair) == "мама Мыла раму\n");
 
-            tlib::tcout << _T("мама мыла раму") << std::endl;
-            ASSERT_TRUE(get_cout() == wstr_cstr(L"мама мыла раму\n", tlib::locale::get_locale_name_console()));
+                  uos << u"мама мыла Раму" << std::endl;
+                  ASSERT_TRUE(get_stdout(pipePair) == "мама мыла Раму\n");
+
+                  tos << _T("мама мыла раму") << std::endl;
+                  ASSERT_TRUE(get_stdout(pipePair) == "мама мыла раму\n");
+            };
+
+            // test std streams in main thread
+            test_out(pipePair, std::cout, std::wcout, tlib::ucout, tlib::tcout);
+            test_out(pipePair_stderr, std::cerr, std::wcerr, tlib::ucerr, tlib::tcerr);
+            test_out(pipePair_stderr, std::clog, std::wclog, tlib::uclog, tlib::tclog);
+
+            // test std streams in other thread
+            std::thread test_thread_out(test_out, pipePair, std::ref(std::cout), std::ref(std::wcout), std::ref(tlib::ucout), std::ref(tlib::tcout));
+            test_thread_out.join();
+            std::thread test_thread_err(test_out, pipePair_stderr, std::ref(std::cerr), std::ref(std::wcerr), std::ref(tlib::ucerr), std::ref(tlib::tcerr));
+            test_thread_err.join();
+            std::thread test_thread_log(test_out, pipePair_stderr, std::ref(std::clog), std::ref(std::wclog), std::ref(tlib::uclog), std::ref(tlib::tclog));
+            test_thread_log.join();
+
 
 #ifdef _WIN32
             _dup2(saved_stdout, _fileno(stdout)); // восстановим связь терминала и stdout
             _close(saved_stdout);                 // закроем копию дискрептора
             _close(pipePair[0]);                  // закроем дискрепторы pipe
             _close(pipePair[1]);
+
+            _dup2(saved_stderr, _fileno(stderr)); // восстановим связь терминала и stdout
+            _close(saved_stderr);                 // закроем копию дискрептора
+            _close(pipePair_stderr[1]);           // закроем дискрепторы pipe
+            _close(pipePair_stderr[0]);
 #elif __linux__
             dup2(saved_stdout, STDOUT_FILENO); // восстановим связь терминала и stdout
             close(saved_stdout);               // закроем копию дискрептора
             close(pipePair[1]);                // закроем дискрепторы pipe
-            close(pipePair[0]);           
-            #undef _read
+            close(pipePair[0]);
+
+            dup2(saved_stderr, STDERR_FILENO); // восстановим связь терминала и stdout
+            close(saved_stderr);               // закроем копию дискрептора
+            close(pipePair_stderr[1]);         // закроем дискрепторы pipe
+            close(pipePair_stderr[0]);
+#undef _read
 #endif
       }
+
+      //TEST(Tiomanip, put_intger_by_radix)
+      //{
+
+      //      std::cout << "tertwe\n";
+      //}
 
 }
