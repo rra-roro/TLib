@@ -19,16 +19,24 @@ int tlib::InitConsolIO(void)
       // Системная локаль по умолчанию "C". Проинициализируем CRT, установив для нее
       // локаль, соответствующую кодировке строковых литералов типа char, в нашей
       // откомпилированной программе, заданной при ее компиляции
-      tlib::locale loc_prg = tlib::locale::get_locale_program();
-      std::locale::global(loc_prg);
-      setlocale(LC_ALL, loc_prg.name().c_str());
+      thread_local tlib::locale loc_prg = tlib::locale::get_locale_program();
+      [[maybe_unused]] thread_local auto old_gl_locale = std::locale::global(loc_prg);
 
-      // Создадим локаль соответствующую текущей кодировке консоли
-      tlib::locale loc = tlib::locale::get_locale_console();
+      [[maybe_unused]] thread_local auto old_name_c_locale = setlocale(LC_ALL, tlib::locale::get_locale_name_program().c_str());
 
-      auto set_locale = [](auto& stream, const tlib::locale& loc) {stream.imbue(loc); stream.clear(); };
+      // Интересно, но как выяснилось покрайней мере в Windows 10 - setlocale задает локаль для строк, используемых в программе,
+      // можно задавать как однобайтовые локали, так и многобайтовые, т.е. можно задавать utf-8
+      //
+      // После этого, все объекты cout, wcout, ucout, cin, wcin, и т.д. будут конвертировать строки из локали программы в локаль консоли
+      // автоматически без нашего участия. Но не только, setlocale также влияет на ф-ии Си работы со строками, заставляя их корректно работать.
+      //
+      // Таким образом нам не нужно подменять stream_buffer и устанавивать локаль через ф-ию член imbue().
+      //
+      // Заметим при этом, что это все влияет на С/C++ CRT библиотеку,
+      // а кодовая страница консоли остается той же что и была (866 по умолчанию)
 
 #ifdef __linux__
+
       // Консоль Linux не сособна выводить wchar_t строки, заменим у
       // wide iostream потоков потоковый буфер, перенаправив тем самым
       // wcout в cout
@@ -38,36 +46,29 @@ int tlib::InitConsolIO(void)
       wcerr.rdbuf(&err_bufferconvert_w_u8);
       wclog.rdbuf(&log_bufferconvert_w_u8);
 
-      set_locale(cout, loc);
-      set_locale(cin, loc);
-      set_locale(cerr, loc);
-      set_locale(clog, loc);
-
-#elif _WIN32
-      // Консоль Windows по умолчанию имеет кодировку отличную от кодировки строк в программе.
-      // Заменим у iostream потоков потоковый буфер, на тот который осуществляет правильное перекодирование символов
-      cout.rdbuf(&out_bufferconvert_programCP_consoleCP);
-      cin.rdbuf(&in_bufferconvert_programCP_consoleCP);
-      cerr.rdbuf(&err_bufferconvert_programCP_consoleCP);
-      clog.rdbuf(&log_bufferconvert_programCP_consoleCP);
-
-      set_locale(cout, loc_prg);
-      set_locale(cin, loc_prg);
-      set_locale(cerr, loc_prg);
-      set_locale(clog, loc_prg);
-
 #endif
 
-      // Установим локаль соответствующую текущей кодировке консоли
-      // для всех консольных потоков ввода/вывода
-      set_locale(wcout, loc);
-      set_locale(ucout, loc);
-      set_locale(wcin, loc);
-      set_locale(ucin, loc);
-      set_locale(wcerr, loc);
-      set_locale(ucerr, loc);
-      set_locale(wclog, loc);
-      set_locale(uclog, loc);
+      auto set_locale = [](auto& stream, const tlib::locale& loc) -> bool {stream.imbue(loc); stream.clear(); return true; };
+
+      // Установим локаль на основе кодировки строк программы для всех консольных потоков ввода/вывода
+      // В Windows, после установки setlocale все будет перекодировано в кодировку консоли
+      // В Linux, кодировка консоли совпадает с кодировкой программы - UTF8
+      // (нужно рассмотреть и протестировать случай, если в linux кодировки не совпадают) 
+      // В любом случае нам нужно установить локаль для консольных потоков ввода/вывода,
+      //  чтобы они правильно отображали даты, цифры, валюту и пр.
+
+      [[maybe_unused]] thread_local bool b1 = set_locale(cout, loc_prg);
+      [[maybe_unused]] thread_local bool b2 = set_locale(wcout, loc_prg);
+      [[maybe_unused]] thread_local bool b3 = set_locale(ucout, loc_prg);
+      [[maybe_unused]] thread_local bool b4 = set_locale(cin, loc_prg);
+      [[maybe_unused]] thread_local bool b5 = set_locale(wcin, loc_prg);
+      [[maybe_unused]] thread_local bool b6 = set_locale(ucin, loc_prg);
+      [[maybe_unused]] thread_local bool b7 = set_locale(cerr, loc_prg);
+      [[maybe_unused]] thread_local bool b8 = set_locale(wcerr, loc_prg);
+      [[maybe_unused]] thread_local bool b9 = set_locale(ucerr, loc_prg);
+      [[maybe_unused]] thread_local bool b10 = set_locale(clog, loc_prg);
+      [[maybe_unused]] thread_local bool b11 = set_locale(wclog, loc_prg);
+      [[maybe_unused]] thread_local bool b12 = set_locale(uclog, loc_prg);
 
       return 0;
 }
@@ -79,7 +80,7 @@ BOOL CALLBACK MyFuncLocaleEx(LPWSTR pStr, DWORD dwFlags, LPARAM lparam)
       std::string locname = wstr_cstr(pStr);
       size_t pos = locname.find("-");
       if (pos != npos)
-            locname.replace(pos, 1, "_");      
+            locname.replace(pos, 1, "_");
       if (IsValidLocaleName(pStr))
       {
             vector<string>& locales = *(vector<string>*)lparam;

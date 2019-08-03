@@ -205,6 +205,13 @@ namespace tlib
                         this->overflow(_Traits::eof());
                         return result;
                   }
+
+                  virtual int sync()
+                  {
+                        this->overflow(_Traits::eof());
+                        return fflush(NULL);
+                  }
+
             };
 
       }
@@ -219,9 +226,9 @@ namespace tlib
       thread_local std::wstring_convert<codecvt_w_u8> strconvert_w_u8(new codecvt_w_u8(CodePageUTF8));
 
       // --------------------------------------
-      string loc_program = tlib::locale::get_locale_name_program();
+      static string loc_program = tlib::locale::get_locale_name_program();
 #ifdef _WIN32
-      string loc_console = tlib::locale::get_locale_name_console();
+      static string loc_console = tlib::locale::get_locale_name_console();
 #elif __linux__
       const char* loc_console = CodePageUTF8;
 #endif
@@ -241,9 +248,8 @@ namespace tlib
       //   Convertering buffer wchar_t --> char8_t  (UTF-32  --> UTF-8)
       static inner_impl::wbuffer_sync_convert<codecvt_w_u8, wchar_t> _sync_in_bufferconvert_w_u8(cin.rdbuf(), new codecvt_w_u8(CodePageUTF8));
       static inner_impl::wbuffer_sync_convert<codecvt_w_u8, wchar_t> _sync_out_bufferconvert_w_u8(cout.rdbuf(), new codecvt_w_u8(CodePageUTF8));
-      static inner_impl::wbuffer_sync_convert<codecvt_w_u8, wchar_t> _sync_err_bufferconvert_w_u8(cerr.rdbuf(), new codecvt_w_u8(CodePageUTF8));
+      static inner_impl::wbuffer_sync_convert<codecvt_w_u8, wchar_t> _sync_err_bufferconvert_w_u8(cerr.rdbuf(), new codecvt_w_u8(CodePageUTF8));      
       static inner_impl::wbuffer_sync_convert<codecvt_w_u8, wchar_t> _sync_log_bufferconvert_w_u8(clog.rdbuf(), new codecvt_w_u8(CodePageUTF8));
-
 
       std::wbuffer_convert<codecvt_w_u8, wchar_t>& in_bufferconvert_w_u8 = _sync_in_bufferconvert_w_u8;
       std::wbuffer_convert<codecvt_w_u8, wchar_t>& out_bufferconvert_w_u8 = _sync_out_bufferconvert_w_u8;
@@ -251,27 +257,27 @@ namespace tlib
       std::wbuffer_convert<codecvt_w_u8, wchar_t>& log_bufferconvert_w_u8 = _sync_log_bufferconvert_w_u8;
 
       //   Convertering buffer char <--> char  (Program code page <--> Console code page) need for Windows
-      static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_in_bufferconvert_programCP_consoleCP(cin.rdbuf(), new codecvt_o_n(loc_program, loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_out_bufferconvert_programCP_consoleCP(cout.rdbuf(), new codecvt_o_n(loc_program, loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_err_bufferconvert_programCP_consoleCP(cerr.rdbuf(), new codecvt_o_n(loc_program, loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_log_bufferconvert_programCP_consoleCP(clog.rdbuf(), new codecvt_o_n(loc_program, loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_in_bufferconvert_programCP_consoleCP(cin.rdbuf(), new codecvt_o_n(loc_program, loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_out_bufferconvert_programCP_consoleCP(cout.rdbuf(), new codecvt_o_n(loc_program, loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_err_bufferconvert_programCP_consoleCP(cerr.rdbuf(), new codecvt_o_n(loc_program, loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_o_n, char> _sync_log_bufferconvert_programCP_consoleCP(clog.rdbuf(), new codecvt_o_n(loc_program, loc_console));
 
-      std::wbuffer_convert<codecvt_o_n, char>& in_bufferconvert_programCP_consoleCP = _sync_in_bufferconvert_programCP_consoleCP;
-      std::wbuffer_convert<codecvt_o_n, char>& out_bufferconvert_programCP_consoleCP = _sync_out_bufferconvert_programCP_consoleCP;
-      std::wbuffer_convert<codecvt_o_n, char>& err_bufferconvert_programCP_consoleCP = _sync_err_bufferconvert_programCP_consoleCP;
-      std::wbuffer_convert<codecvt_o_n, char>& log_bufferconvert_programCP_consoleCP = _sync_log_bufferconvert_programCP_consoleCP;
+      //std::wbuffer_convert<codecvt_o_n, char>& in_bufferconvert_programCP_consoleCP = _sync_in_bufferconvert_programCP_consoleCP;
+      //std::wbuffer_convert<codecvt_o_n, char>& out_bufferconvert_programCP_consoleCP = _sync_out_bufferconvert_programCP_consoleCP;
+      //std::wbuffer_convert<codecvt_o_n, char>& err_bufferconvert_programCP_consoleCP = _sync_err_bufferconvert_programCP_consoleCP;
+      //std::wbuffer_convert<codecvt_o_n, char>& log_bufferconvert_programCP_consoleCP = _sync_log_bufferconvert_programCP_consoleCP;
 
       //   Convertering buffer char16_t <--> char (UTF-16  <-->  Console code page/UTF-8) need for Windows and Linux    
-      static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_in_bufferconvert_u16_o(cin.rdbuf(), new codecvt_u16_o(loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_out_bufferconvert_u16_o(cout.rdbuf(), new codecvt_u16_o(loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_err_bufferconvert_u16_o(cerr.rdbuf(), new codecvt_u16_o(loc_console));
-      static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_log_bufferconvert_u16_o(clog.rdbuf(), new codecvt_u16_o(loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_in_bufferconvert_u16_o(cin.rdbuf(), new codecvt_u16_o(loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_out_bufferconvert_u16_o(cout.rdbuf(), new codecvt_u16_o(loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_err_bufferconvert_u16_o(cerr.rdbuf(), new codecvt_u16_o(loc_console));
+      //static inner_impl::wbuffer_sync_convert<codecvt_u16_o, char16_t> _sync_log_bufferconvert_u16_o(clog.rdbuf(), new codecvt_u16_o(loc_console));
+      
 
-
-      std::wbuffer_convert<codecvt_u16_o, char16_t>& in_bufferconvert_u16_o = _sync_in_bufferconvert_u16_o;
-      std::wbuffer_convert<codecvt_u16_o, char16_t>& out_bufferconvert_u16_o = _sync_out_bufferconvert_u16_o;
-      std::wbuffer_convert<codecvt_u16_o, char16_t>& err_bufferconvert_u16_o = _sync_err_bufferconvert_u16_o;
-      std::wbuffer_convert<codecvt_u16_o, char16_t>& log_bufferconvert_u16_o = _sync_log_bufferconvert_u16_o;
+      //std::wbuffer_convert<codecvt_u16_o, char16_t>& in_bufferconvert_u16_o = _sync_in_bufferconvert_u16_o;
+      //std::wbuffer_convert<codecvt_u16_o, char16_t>& out_bufferconvert_u16_o = _sync_out_bufferconvert_u16_o;
+      //std::wbuffer_convert<codecvt_u16_o, char16_t>& err_bufferconvert_u16_o = _sync_err_bufferconvert_u16_o;
+      //std::wbuffer_convert<codecvt_u16_o, char16_t>& log_bufferconvert_u16_o = _sync_log_bufferconvert_u16_o;
 
 
 }

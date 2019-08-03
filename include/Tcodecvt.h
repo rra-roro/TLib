@@ -245,16 +245,16 @@ namespace tlib
       extern std::wbuffer_convert<codecvt_w_u8, wchar_t>& log_bufferconvert_w_u8;
 
       //   Convertering buffer char <--> char  (Program code page <--> Console code page) need for Windows
-      extern std::wbuffer_convert<codecvt_o_n, char>& in_bufferconvert_programCP_consoleCP;
-      extern std::wbuffer_convert<codecvt_o_n, char>& out_bufferconvert_programCP_consoleCP;
-      extern std::wbuffer_convert<codecvt_o_n, char>& err_bufferconvert_programCP_consoleCP;
-      extern std::wbuffer_convert<codecvt_o_n, char>& log_bufferconvert_programCP_consoleCP;
+      //extern std::wbuffer_convert<codecvt_o_n, char>& in_bufferconvert_programCP_consoleCP;
+      //extern std::wbuffer_convert<codecvt_o_n, char>& out_bufferconvert_programCP_consoleCP;
+      //extern std::wbuffer_convert<codecvt_o_n, char>& err_bufferconvert_programCP_consoleCP;
+      //extern std::wbuffer_convert<codecvt_o_n, char>& log_bufferconvert_programCP_consoleCP;
 
       //   Convertering buffer char16_t <--> char (UTF-16  <-->  Console code page) need for Windows
-      extern std::wbuffer_convert<codecvt_u16_o, char16_t>& in_bufferconvert_u16_o;
-      extern std::wbuffer_convert<codecvt_u16_o, char16_t>& out_bufferconvert_u16_o;
-      extern std::wbuffer_convert<codecvt_u16_o, char16_t>& err_bufferconvert_u16_o;
-      extern std::wbuffer_convert<codecvt_u16_o, char16_t>& log_bufferconvert_u16_o;
+      //extern std::wbuffer_convert<codecvt_u16_o, char16_t>& in_bufferconvert_u16_o;
+      //extern std::wbuffer_convert<codecvt_u16_o, char16_t>& out_bufferconvert_u16_o;
+      //extern std::wbuffer_convert<codecvt_u16_o, char16_t>& err_bufferconvert_u16_o;
+      //extern std::wbuffer_convert<codecvt_u16_o, char16_t>& log_bufferconvert_u16_o;
 
 }
 
