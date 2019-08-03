@@ -378,6 +378,12 @@ namespace tlib
             ASSERT_TRUE(cstr_wstr(u8"Мама мыла раму", "ru_RU.utf8") == L"Мама мыла раму");
             ASSERT_TRUE(wstr_cstr(L"Мама мыла раму", "ru_RU.utf8") == u8"Мама мыла раму");
 
+            ASSERT_TRUE(cstr_u16str("Мама мыла раму") == u"Мама мыла раму");
+            ASSERT_TRUE(u16str_cstr(u"Мама мыла раму") == "Мама мыла раму");
+
+            ASSERT_TRUE(cstr_u16str(u8"Мама мыла раму", "ru_RU.utf8") == u"Мама мыла раму");
+            ASSERT_TRUE(u16str_cstr(u"Мама мыла раму", "ru_RU.utf8") == u8"Мама мыла раму");
+
             ASSERT_TRUE(u8str_wstr(u8"Мама мыла раму") == L"Мама мыла раму");
             ASSERT_TRUE(wstr_u8str(L"Мама мыла раму") == u8"Мама мыла раму");
 
@@ -603,8 +609,8 @@ namespace tlib
 
       TEST(Tiostream, SetIostreamLocale)
       {
-            // Проверяем всевозможные форматы задание имени локали
-            // Формат имени локали не должен зависеть от платформы
+            // Инициализируем I/O streams для вывода текста в кодировке консоли, 
+            // со всеми необходимыми фасетами
 
             InitConsolIO();
 
@@ -615,7 +621,7 @@ namespace tlib
             {
                   os << "[          ] :  " << io_name << " : 'Мама мыла раму'" << std::endl;
                   wos << L"[          ] : w" << cstr_wstr(io_name) << L" : 'Мама мыла раму'" << std::endl;
-                  uos << u"[          ] : u" << cstr_ustr(io_name, tlib::locale::get_locale_name_program()) << u" : 'Мама мыла раму'" << std::endl;                  
+                  uos << u"[          ] : u" << cstr_u16str(io_name) << u" : 'Мама мыла раму'" << std::endl;                  
                   tos << _T("[          ] : t") << str2tstr(io_name) << _T(" : 'Мама мыла раму'") << std::endl;                  
             };
 
@@ -626,21 +632,21 @@ namespace tlib
             int pipePair[2];
             int pipePair_stderr[2];
 #ifdef _WIN32
-            auto saved_stdout = _dup(_fileno(stdout));
+            auto saved_stdout = _dup(_fileno(stdout));  // сохраним связь терминала и stdout
             _pipe(pipePair, 256, _O_BINARY);
-            _dup2(pipePair[1], _fileno(stdout));
+            _dup2(pipePair[1], _fileno(stdout));        // свяжем stdout с pipe
 
-            auto saved_stderr = _dup(_fileno(stderr)); // сохраним связь терминала и stdout
+            auto saved_stderr = _dup(_fileno(stderr));  // сохраним связь терминала и stdout
             _pipe(pipePair_stderr, 256, _O_BINARY);
-            _dup2(pipePair_stderr[1], _fileno(stderr));
+            _dup2(pipePair_stderr[1], _fileno(stderr)); // свяжем stderr с pipe
 #elif __linux__
-            auto saved_stdout = dup(STDOUT_FILENO); // сохраним связь терминала и stdout
+            auto saved_stdout = dup(STDOUT_FILENO);  // сохраним связь терминала и stdout
             pipe(pipePair);
-            dup2(pipePair[1], STDOUT_FILENO); // свяжем stdout с pipe
+            dup2(pipePair[1], STDOUT_FILENO);        // свяжем stdout с pipe
 
-            auto saved_stderr = dup(STDERR_FILENO); // сохраним связь терминала и stdout
+            auto saved_stderr = dup(STDERR_FILENO);  // сохраним связь терминала и stderr
             pipe(pipePair_stderr);
-            dup2(pipePair_stderr[1], STDERR_FILENO); // свяжем stdout с pipe
+            dup2(pipePair_stderr[1], STDERR_FILENO); // свяжем stderr с pipe
 #define _read read
 #endif
 
@@ -688,7 +694,7 @@ namespace tlib
             _close(pipePair[0]);                  // закроем дискрепторы pipe
             _close(pipePair[1]);
 
-            _dup2(saved_stderr, _fileno(stderr)); // восстановим связь терминала и stdout
+            _dup2(saved_stderr, _fileno(stderr)); // восстановим связь терминала и stderr
             _close(saved_stderr);                 // закроем копию дискрептора
             _close(pipePair_stderr[1]);           // закроем дискрепторы pipe
             _close(pipePair_stderr[0]);
@@ -698,7 +704,7 @@ namespace tlib
             close(pipePair[1]);                // закроем дискрепторы pipe
             close(pipePair[0]);
 
-            dup2(saved_stderr, STDERR_FILENO); // восстановим связь терминала и stdout
+            dup2(saved_stderr, STDERR_FILENO); // восстановим связь терминала и stderr
             close(saved_stderr);               // закроем копию дискрептора
             close(pipePair_stderr[1]);         // закроем дискрепторы pipe
             close(pipePair_stderr[0]);
@@ -706,10 +712,9 @@ namespace tlib
 #endif
       }
 
-      //TEST(Tiomanip, put_intger_by_radix)
-      //{
-
-      //      std::cout << "tertwe\n";
-      //}
+      TEST(Tiomanip, put_intger_by_radix)
+      {
+            std::cout << "tertwe\n";
+      }
 
 }

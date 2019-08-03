@@ -231,6 +231,9 @@ namespace tlib
       //   String converter wchar_t <--> char8_t   (Wide  <--> UTF-8)
       extern thread_local std::wstring_convert<codecvt_w_u8, wchar_t> strconvert_w_u8;
 
+      //   String converter char16_t <--> char  (UTF-16 <--> ProgramCodePage)
+      extern thread_local std::wstring_convert<codecvt_u16_o, char16_t> strconvert_u16_codepage;
+
 
       //   Convertering buffer char16_t <--> char8_t  (UTF-16  <--> UTF-8) need for Linux
       extern std::wbuffer_convert<codecvt_u16_u8, char16_t>& in_bufferconvert_u16_u8;

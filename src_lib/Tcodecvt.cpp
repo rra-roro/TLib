@@ -225,6 +225,9 @@ namespace tlib
       //   String converter wchar_t <--> char8_t   (Wide  <--> UTF-8)
       thread_local std::wstring_convert<codecvt_w_u8> strconvert_w_u8(new codecvt_w_u8(CodePageUTF8));
 
+      //   String converter char16_t <--> char  (UTF-16 <--> ProgramCodePage)
+      thread_local std::wstring_convert<codecvt_u16_o, char16_t> strconvert_u16_codepage(new codecvt_u16_o(tlib::locale::get_locale_name_program()));
+
       // --------------------------------------
       static string loc_program = tlib::locale::get_locale_name_program();
 #ifdef _WIN32
