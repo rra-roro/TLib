@@ -247,7 +247,7 @@ struct get_underlying_char<T,
        typename std::enable_if_t<!std::is_class_v<remove_all_t<T>> &&
                                 is_symbol_v<remove_all_t<T>>>
 >
-{
+{     // С string      
       using type = typename remove_all<T>::type;
 };
 
@@ -256,8 +256,17 @@ struct get_underlying_char<T,
                typename std::enable_if_t<std::is_class_v<remove_all_t<T>> &&
                                          is_symbol_v<typename remove_all_t<T>::value_type>>
 >
-{ // determine whether _Ty is a pointer
+{     // basic_string
       using type = typename remove_all_t<T>::value_type;
+};
+
+template <class T>
+struct get_underlying_char<T,
+               typename std::enable_if_t<std::is_class_v<remove_all_t<T>> &&
+                                         is_symbol_v<typename remove_all_t<T>::char_type>>
+>
+{     // basic_ios
+      using type = typename remove_all_t<T>::char_type;
 };
 
 template <class T>
