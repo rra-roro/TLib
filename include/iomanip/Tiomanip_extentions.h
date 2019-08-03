@@ -14,47 +14,6 @@
 namespace tlib
 {
       //========================================================================================
-      // Объявим манипуляторы с одним аргументом:
-
-      // Манипулятор put_guid() Превращает GUID в строку
-      class put_guid
-      {
-            const GUID& guid;
-
-        public:
-            put_guid(const GUID& guid) : guid(guid){};
-
-            template <class _Elem>
-            friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const put_guid& oG)
-            {
-                  return oG.PrintGuid(os);
-            }
-
-        private:
-            template <typename _Elem>
-            std::basic_ostream<_Elem>& PrintGuid(std::basic_ostream<_Elem>& iostr) const
-            {
-                  std::streamsize W = iostr.width();
-                  _Elem F = iostr.fill();
-                  iostr << hex << setfill<_Elem>(TemplateTypeOfCh('0', _Elem));
-
-                  iostr << setw(8) << guid.Data1;
-                  iostr << setw(4) << guid.Data2;
-                  iostr << setw(4) << guid.Data3;
-                  for (int i = 0; i < 8; i++)
-                        iostr << setw(2) << ((unsigned char*)&guid.Data4)[i];
-
-                  iostr.fill(F);
-                  iostr.width(W);
-                  return iostr;
-            }
-      };
-
-      extern template std::basic_ostream<char>& put_guid::PrintGuid(std::basic_ostream<char>& iostr) const;
-      extern template std::basic_ostream<wchar_t>& put_guid::PrintGuid(std::basic_ostream<wchar_t>& iostr) const;
-      extern template std::basic_ostream<char16_t>& put_guid::PrintGuid(std::basic_ostream<char16_t>& iostr) const;
-
-      //========================================================================================
       // Манипулятор     put_intger_by_radix()
       // для вывода в поток числа в произвольной системе счисления
       // value   - конвертируемое число
@@ -169,5 +128,48 @@ namespace tlib
       extern template std::basic_ostream<char>& put_intger_by_radix<char>::C_Radix(std::basic_ostream<char>& iostr) const;
       extern template std::basic_ostream<wchar_t>& put_intger_by_radix<wchar_t>::C_Radix(std::basic_ostream<wchar_t>& iostr) const;
       extern template std::basic_ostream<char16_t>& put_intger_by_radix<char16_t>::C_Radix(std::basic_ostream<char16_t>& iostr) const;
+
+      //========================================================================================
+      // Манипулятор put_guid() Превращает GUID в строку
+      class put_guid
+      {
+            const GUID& guid;
+
+        public:
+            put_guid(const GUID& guid) : guid(guid){};
+
+            template <class _Elem>
+            friend inline std::basic_ostream<_Elem>& operator<<(std::basic_ostream<_Elem>& os, const put_guid& oG)
+            {
+                  return oG.PrintGuid(os);
+            }
+
+        private:
+            template <typename _Elem>
+            std::basic_ostream<_Elem>& PrintGuid(std::basic_ostream<_Elem>& iostr) const
+            {
+                  std::streamsize W = iostr.width();
+                  _Elem F = iostr.fill();
+                  iostr << setfill<_Elem>(TemplateTypeOfCh('0', _Elem));
+
+                  iostr << setw(8) << put_intger_by_radix(guid.Data1, 16) << TemplateTypeOfCh('-', _Elem);
+                  iostr << setw(4) << put_intger_by_radix(guid.Data2, 16) << TemplateTypeOfCh('-', _Elem);
+                  iostr << setw(4) << put_intger_by_radix(guid.Data3, 16) << TemplateTypeOfCh('-', _Elem);
+                  for (int i = 0; i < 8; i++)
+                  {
+                        iostr << setw(2) << put_intger_by_radix(((unsigned char*)&guid.Data4)[i], 16);
+                        if (i == 1)
+                              iostr << TemplateTypeOfCh('-', _Elem);
+                  }                        
+
+                  iostr.fill(F);
+                  iostr.width(W);
+                  return iostr;
+            }
+      };
+
+      extern template std::basic_ostream<char>& put_guid::PrintGuid(std::basic_ostream<char>& iostr) const;
+      extern template std::basic_ostream<wchar_t>& put_guid::PrintGuid(std::basic_ostream<wchar_t>& iostr) const;
+      extern template std::basic_ostream<char16_t>& put_guid::PrintGuid(std::basic_ostream<char16_t>& iostr) const;
 
 }
