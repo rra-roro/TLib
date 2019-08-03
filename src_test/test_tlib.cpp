@@ -12,6 +12,7 @@
 #include <Tlocale.h>
 #include <Tiostream.h>
 #include <Tstdlib.h>
+#include <Tiomanip.h>
 
 
 TEST(version, test1)
@@ -609,7 +610,7 @@ namespace tlib
 
       TEST(Tiostream, SetIostreamLocale)
       {
-            // Инициализируем I/O streams для вывода текста в кодировке консоли, 
+            // Инициализируем I/O streams для вывода текста в кодировке консоли,
             // со всеми необходимыми фасетами
 
             InitConsolIO();
@@ -617,12 +618,11 @@ namespace tlib
             ASSERT_TRUE(std::locale().name() == "*");
             ASSERT_TRUE(setlocale(LC_ALL, NULL) != std::string("C"));
 
-            auto print_out = [&](std::string_view io_name, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos)
-            {
+            auto print_out = [&](std::string_view io_name, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos) {
                   os << "[          ] :  " << io_name << " : 'Мама мыла раму'" << std::endl;
                   wos << L"[          ] : w" << cstr_wstr(io_name) << L" : 'Мама мыла раму'" << std::endl;
-                  uos << u"[          ] : u" << cstr_u16str(io_name) << u" : 'Мама мыла раму'" << std::endl;                  
-                  tos << _T("[          ] : t") << str2tstr(io_name) << _T(" : 'Мама мыла раму'") << std::endl;                  
+                  uos << u"[          ] : u" << cstr_u16str(io_name) << u" : 'Мама мыла раму'" << std::endl;
+                  tos << _T("[          ] : t") << str2tstr(io_name) << _T(" : 'Мама мыла раму'") << std::endl;
             };
 
             print_out("cout", std::cout, std::wcout, tlib::ucout, tlib::tcout);
@@ -632,19 +632,19 @@ namespace tlib
             int pipePair[2];
             int pipePair_stderr[2];
 #ifdef _WIN32
-            auto saved_stdout = _dup(_fileno(stdout));  // сохраним связь терминала и stdout
+            auto saved_stdout = _dup(_fileno(stdout)); // сохраним связь терминала и stdout
             _pipe(pipePair, 256, _O_BINARY);
-            _dup2(pipePair[1], _fileno(stdout));        // свяжем stdout с pipe
+            _dup2(pipePair[1], _fileno(stdout)); // свяжем stdout с pipe
 
-            auto saved_stderr = _dup(_fileno(stderr));  // сохраним связь терминала и stdout
+            auto saved_stderr = _dup(_fileno(stderr)); // сохраним связь терминала и stdout
             _pipe(pipePair_stderr, 256, _O_BINARY);
             _dup2(pipePair_stderr[1], _fileno(stderr)); // свяжем stderr с pipe
 #elif __linux__
-            auto saved_stdout = dup(STDOUT_FILENO);  // сохраним связь терминала и stdout
+            auto saved_stdout = dup(STDOUT_FILENO); // сохраним связь терминала и stdout
             pipe(pipePair);
-            dup2(pipePair[1], STDOUT_FILENO);        // свяжем stdout с pipe
+            dup2(pipePair[1], STDOUT_FILENO); // свяжем stdout с pipe
 
-            auto saved_stderr = dup(STDERR_FILENO);  // сохраним связь терминала и stderr
+            auto saved_stderr = dup(STDERR_FILENO); // сохраним связь терминала и stderr
             pipe(pipePair_stderr);
             dup2(pipePair_stderr[1], STDERR_FILENO); // свяжем stderr с pipe
 #define _read read
@@ -657,8 +657,7 @@ namespace tlib
                   return std::string(buf.c_str());
             };
 
-            auto test_out = [&](int* pipePair, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos)
-            {
+            auto test_out = [&](int* pipePair, std::ostream& os, std::wostream& wos, tlib::u16ostream& uos, tlib::tostream& tos) {
                   InitConsolIO();
 
                   os << "Мама мыла раму" << std::endl;
@@ -699,9 +698,9 @@ namespace tlib
             _close(pipePair_stderr[1]);           // закроем дискрепторы pipe
             _close(pipePair_stderr[0]);
 #elif __linux__
-            dup2(saved_stdout, STDOUT_FILENO); // восстановим связь терминала и stdout
-            close(saved_stdout);               // закроем копию дискрептора
-            close(pipePair[1]);                // закроем дискрепторы pipe
+            dup2(saved_stdout, STDOUT_FILENO);       // восстановим связь терминала и stdout
+            close(saved_stdout);                     // закроем копию дискрептора
+            close(pipePair[1]);                      // закроем дискрепторы pipe
             close(pipePair[0]);
 
             dup2(saved_stderr, STDERR_FILENO); // восстановим связь терминала и stderr
@@ -712,9 +711,155 @@ namespace tlib
 #endif
       }
 
-      TEST(Tiomanip, put_intger_by_radix)
+      TEST(Tiomanip, put_unsigned_intger_by_radix)
       {
-            std::cout << "tertwe\n";
+            auto test_put_intger_by_radix = [&](auto&& strstr, size_t width, bool showbase)
+            {
+                  using _Elem = get_underlying_char_t<decltype(strstr)>;
+
+                  strstr << std::setfill(TemplateTypeOfCh('0', _Elem));
+
+                  if (showbase) strstr << std::showbase;
+
+                  strstr << std::setw(width) << tlib::put_intger_by_radix(0xf, 2) << " | ";
+                  strstr << std::setw(width) << tlib::put_intger_by_radix(0xf, 10) << " | ";
+                  strstr << std::setw(width) << tlib::put_intger_by_radix(0xf, 16);
+
+                  return strstr.str();
+            };
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, false)     ==    "1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, false)    ==   L"1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, false) ==   u"1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, false)   == _T("1111 | 15 | f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, true)     ==    "1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, true)    ==   L"1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, true) ==   u"1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, true)   == _T("1111b | 15 | 0xf"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, false)     ==    "1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, false)    ==   L"1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, false) ==   u"1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, false)   == _T("1111 | 15 | 0f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, true)     ==    "1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, true)    ==   L"1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, true) ==   u"1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, true)   == _T("1111b | 15 | 0x0f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, false)     ==    "1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, false)    ==   L"1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, false) ==   u"1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, false)   == _T("1111 | 015 | 00f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, true)     ==    "1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, true)    ==   L"1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, true) ==   u"1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, true)   == _T("1111b | 015 | 0x00f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, false)     ==    "01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, false)    ==   L"01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, false) ==   u"01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, false)   == _T("01111 | 00015 | 0000f"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, true)     ==    "01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, true)    ==   L"01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, true) ==   u"01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, true)   == _T("01111b | 00015 | 0x0000f"));
+      }
+
+      TEST(Tiomanip, put_signed_intger_by_radix)
+      {
+            auto test_put_intger_by_radix = [&](auto&& strstr, auto integer, bool showbase)
+            {
+                  using _Elem = get_underlying_char_t<decltype(strstr)>;
+
+                  strstr << std::setfill(TemplateTypeOfCh('0', _Elem));
+
+                  if (showbase) strstr << std::showbase;
+
+                  strstr << tlib::put_intger_by_radix(integer, 2) << " | ";
+                  strstr << tlib::put_intger_by_radix(integer, 10) << " | ";
+                  strstr << tlib::put_intger_by_radix(integer, 16);
+
+                  return strstr.str();
+            };
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, false)     ==    "11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, false)    ==   L"11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, false) ==   u"11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, false)   == _T("11111111111111111111111111110110 | -10 | fffffff6"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, true)     ==    "11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, true)    ==   L"11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, true) ==   u"11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, true)   == _T("11111111111111111111111111110110b | -10 | 0xfffffff6"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, false)     ==    "11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, false)    ==   L"11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, false) ==   u"11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, false)   == _T("11110110 | -10 | f6"));
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, true)     ==    "11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, true)    ==   L"11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, true) ==   u"11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, true)   == _T("11110110b | -10 | 0xf6"));
+      }
+
+      TEST(Tiomanip, put_array_intger_by_radix)
+      {
+            auto test_put_intger_by_radix = [&](auto&& strstr)
+            {
+                  using _Elem = get_underlying_char_t<decltype(strstr)>;
+
+                  strstr << std::setfill(TemplateTypeOfCh('0', _Elem)) << std::uppercase;
+
+                  const unsigned int CountByte = 16;
+
+                  unsigned char* array_byte = new unsigned char[CountByte];
+
+                  for (unsigned int i = 0; i < CountByte; i++)
+                  {
+                        array_byte[i] = i;
+                  }
+
+                  for (unsigned int i = 0; i < CountByte; i++)
+                  {
+                        strstr << std::setw(2) << put_intger_by_radix(array_byte[i], 16) << TemplateTypeOfStr(" ", _Elem);
+                  }
+                  delete[] array_byte;
+
+                  return strstr.str();
+            };
+
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream())     ==    "00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream())    ==   L"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream()) ==   u"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream())   == _T("00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F "));
+      }
+
+      TEST(Tiomanip, put_guid)
+      {
+            auto test_put_guid = [&](auto&& strstr)
+            {
+                  // {79BFCAB0-EEE3-407F-BE0D-766DE21E996C}
+                  static const GUID my_guid = { 0x79bfcab0, 0xeee3, 0x407f, { 0xbe, 0xd, 0x76, 0x6d, 0xe2, 0x1e, 0x99, 0x6c } };
+
+                  strstr << std::uppercase << tlib::put_guid(my_guid);
+
+                  return strstr.str();
+            };
+
+            ASSERT_TRUE(test_put_guid(std::stringstream())     ==    "79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(std::wstringstream())    ==   L"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(tlib::u16stringstream()) ==   u"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(tlib::tstringstream())   == _T("79BFCAB0-EEE3-407F-BE0D-766DE21E996C"));
+      }
+
+      TEST(Tregex, regex_match)
+      {
+            std::cout << "FSDAfsd";
       }
 
 }
