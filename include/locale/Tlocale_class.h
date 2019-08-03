@@ -342,8 +342,17 @@ namespace tlib
                   }
             };
 
-            static lang_names all_locale_names;
-            static code_pages all_code_pages;
+            static lang_names& get_all_locale_names()
+            {
+                  static lang_names all_locale_names;
+                  return all_locale_names;
+            };
+
+            static code_pages& get_all_code_pages()
+            {
+                  static code_pages all_code_pages;
+                  return all_code_pages;
+            };
 
             std::string name_locale;
             std::locale internal_locale;
@@ -360,7 +369,7 @@ namespace tlib
 
             static std::string get_locname(std::string_view str)
             {
-                  auto long_name = all_locale_names.find_long(str.data());
+                  auto long_name = get_all_locale_names().find_long(str.data());
                   if (!long_name.empty())
                         return long_name;
                   else
@@ -374,14 +383,14 @@ namespace tlib
                   if (str == "POSIX" || str == "C") return "C";
 
                   // Предпологаем, что нам передали кроткое имя, получим из него длинное:
-                  auto long_name = all_locale_names.find_long(str.data());
+                  auto long_name = get_all_locale_names().find_long(str.data());
                   if (!long_name.empty())
                         return long_name; // окажемся тут, если имя ru-RU или ru_RU, сконвертируем его в Russian_Russia
 
                   // Если нам передали не короткое имя, найдем короткое,
                   // а из него длинное в нормализованном виде
-                  auto short_name = all_locale_names.find_short(str.data());
-                  long_name = all_locale_names.find_long(short_name);
+                  auto short_name = get_all_locale_names().find_short(str.data());
+                  long_name = get_all_locale_names().find_long(short_name);
                   if (!long_name.empty())
                         return long_name; // окажемся тут, если нам передали корректное длинное имя
                                           // вернем нормализованное имя вида Russian_Russia
@@ -391,21 +400,21 @@ namespace tlib
                   if (str == "POSIX" || str == "C")
                   {
                         return str.data();
-                  }                        
+                  }
 
                   // Предпологаем, что нам передали длинное имя, получим из него короткое:
-                  auto short_name = all_locale_names.find_short(str.data());
+                  auto short_name = get_all_locale_names().find_short(str.data());
                   if (!short_name.empty())
                   {
                         std::replace(short_name.begin(), short_name.end(), '-', '_');
-                        return short_name;  // окажемся тут, если имя Russian_Russia или Russian-Russia, сконвертируем его в ru_RU
+                        return short_name; // окажемся тут, если имя Russian_Russia или Russian-Russia, сконвертируем его в ru_RU
                   }
 
                   // Если нам передали короткое имя, найдем длинное,
                   // а из него короткое в нормализованном виде
 
-                  auto long_name = all_locale_names.find_long(str.data());
-                  short_name = all_locale_names.find_short(long_name);
+                  auto long_name = get_all_locale_names().find_long(str.data());
+                  short_name = get_all_locale_names().find_short(long_name);
                   if (!short_name.empty())
                   {
                         std::replace(short_name.begin(), short_name.end(), '-', '_');

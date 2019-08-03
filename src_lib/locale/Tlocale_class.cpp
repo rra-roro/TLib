@@ -10,10 +10,6 @@ using namespace tlib;
 using namespace std;
 
 /////////////////////////////////////
-
-tlib::locale::lang_names tlib::locale::all_locale_names;
-tlib::locale::code_pages tlib::locale::all_code_pages;
-
 using name_l = string;
 using codepage_l = string;
 
@@ -89,13 +85,13 @@ bool tlib::locale::detect_multibyte_codepage(std::string_view loc_name)
 #ifdef _WIN32
       if (code_page.empty())
       {
-            auto short_name = all_locale_names.find_short(loc_name.data());
+            auto short_name = get_all_locale_names().find_short(loc_name.data());
             if (!short_name.empty())
                   language = short_name;
             else
             {
-                  auto long_name = all_locale_names.find_long(loc_name.data());
-                  short_name = all_locale_names.find_short(long_name);
+                  auto long_name = get_all_locale_names().find_long(loc_name.data());
+                  short_name = get_all_locale_names().find_short(long_name);
                   if (!short_name.empty())
                         language = short_name;
             }
@@ -124,7 +120,7 @@ bool tlib::locale::detect_multibyte_codepage(std::string_view loc_name)
             code_page = nl_langinfo_l(CODESET, (locale_t)newlocale(LC_ALL_MASK, loc_name.data(), (locale_t)0));
       }
 #endif
-      return all_code_pages.is_mb(code_page);
+      return get_all_code_pages().is_mb(code_page);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -151,7 +147,7 @@ std::string tlib::locale::locale_name_fix_codepage(std::string_view loc_name)
             codepage.erase(std::remove_if(codepage.begin(), codepage.end(), [](auto& ch) { return ch == '-' || ch == '_'; }),
                 codepage.end());
 
-            auto [it_cp_begin, it_cp_end] = all_code_pages.get_cp(codepage);
+            auto [it_cp_begin, it_cp_end] = get_all_code_pages().get_cp(codepage);
             if (it_cp_begin == it_cp_end)
             {
                   if (auto ret = checkup_locale(language, code_page))
