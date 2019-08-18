@@ -13,7 +13,7 @@
 #include <Tiostream.h>
 #include <Tstdlib.h>
 #include <Tiomanip.h>
-
+#include <Tregex.h>
 
 TEST(version, test1)
 {
@@ -22,19 +22,6 @@ TEST(version, test1)
 
 namespace tlib
 {
-      //class PublisherMixinTest : public testing::Test
-      //{
-      //  public:
-      //      void SetUp() {}
-      //      void TearDown() {}
-      //};
-
-      //TEST_F(PublisherMixinTest, UniqueAddSubscribers1)
-      //{
-      //      //pbl.subscribe(subscriber_functor()); //  rvalue - добавляем повторно
-      //      //ASSERT_TRUE(pbl.subscribers.size() == 7);
-      //}
-
 
       TEST(Tlocale, Create_locale_by_any_name)
       {
@@ -713,13 +700,13 @@ namespace tlib
 
       TEST(Tiomanip, put_unsigned_intger_by_radix)
       {
-            auto test_put_intger_by_radix = [&](auto&& strstr, size_t width, bool showbase)
-            {
+            auto test_put_intger_by_radix = [&](auto&& strstr, size_t width, bool showbase) {
                   using _Elem = get_underlying_char_t<decltype(strstr)>;
 
                   strstr << std::setfill(TemplateTypeOfCh('0', _Elem));
 
-                  if (showbase) strstr << std::showbase;
+                  if (showbase)
+                        strstr << std::showbase;
 
                   strstr << std::setw(width) << tlib::put_intger_by_radix(0xf, 2) << " | ";
                   strstr << std::setw(width) << tlib::put_intger_by_radix(0xf, 10) << " | ";
@@ -728,56 +715,56 @@ namespace tlib
                   return strstr.str();
             };
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, false)     ==    "1111 | 15 | f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, false)    ==   L"1111 | 15 | f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, false) ==   u"1111 | 15 | f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, false)   == _T("1111 | 15 | f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, false) == "1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, false) == L"1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, false) == u"1111 | 15 | f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, false) == _T("1111 | 15 | f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, true)     ==    "1111b | 15 | 0xf");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, true)    ==   L"1111b | 15 | 0xf");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, true) ==   u"1111b | 15 | 0xf");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, true)   == _T("1111b | 15 | 0xf"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 0, true) == "1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 0, true) == L"1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 0, true) == u"1111b | 15 | 0xf");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 0, true) == _T("1111b | 15 | 0xf"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, false)     ==    "1111 | 15 | 0f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, false)    ==   L"1111 | 15 | 0f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, false) ==   u"1111 | 15 | 0f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, false)   == _T("1111 | 15 | 0f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, false) == "1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, false) == L"1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, false) == u"1111 | 15 | 0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, false) == _T("1111 | 15 | 0f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, true)     ==    "1111b | 15 | 0x0f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, true)    ==   L"1111b | 15 | 0x0f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, true) ==   u"1111b | 15 | 0x0f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, true)   == _T("1111b | 15 | 0x0f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 2, true) == "1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 2, true) == L"1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 2, true) == u"1111b | 15 | 0x0f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 2, true) == _T("1111b | 15 | 0x0f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, false)     ==    "1111 | 015 | 00f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, false)    ==   L"1111 | 015 | 00f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, false) ==   u"1111 | 015 | 00f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, false)   == _T("1111 | 015 | 00f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, false) == "1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, false) == L"1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, false) == u"1111 | 015 | 00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, false) == _T("1111 | 015 | 00f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, true)     ==    "1111b | 015 | 0x00f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, true)    ==   L"1111b | 015 | 0x00f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, true) ==   u"1111b | 015 | 0x00f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, true)   == _T("1111b | 015 | 0x00f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 3, true) == "1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 3, true) == L"1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 3, true) == u"1111b | 015 | 0x00f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 3, true) == _T("1111b | 015 | 0x00f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, false)     ==    "01111 | 00015 | 0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, false)    ==   L"01111 | 00015 | 0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, false) ==   u"01111 | 00015 | 0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, false)   == _T("01111 | 00015 | 0000f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, false) == "01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, false) == L"01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, false) == u"01111 | 00015 | 0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, false) == _T("01111 | 00015 | 0000f"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, true)     ==    "01111b | 00015 | 0x0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, true)    ==   L"01111b | 00015 | 0x0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, true) ==   u"01111b | 00015 | 0x0000f");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, true)   == _T("01111b | 00015 | 0x0000f"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), 5, true) == "01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), 5, true) == L"01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), 5, true) == u"01111b | 00015 | 0x0000f");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), 5, true) == _T("01111b | 00015 | 0x0000f"));
       }
 
       TEST(Tiomanip, put_signed_intger_by_radix)
       {
-            auto test_put_intger_by_radix = [&](auto&& strstr, auto integer, bool showbase)
-            {
+            auto test_put_intger_by_radix = [&](auto&& strstr, auto integer, bool showbase) {
                   using _Elem = get_underlying_char_t<decltype(strstr)>;
 
                   strstr << std::setfill(TemplateTypeOfCh('0', _Elem));
 
-                  if (showbase) strstr << std::showbase;
+                  if (showbase)
+                        strstr << std::showbase;
 
                   strstr << tlib::put_intger_by_radix(integer, 2) << " | ";
                   strstr << tlib::put_intger_by_radix(integer, 10) << " | ";
@@ -786,31 +773,30 @@ namespace tlib
                   return strstr.str();
             };
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, false)     ==    "11111111111111111111111111110110 | -10 | fffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, false)    ==   L"11111111111111111111111111110110 | -10 | fffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, false) ==   u"11111111111111111111111111110110 | -10 | fffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, false)   == _T("11111111111111111111111111110110 | -10 | fffffff6"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, false) == "11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, false) == L"11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, false) == u"11111111111111111111111111110110 | -10 | fffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, false) == _T("11111111111111111111111111110110 | -10 | fffffff6"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, true)     ==    "11111111111111111111111111110110b | -10 | 0xfffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, true)    ==   L"11111111111111111111111111110110b | -10 | 0xfffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, true) ==   u"11111111111111111111111111110110b | -10 | 0xfffffff6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, true)   == _T("11111111111111111111111111110110b | -10 | 0xfffffff6"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), -10, true) == "11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), -10, true) == L"11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), -10, true) == u"11111111111111111111111111110110b | -10 | 0xfffffff6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), -10, true) == _T("11111111111111111111111111110110b | -10 | 0xfffffff6"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, false)     ==    "11110110 | -10 | f6");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, false)    ==   L"11110110 | -10 | f6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, false) ==   u"11110110 | -10 | f6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, false)   == _T("11110110 | -10 | f6"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, false) == "11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, false) == L"11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, false) == u"11110110 | -10 | f6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, false) == _T("11110110 | -10 | f6"));
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, true)     ==    "11110110b | -10 | 0xf6");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, true)    ==   L"11110110b | -10 | 0xf6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, true) ==   u"11110110b | -10 | 0xf6");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, true)   == _T("11110110b | -10 | 0xf6"));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream(), (char)-10, true) == "11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream(), (char)-10, true) == L"11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream(), (char)-10, true) == u"11110110b | -10 | 0xf6");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream(), (char)-10, true) == _T("11110110b | -10 | 0xf6"));
       }
 
       TEST(Tiomanip, put_array_intger_by_radix)
       {
-            auto test_put_intger_by_radix = [&](auto&& strstr)
-            {
+            auto test_put_intger_by_radix = [&](auto&& strstr) {
                   using _Elem = get_underlying_char_t<decltype(strstr)>;
 
                   strstr << std::setfill(TemplateTypeOfCh('0', _Elem)) << std::uppercase;
@@ -833,16 +819,15 @@ namespace tlib
                   return strstr.str();
             };
 
-            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream())     ==    "00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
-            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream())    ==   L"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream()) ==   u"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
-            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream())   == _T("00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F "));
+            ASSERT_TRUE(test_put_intger_by_radix(std::stringstream()) == "00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(std::wstringstream()) == L"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::u16stringstream()) == u"00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ");
+            ASSERT_TRUE(test_put_intger_by_radix(tlib::tstringstream()) == _T("00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F "));
       }
 
       TEST(Tiomanip, put_guid)
       {
-            auto test_put_guid = [&](auto&& strstr)
-            {
+            auto test_put_guid = [&](auto&& strstr) {
                   // {79BFCAB0-EEE3-407F-BE0D-766DE21E996C}
                   static const GUID my_guid = { 0x79bfcab0, 0xeee3, 0x407f, { 0xbe, 0xd, 0x76, 0x6d, 0xe2, 0x1e, 0x99, 0x6c } };
 
@@ -851,15 +836,286 @@ namespace tlib
                   return strstr.str();
             };
 
-            ASSERT_TRUE(test_put_guid(std::stringstream())     ==    "79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
-            ASSERT_TRUE(test_put_guid(std::wstringstream())    ==   L"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
-            ASSERT_TRUE(test_put_guid(tlib::u16stringstream()) ==   u"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
-            ASSERT_TRUE(test_put_guid(tlib::tstringstream())   == _T("79BFCAB0-EEE3-407F-BE0D-766DE21E996C"));
+            ASSERT_TRUE(test_put_guid(std::stringstream()) == "79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(std::wstringstream()) == L"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(tlib::u16stringstream()) == u"79BFCAB0-EEE3-407F-BE0D-766DE21E996C");
+            ASSERT_TRUE(test_put_guid(tlib::tstringstream()) == _T("79BFCAB0-EEE3-407F-BE0D-766DE21E996C"));
       }
 
       TEST(Tregex, regex_match)
       {
-            std::cout << "FSDAfsd";
+            auto test_regex_match = [&](auto&& str, auto&& match_str, auto&& reg_exp) {
+
+                  using _Elem = get_underlying_char_t<decltype(str)>;
+
+                  ASSERT_TRUE(std::regex_match(str, match_str, reg_exp));
+
+                  ASSERT_TRUE(match_str.ready() == true);
+                  ASSERT_TRUE(match_str.empty() == false);
+                  ASSERT_TRUE(match_str.size() == 4);
+
+                  ASSERT_FALSE(match_str.prefix().matched);
+                  ASSERT_FALSE(match_str.suffix().matched);
+
+                  ASSERT_TRUE(match_str[0].matched == 1);
+                  ASSERT_TRUE(match_str[0] == TemplateTypeOfStr("Мама Мыла Раму", _Elem));
+                  ASSERT_TRUE(match_str.position(0) == 0);
+                  ASSERT_TRUE(match_str.length(0) == 14);
+                  ASSERT_TRUE(match_str.str(0) == TemplateTypeOfStr("Мама Мыла Раму", _Elem));
+
+                  ASSERT_TRUE(match_str[1].matched == 1);
+                  ASSERT_TRUE(match_str[1] == TemplateTypeOfStr("Мама ", _Elem));
+                  ASSERT_TRUE(match_str.position(1) == 0);
+                  ASSERT_TRUE(match_str.length(1) == 5);
+                  ASSERT_TRUE(match_str.str(1) == TemplateTypeOfStr("Мама ", _Elem));
+
+                  ASSERT_TRUE(match_str[2].matched == 1);
+                  ASSERT_TRUE(match_str[2] == TemplateTypeOfStr("Мыла", _Elem));
+                  ASSERT_TRUE(match_str.position(2) == 5);
+                  ASSERT_TRUE(match_str.length(2) == 4);
+                  ASSERT_TRUE(match_str.str(2) == TemplateTypeOfStr("Мыла", _Elem));
+
+                  ASSERT_TRUE(match_str[3].matched == 1);
+                  ASSERT_TRUE(match_str[3] == TemplateTypeOfStr(" Раму", _Elem));
+                  ASSERT_TRUE(match_str.position(3) == 9);
+                  ASSERT_TRUE(match_str.length(3) == 5);
+                  ASSERT_TRUE(match_str.str(3) == TemplateTypeOfStr(" Раму", _Elem));
+            };
+
+
+#ifdef _WIN32
+            test_regex_match(std::string("Мама Мыла Раму"), std::smatch(), std::regex("(.*)(мыла)(.*)", std::regex_constants::icase));
+#endif
+            // test_regex_match(std::string(u8"Мама Мыла Раму"), std::smatch(), std::regex(u8"(.*)(мыла)(.*)", std::regex_constants::icase));
+
+            test_regex_match(std::wstring(L"Мама Мыла Раму"), std::wsmatch(), std::wregex(L"(.*)(мыла)(.*)", std::regex_constants::icase));
+            test_regex_match(std::u16string(u"Мама Мыла Раму"), tlib::usmatch(), tlib::uregex(u"(.*)(мыла)(.*)", std::regex_constants::icase));
+            test_regex_match(tlib::tstring(_T("Мама Мыла Раму")), tlib::tsmatch(), tlib::tregex(_T("(.*)(мыла)(.*)"), std::regex_constants::icase));
+      }
+
+      TEST(Tregex, regex_search)
+      {
+            auto test_regex_search = [&](auto&& str, auto&& match_str, auto&& reg_exp) {
+                  using _Elem = get_underlying_char_t<decltype(str)>;
+
+                  ASSERT_TRUE(std::regex_search(str, match_str, reg_exp));
+
+                  ASSERT_TRUE(match_str.ready() == true);
+                  ASSERT_TRUE(match_str.empty() == false);
+                  ASSERT_TRUE(match_str.size() == 1);
+
+                  ASSERT_TRUE(match_str.prefix().matched);
+                  ASSERT_TRUE(match_str.suffix().matched);
+
+                  ASSERT_TRUE(match_str[0].matched == 1);
+                  ASSERT_TRUE(match_str[0] == TemplateTypeOfStr(" Мыла ", _Elem));
+                  ASSERT_TRUE(match_str.position(0) == 4);
+                  ASSERT_TRUE(match_str.length(0) == 6);
+                  ASSERT_TRUE(match_str.str(0) == TemplateTypeOfStr(" Мыла ", _Elem));
+            };
+#ifdef _WIN32
+            test_regex_search(std::string("Мама Мыла Раму"), std::smatch(), std::regex(R"(\sмыла\s)", std::regex_constants::icase));
+#endif
+            //test_regex_search(std::string(u8"Мама Мыла Раму"), std::smatch(), std::regex(u8R"(\sмыла\s)", std::regex_constants::icase));
+            test_regex_search(std::wstring(L"Мама Мыла Раму"), std::wsmatch(), std::wregex(LR"(\sмыла\s)", std::regex_constants::icase));
+            test_regex_search(std::u16string(u"Мама Мыла Раму"), tlib::usmatch(), tlib::uregex(uR"(\sмыла\s)", std::regex_constants::icase));
+            test_regex_search(tlib::tstring(_T("Мама Мыла Раму")), tlib::tsmatch(), tlib::tregex(_T(R"(\sмыла\s)"), std::regex_constants::icase));
+      }
+
+      TEST(Tregex, regex_replace)
+      {
+            std::smatch match_str;
+            std::smatch match_u8str;
+            std::wsmatch match_wstr;
+            tlib::usmatch match_u16str;
+            tlib::tsmatch match_tstr;
+
+            std::string rus_str = "Мама Мыла Раму";
+            std::string rus_u8str = u8"Мама Мыла Раму";
+            std::wstring rus_wstr = L"Мама Мыла Раму";
+            std::u16string rus_u16str = u"Мама Мыла Раму";
+            tlib::tstring rus_tstr = _T("Мама Мыла Раму");
+
+            std::regex reg_exp(R"(раму)", std::regex_constants::icase);
+            std::regex u8reg_exp(u8R"(раму)", std::regex_constants::icase);
+            std::wregex wreg_exp(LR"(раму)", std::regex_constants::icase);
+            tlib::uregex u16reg_exp(uR"(раму)", std::regex_constants::icase);
+            tlib::tregex treg_exp(_T(R"(раму)"), std::regex_constants::icase);
+
+#ifdef _WIN32
+            ASSERT_TRUE(std::regex_replace(rus_str, reg_exp, "Рому") == "Мама Мыла Рому");
+#endif
+            // ASSERT_TRUE(std::regex_replace(rus_u8str, u8reg_exp, u8"Рому") == u8"Мама Мыла Рому");
+            ASSERT_TRUE(std::regex_replace(rus_wstr, wreg_exp, L"Рому") == L"Мама Мыла Рому");
+            ASSERT_TRUE(std::regex_replace(rus_u16str, u16reg_exp, u"Рому") == u"Мама Мыла Рому");
+            ASSERT_TRUE(std::regex_replace(rus_tstr, treg_exp, _T("Рому")) == _T("Мама Мыла Рому"));
+      }
+
+      TEST(Tregex, regex_token_iterator)
+      {
+            std::smatch match_str;
+            std::smatch match_u8str;
+            std::wsmatch match_wstr;
+            tlib::usmatch match_u16str;
+            tlib::tsmatch match_tstr;
+
+            std::string str = "-b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help";
+            std::string u8str = u8"-b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help";
+            std::wstring wstr = L"-b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help";
+            std::u16string ustr = u"-b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help";
+            tlib::tstring tstr = _T("-b 'параметр опции b' -j dddd -c -a \"не опция\" -klm \"-e\" w \"-f w\" -- --help");
+
+            std::regex reg_exp("(\"[^\"]+\"|\'[^\']+\'|\\S+)");
+            std::regex u8_reg_exp(u8"(\"[^\"]+\"|\'[^\']+\'|\\S+)");
+            std::wregex w_reg_exp(L"(\"[^\"]+\"|\'[^\']+\'|\\S+)");
+            tlib::uregex u16_reg_exp(u"(\"[^\"]+\"|\'[^\']+\'|\\S+)");
+            tlib::tregex t_reg_exp(_T("(\"[^\"]+\"|\'[^\']+\'|\\S+)"));
+
+            std::vector<std::string> vec_str;
+            std::vector<std::string> vec_u8str;
+            std::vector<std::wstring> vec_wstr;
+            std::vector<std::u16string> vec_ustr;
+            std::vector<tlib::tstring> vec_tstr;
+
+            std::copy(std::sregex_token_iterator(str.begin(), str.end(), reg_exp, 1),
+                std::sregex_token_iterator(),
+                std::back_insert_iterator<decltype(vec_str)>(vec_str));
+
+            //std::copy(std::sregex_token_iterator(u8str.begin(), u8str.end(), u8_reg_exp, 1),
+            //          std::sregex_token_iterator(),
+            //          std::back_insert_iterator<decltype(vec_u8str)>(vec_u8str));
+
+            std::copy(std::wsregex_token_iterator(wstr.begin(), wstr.end(), w_reg_exp, 1),
+                std::wsregex_token_iterator(),
+                std::back_insert_iterator<decltype(vec_wstr)>(vec_wstr));
+
+            std::copy(tlib::usregex_token_iterator(ustr.begin(), ustr.end(), u16_reg_exp, 1),
+                tlib::usregex_token_iterator(),
+                std::back_insert_iterator<decltype(vec_ustr)>(vec_ustr));
+
+            std::copy(tlib::tsregex_token_iterator(tstr.begin(), tstr.end(), t_reg_exp, 1),
+                tlib::tsregex_token_iterator(),
+                std::back_insert_iterator<decltype(vec_tstr)>(vec_tstr));
+
+            auto check_tokens_vector = [&](auto& vec) {
+                  using _Elem = get_underlying_char_t<typename remove_all_t<decltype(vec)>::value_type>;
+
+                  ASSERT_TRUE(vec.size() == 13);
+                  ASSERT_TRUE(vec[0] == TemplateTypeOfStr("-b", _Elem));
+                  ASSERT_TRUE(vec[1] == TemplateTypeOfStr("'параметр опции b'", _Elem));
+                  ASSERT_TRUE(vec[2] == TemplateTypeOfStr("-j", _Elem));
+                  ASSERT_TRUE(vec[3] == TemplateTypeOfStr("dddd", _Elem));
+                  ASSERT_TRUE(vec[4] == TemplateTypeOfStr("-c", _Elem));
+                  ASSERT_TRUE(vec[5] == TemplateTypeOfStr("-a", _Elem));
+                  ASSERT_TRUE(vec[6] == TemplateTypeOfStr("\"не опция\"", _Elem));
+                  ASSERT_TRUE(vec[7] == TemplateTypeOfStr("-klm", _Elem));
+                  ASSERT_TRUE(vec[8] == TemplateTypeOfStr("\"-e\"", _Elem));
+                  ASSERT_TRUE(vec[9] == TemplateTypeOfStr("w", _Elem));
+                  ASSERT_TRUE(vec[10] == TemplateTypeOfStr("\"-f w\"", _Elem));
+                  ASSERT_TRUE(vec[11] == TemplateTypeOfStr("--", _Elem));
+                  ASSERT_TRUE(vec[12] == TemplateTypeOfStr("--help", _Elem));
+            };
+
+#ifdef _WIN32
+            check_tokens_vector(vec_str);
+#endif
+            //check_tokens_vector(vec_u8str);
+            check_tokens_vector(vec_wstr);
+            check_tokens_vector(vec_ustr);
+            check_tokens_vector(vec_tstr);
+      }
+
+      TEST(Tregex, regex_iterator)
+      {
+            std::string str = "-b 'параметр опции b'  \"не опция\" \"-e\" w \"-f w\" ";
+            std::string u8str = u8"-b 'параметр опции b'  \"не опция\" \"-e\" w \"-f w\" ";
+            std::wstring wstr = L"-b 'параметр опции b'  \"не опция\" \"-e\" w \"-f w\" ";
+            std::u16string ustr = u"-b 'параметр опции b'  \"не опция\" \"-e\" w \"-f w\" ";
+            tlib::tstring tstr = _T("-b 'параметр опции b'  \"не опция\" \"-e\" w \"-f w\" ");
+
+            std::regex reg_exp("\"[^\"]+\"|\'[^\']+\'|\\S+");
+            std::regex u8_reg_exp(u8"\"[^\"]+\"|\'[^\']+\'|\\S+");
+            std::wregex w_reg_exp(L"\"[^\"]+\"|\'[^\']+\'|\\S+");
+            tlib::uregex u16_reg_exp(u"\"[^\"]+\"|\'[^\']+\'|\\S+");
+            tlib::tregex t_reg_exp(_T("\"[^\"]+\"|\'[^\']+\'|\\S+"));
+
+            std::vector<std::smatch> vec_smatch;
+            std::vector<std::smatch> vec_smatch_u8;
+            std::vector<std::wsmatch> vec_wsmatch;
+            std::vector<tlib::usmatch> vec_usmatch;
+            std::vector<tlib::tsmatch> vec_tsmatch;
+
+            auto get_smatchs_vector = [&](auto beg, auto end, auto& vec) {
+                  ASSERT_TRUE(std::distance(beg, end) == 6);
+
+                  for_each(beg, end, [&](const auto& match) {
+                        vec.push_back(match);
+                  });
+            };
+
+#ifdef _WIN32
+            get_smatchs_vector(std::sregex_iterator(str.begin(), str.end(), reg_exp), std::sregex_iterator(), vec_smatch);
+#endif
+            //get_smatchs_vector(std::sregex_iterator(u8str.begin(), u8str.end(), u8_reg_exp), std::sregex_iterator(), vec_smatch_u8);
+            get_smatchs_vector(std::wsregex_iterator(wstr.begin(), wstr.end(), w_reg_exp), std::wsregex_iterator(), vec_wsmatch);
+            get_smatchs_vector(tlib::usregex_iterator(ustr.begin(), ustr.end(), u16_reg_exp), tlib::usregex_iterator(), vec_usmatch);
+            get_smatchs_vector(tlib::tsregex_iterator(tstr.begin(), tstr.end(), t_reg_exp), tlib::tsregex_iterator(), vec_tsmatch);
+
+            auto check_smatchs_vector = [&](auto& vec) {
+                  using _Elem = get_underlying_char_t<typename remove_all_t<decltype(vec)>::value_type::string_type>;
+
+                  ASSERT_TRUE(vec.size() == 6);
+
+                  ASSERT_TRUE(vec[0].ready() == 1);
+                  ASSERT_TRUE(vec[0].empty() == 0);
+                  ASSERT_TRUE(vec[0].size() == 1);
+                  ASSERT_TRUE(vec[0].position(0) == 0);
+                  ASSERT_TRUE(vec[0].length(0) == 2);
+                  ASSERT_TRUE(vec[0].str(0) == TemplateTypeOfStr("-b", _Elem));
+
+                  ASSERT_TRUE(vec[1].ready() == 1);
+                  ASSERT_TRUE(vec[1].empty() == 0);
+                  ASSERT_TRUE(vec[1].size() == 1);
+                  ASSERT_TRUE(vec[1].position(0) == 3);
+                  ASSERT_TRUE(vec[1].length(0) == 18);
+                  ASSERT_TRUE(vec[1].str(0) == TemplateTypeOfStr("'параметр опции b'", _Elem));
+
+                  ASSERT_TRUE(vec[2].ready() == 1);
+                  ASSERT_TRUE(vec[2].empty() == 0);
+                  ASSERT_TRUE(vec[2].size() == 1);
+                  ASSERT_TRUE(vec[2].position(0) == 23);
+                  ASSERT_TRUE(vec[2].length(0) == 10);
+                  ASSERT_TRUE(vec[2].str(0) == TemplateTypeOfStr("\"не опция\"", _Elem));
+
+                  ASSERT_TRUE(vec[3].ready() == 1);
+                  ASSERT_TRUE(vec[3].empty() == 0);
+                  ASSERT_TRUE(vec[3].size() == 1);
+                  ASSERT_TRUE(vec[3].position(0) == 34);
+                  ASSERT_TRUE(vec[3].length(0) == 4);
+                  ASSERT_TRUE(vec[3].str(0) == TemplateTypeOfStr("\"-e\"", _Elem));
+
+                  ASSERT_TRUE(vec[4].ready() == 1);
+                  ASSERT_TRUE(vec[4].empty() == 0);
+                  ASSERT_TRUE(vec[4].size() == 1);
+                  ASSERT_TRUE(vec[4].position(0) == 39);
+                  ASSERT_TRUE(vec[4].length(0) == 1);
+                  ASSERT_TRUE(vec[4].str(0) == TemplateTypeOfStr("w", _Elem));
+
+                  ASSERT_TRUE(vec[5].ready() == 1);
+                  ASSERT_TRUE(vec[5].empty() == 0);
+                  ASSERT_TRUE(vec[5].size() == 1);
+                  ASSERT_TRUE(vec[5].position(0) == 41);
+                  ASSERT_TRUE(vec[5].length(0) == 6);
+                  ASSERT_TRUE(vec[5].str(0) == TemplateTypeOfStr("\"-f w\"", _Elem));
+            };
+
+#ifdef _WIN32
+            check_smatchs_vector(vec_smatch);
+#endif
+            //check_smatchs_vector(vec_smatch_u8);
+            check_smatchs_vector(vec_wsmatch);
+            check_smatchs_vector(vec_usmatch);
+            check_smatchs_vector(vec_tsmatch);
       }
 
 }
