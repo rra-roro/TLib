@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Класс tlib::v1::env</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="inherits.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacetlib.html">tlib</a></li><li class="navelem"><a class="el" href="namespacetlib_1_1v1.html">v1</a></li><li class="navelem"><a class="el" href="classtlib_1_1v1_1_1env.html">env</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-static-methods">Открытые статические члены</a> &#124;
+<a href="classtlib_1_1v1_1_1env-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс tlib::v1::env</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="_tenvironment_8h_source.html">Tenvironment.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Открытые статические члены</h2></td></tr>
+<tr class="memitem:a80ca174911909eacff2310f7d06e0c2f"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_t  = std::basic_string&lt;_Elem&gt;&gt; </td></tr>
+<tr class="memitem:a80ca174911909eacff2310f7d06e0c2f"><td class="memTemplItemLeft" align="right" valign="top">static string_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtlib_1_1v1_1_1env.html#a80ca174911909eacff2310f7d06e0c2f">get_var</a> (T &amp;&amp;name)</td></tr>
+<tr class="separator:a80ca174911909eacff2310f7d06e0c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0da83e27d65b59df74ce6afe55b7939"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 , class _Elem1  = get_underlying_char_t&lt;T1&gt;, class _Elem2  = get_underlying_char_t&lt;T2&gt;, typename  = std::enable_if_t&lt;std::is_same_v&lt;_Elem1, _Elem2&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ae0da83e27d65b59df74ce6afe55b7939"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtlib_1_1v1_1_1env.html#ae0da83e27d65b59df74ce6afe55b7939">set_var</a> (T1 &amp;&amp;name, T2 &amp;&amp;value)</td></tr>
+<tr class="separator:ae0da83e27d65b59df74ce6afe55b7939"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fdea2f93a977bb37630fb0b2f1a0d36"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a3fdea2f93a977bb37630fb0b2f1a0d36"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtlib_1_1v1_1_1env.html#a3fdea2f93a977bb37630fb0b2f1a0d36">del_var</a> (T &amp;&amp;name)</td></tr>
+<tr class="separator:a3fdea2f93a977bb37630fb0b2f1a0d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a3fdea2f93a977bb37630fb0b2f1a0d36"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void tlib::v1::env::del_var </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a80ca174911909eacff2310f7d06e0c2f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_t  = std::basic_string&lt;_Elem&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string_t tlib::v1::env::get_var </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae0da83e27d65b59df74ce6afe55b7939"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 , class _Elem1  = get_underlying_char_t&lt;T1&gt;, class _Elem2  = get_underlying_char_t&lt;T2&gt;, typename  = std::enable_if_t&lt;std::is_same_v&lt;_Elem1, _Elem2&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void tlib::v1::env::set_var </td>
+          <td>(</td>
+          <td class="paramtype">T1 &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li>include/<a class="el" href="_tenvironment_8h_source.html">Tenvironment.h</a></li>
+<li>src_lib/<a class="el" href="_tenvironment_8cpp.html">Tenvironment.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

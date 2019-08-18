@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Файл src_test/test_tlib.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_f11526b0e66d578304eec0a082b402c6.html">src_test</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Пространства имен</a> &#124;
+<a href="#define-members">Макросы</a> &#124;
+<a href="#func-members">Функции</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл test_tlib.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;gtest/gtest.h&quot;</code><br/>
+<code>#include &quot;gtest/gtest_prod.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_tlib__version_8h_source.html">Tlib_version.h</a>&quot;</code><br/>
+<code>#include &lt;string_view&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+<code>#include &lt;fcntl.h&gt;</code><br/>
+<code>#include &lt;thread&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tlocale_8h_source.html">Tlocale.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tiostream_8h_source.html">Tiostream.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tstdlib_8h_source.html">Tstdlib.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tiomanip_8h_source.html">Tiomanip.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tregex_8h_source.html">Tregex.h</a>&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для test_tlib.cpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="test__tlib_8cpp__incl.png" border="0" usemap="#src__test_2test__tlib_8cpp" alt=""/></div>
+<map name="src__test_2test__tlib_8cpp" id="src__test_2test__tlib_8cpp">
+<area shape="rect" id="node4" href="_tlib__version_8h.html" title="Tlib_version.h" alt="" coords="274,80,376,107"/><area shape="rect" id="node9" href="_tlocale_8h.html" title="Tlocale.h" alt="" coords="709,155,783,181"/><area shape="rect" id="node29" href="_tiostream_8h.html" title="Tiostream.h" alt="" coords="1419,304,1509,331"/><area shape="rect" id="node33" href="_tstdlib_8h.html" title="Tstdlib.h" alt="" coords="1253,229,1325,256"/><area shape="rect" id="node34" href="_tiomanip_8h.html" title="Tiomanip.h" alt="" coords="961,80,1047,107"/><area shape="rect" id="node38" href="_tregex_8h.html" title="Tregex.h" alt="" coords="1742,453,1815,480"/><area shape="rect" id="node13" href="_tlocale__config_8h.html" title="Tlocale_config.h" alt="" coords="679,453,795,480"/><area shape="rect" id="node21" href="_tlocale__facets_8h.html" title="locale/Tlocale_facets.h" alt="" coords="274,379,429,405"/><area shape="rect" id="node22" href="_tlocale__class_8h.html" title="locale/Tlocale_class.h" alt="" coords="311,304,461,331"/><area shape="rect" id="node25" href="_tlocale__alg_8h.html" title="locale/Tlocale_alg.h" alt="" coords="682,229,819,256"/><area shape="rect" id="node14" href="_tstring_8h.html" title="Tstring.h" alt="" coords="1277,528,1349,555"/><area shape="rect" id="node15" href="_tcodecvt_8h.html" title="Tcodecvt.h" alt="" coords="1429,603,1515,629"/><area shape="rect" id="node17" href="char8__t_8h.html" title="char8_t.h" alt="" coords="1319,677,1395,704"/><area shape="rect" id="node18" href="select__lib_8h.html" title="win/select_lib.h" alt="" coords="1563,677,1673,704"/><area shape="rect" id="node19" href="_ttype_8h.html" title="Ttype.h" alt="" coords="881,603,948,629"/><area shape="rect" id="node36" href="_tiomanip__standart_8h.html" title="iomanip/Tiomanip_standart.h" alt="" coords="909,155,1099,181"/><area shape="rect" id="node37" href="_tiomanip__extentions_8h.html" title="iomanip/Tiomanip_extentions.h" alt="" coords="1123,155,1325,181"/></map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Пространства имен</h2></td></tr>
+<tr class="memitem:namespacetlib"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html">tlib</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr class="memitem:ac71eee326527fe37574dcf30816b6fff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__tlib_8cpp.html#ac71eee326527fe37574dcf30816b6fff">PRIVATE_TEST</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ac71eee326527fe37574dcf30816b6fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa09fd5764636aa1fd781749313864e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__tlib_8cpp.html#acaa09fd5764636aa1fd781749313864e">__hexfloat__</a>&#160;&#160;&#160;&quot;\nhexfloat double: 0x1,3880fcb923a2ap+13&quot;</td></tr>
+<tr class="separator:acaa09fd5764636aa1fd781749313864e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512a9b07a74c5ea8e20e38e49ebb3888"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__tlib_8cpp.html#a512a9b07a74c5ea8e20e38e49ebb3888">_tt</a>(str)&#160;&#160;&#160;<a class="el" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(str, char_type)</td></tr>
+<tr class="separator:a512a9b07a74c5ea8e20e38e49ebb3888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr class="memitem:aaadc8fc06763c6f3e803b98d6a3db433"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__tlib_8cpp.html#aaadc8fc06763c6f3e803b98d6a3db433">TEST</a> (<a class="el" href="_tlib__version_8cpp.html#ae64f17a84dc9c7144d1036498ff26fd9">version</a>, test1)</td></tr>
+<tr class="separator:aaadc8fc06763c6f3e803b98d6a3db433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03fef50f1216531465f838901b2e5651"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a03fef50f1216531465f838901b2e5651">tlib::TEST</a> (Tlocale, Create_locale_by_any_name)</td></tr>
+<tr class="separator:a03fef50f1216531465f838901b2e5651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b2cd0d5086e5a4270e0a10fa93d79c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a5b2cd0d5086e5a4270e0a10fa93d79c1">tlib::TEST</a> (Tlocale, facets)</td></tr>
+<tr class="separator:a5b2cd0d5086e5a4270e0a10fa93d79c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671db6d6ef53860ab54d19ed7336cdaa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a671db6d6ef53860ab54d19ed7336cdaa">tlib::TEST</a> (Tlocale_alg, IsSymbol)</td></tr>
+<tr class="separator:a671db6d6ef53860ab54d19ed7336cdaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e8804d567c3f4ffbef5f8a33b4c7629"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a8e8804d567c3f4ffbef5f8a33b4c7629">tlib::TEST</a> (Tlocale_alg, StringTransforation)</td></tr>
+<tr class="separator:a8e8804d567c3f4ffbef5f8a33b4c7629"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1219cf32e795b3f4216f66ad71130141"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a1219cf32e795b3f4216f66ad71130141">tlib::TEST</a> (Tcodecvt, StringConversationFunctions)</td></tr>
+<tr class="separator:a1219cf32e795b3f4216f66ad71130141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb11ef4f7cb34dbdc53f762dd8bc7886"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#afb11ef4f7cb34dbdc53f762dd8bc7886">tlib::TEST</a> (Tstdlib, NumberToString)</td></tr>
+<tr class="separator:afb11ef4f7cb34dbdc53f762dd8bc7886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70bdaded73bbaee2725e2e6c451ba17c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a70bdaded73bbaee2725e2e6c451ba17c">tlib::TEST</a> (Tiostream, SetIostreamLocale)</td></tr>
+<tr class="separator:a70bdaded73bbaee2725e2e6c451ba17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac863cd8c0dfbe1d9125585d6e4371ae5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ac863cd8c0dfbe1d9125585d6e4371ae5">tlib::TEST</a> (Tiomanip, put_unsigned_intger_by_radix)</td></tr>
+<tr class="separator:ac863cd8c0dfbe1d9125585d6e4371ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfbb4a4220d0ac681f57aa3f1b2250ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#adfbb4a4220d0ac681f57aa3f1b2250ab">tlib::TEST</a> (Tiomanip, put_signed_intger_by_radix)</td></tr>
+<tr class="separator:adfbb4a4220d0ac681f57aa3f1b2250ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec6a5713ac7a3ef04c55db8d6426fc9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#aaec6a5713ac7a3ef04c55db8d6426fc9">tlib::TEST</a> (Tiomanip, put_array_intger_by_radix)</td></tr>
+<tr class="separator:aaec6a5713ac7a3ef04c55db8d6426fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0d374db570d8ecc7865b0f1680310a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ab0d374db570d8ecc7865b0f1680310a0">tlib::TEST</a> (Tiomanip, put_guid)</td></tr>
+<tr class="separator:ab0d374db570d8ecc7865b0f1680310a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53ee1170c57fc0464db37bc528094ae7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a53ee1170c57fc0464db37bc528094ae7">tlib::TEST</a> (Tregex, regex_match)</td></tr>
+<tr class="separator:a53ee1170c57fc0464db37bc528094ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a598773121d84a82514a012a52f17d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ae9a598773121d84a82514a012a52f17d">tlib::TEST</a> (Tregex, regex_search)</td></tr>
+<tr class="separator:ae9a598773121d84a82514a012a52f17d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31eeeca9f99246d72f644ec208560edc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a31eeeca9f99246d72f644ec208560edc">tlib::TEST</a> (Tregex, regex_replace)</td></tr>
+<tr class="separator:a31eeeca9f99246d72f644ec208560edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed6c830ee32e1ea19b940997c61b0071"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#aed6c830ee32e1ea19b940997c61b0071">tlib::TEST</a> (Tregex, regex_token_iterator)</td></tr>
+<tr class="separator:aed6c830ee32e1ea19b940997c61b0071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30ee8d80f04eeb11651255a64a8f8fd5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a30ee8d80f04eeb11651255a64a8f8fd5">tlib::TEST</a> (Tregex, regex_iterator)</td></tr>
+<tr class="separator:a30ee8d80f04eeb11651255a64a8f8fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Макросы</h2>
+<a class="anchor" id="acaa09fd5764636aa1fd781749313864e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define __hexfloat__&#160;&#160;&#160;&quot;\nhexfloat double: 0x1,3880fcb923a2ap+13&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a512a9b07a74c5ea8e20e38e49ebb3888"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _tt</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">str</td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(str, char_type)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac71eee326527fe37574dcf30816b6fff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRIVATE_TEST&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Функции</h2>
+<a class="anchor" id="aaadc8fc06763c6f3e803b98d6a3db433"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_tlib__version_8cpp.html#ae64f17a84dc9c7144d1036498ff26fd9">version</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">test1&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

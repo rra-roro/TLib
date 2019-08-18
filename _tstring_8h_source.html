@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Исходный файл include/Tstring.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Tstring.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_tstring_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">*   Файл Tstring.h - содержит макроссы и классы необходимые для реализации строк</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">*                    в независемости от типа кодировки Ansi или Unicode</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">*</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">*   Версия файла 1.0</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">*   Версия файла 2.0 - Исправил вывод hex значений</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">*   Версия файла 3.0 - Добавил в область видимости Tstring константу npos</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">*                      А также определил tostream и tistream</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">*   Версия файла 4.0 - Добавил поддержку платформы WINCE</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">*   Версия файла 5.0 - Перекрыл все конструкторы базового класса</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">*   Версия файла 6.0 - Отказался от промежуточного класса _string/_wstring, </span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">*                      исправил вывод для cout в зависемости от заданной локали,</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">*                      задал функции для конвертирования string и wstring друг в друга,</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">*                      все буфферы реализованы через вектора.</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">*   Версия файла 7.0 - Ввел новы ф-ии конвертации строк из tstring в string и wstring и обратно.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">*                      Локали стандартных потоков ввода вывода теперь работают только в консольных _CONSOLE</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*                      приложениях, иначи могут вызывать сбой. В силу отсутствия таких потоков в GUI прогах.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">*                      Изменил способ конвертаци символов из OEM в ANSI, отказавшись от OemToCharA. </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">*                      Таким образом, избавился от зависимости с user32.dll</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">*</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">*   Версия файла 8.0 - Добавил макросы TemplateTypeOfStr(str,type) и TemplateTypeOfCh(str,type), </span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">*                      которые позволяют задавать в явном виде тип char и wchar_t строки и символа в Шаблонах</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">*</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef TSTRING</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TSTRING</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="tchar_8h.html">tchar.h</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="tchar_8h.html">linux/tchar.h</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="_tstring_8h.html#ab327acd0a24a2ccb9dfc3af0a807172f">   36</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma warning(push)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma warning(disable : 4996) // was declared deprecated CodeCvt</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;string_view&gt;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;locale&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tcodecvt_8h.html">Tcodecvt.h</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_ttype_8h.html">Ttype.h</a>&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="char8__t_8h.html">char8_t.h</a>&gt;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifndef __cpp_lib_char8_t</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">namespace </span>std</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">   56</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">u8string</a> = basic_string&lt;char8_t&gt;;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="namespacestd.html#a055d74891f333fba5a00a11873e8556f">   57</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacestd.html#a055d74891f333fba5a00a11873e8556f">u8string_view</a> = basic_string_view&lt;char8_t&gt;;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">namespace </span>tlib</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code" href="namespacetlib.html#a801ca383476785668f33fb5b8ee3b56f">npos</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespacetlib.html#afdd8348da28c522eaf1fa3c9506e3de9">   65</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#afdd8348da28c522eaf1fa3c9506e3de9">tstring</a> = std::basic_string&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespacetlib.html#ad92441715b8e426893c06146f1062e3f">   66</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#ad92441715b8e426893c06146f1062e3f">tstring_view</a> = std::basic_string_view&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="comment">//=======================================================================</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="comment">//  Вводим функции, которые позволяют осуществлять преобразования между различными типами строк.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="comment">//  Например, преоразовать string и wstring друг в друга</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="comment">//   string &lt;--&gt; wstring</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">   74</a></span>&#160;      <span class="keyword">inline</span> std::wstring <a class="code" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">cstr_wstr</a>(std::string_view str)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = str.data();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ae683ae2d83a90c8b66773243067de222">strconvert_w_codepage</a>.from_bytes(_first_symbol, _first_symbol + str.size());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">   80</a></span>&#160;      <span class="keyword">inline</span> std::string <a class="code" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">wstr_cstr</a>(std::wstring_view wstr)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *_first_symbol = wstr.data();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ae683ae2d83a90c8b66773243067de222">strconvert_w_codepage</a>.to_bytes(_first_symbol, _first_symbol + wstr.size());</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="namespacetlib.html#a65d67ca2a7c94eb91d3fc271416d04f6">   86</a></span>&#160;      <span class="keyword">inline</span> std::wstring <a class="code" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">cstr_wstr</a>(std::string_view str, std::string_view loc_name)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            std::wstring_convert&lt;codecvt_w_o&gt; <a class="code" href="namespacetlib.html#ae683ae2d83a90c8b66773243067de222">strconvert_w_codepage</a>(<span class="keyword">new</span> <a class="code" href="namespacetlib.html#a20e4361587bc1962cf0b361d2de71b1e">codecvt_w_o</a>(loc_name.data()));</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = str.data();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> strconvert_w_codepage.from_bytes(_first_symbol, _first_symbol + str.size());</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="namespacetlib.html#aa981622607966ca5cd4212115500055d">   94</a></span>&#160;      <span class="keyword">inline</span> std::string <a class="code" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">wstr_cstr</a>(std::wstring_view wstr, std::string_view loc_name)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            std::wstring_convert&lt;codecvt_w_o&gt; <a class="code" href="namespacetlib.html#ae683ae2d83a90c8b66773243067de222">strconvert_w_codepage</a>(<span class="keyword">new</span> <a class="code" href="namespacetlib.html#a20e4361587bc1962cf0b361d2de71b1e">codecvt_w_o</a>(loc_name.data()));</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *_first_symbol = wstr.data();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> strconvert_w_codepage.to_bytes(_first_symbol, _first_symbol + wstr.size());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="comment">//   string &lt;--&gt; u16string</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="namespacetlib.html#aa9fb4a9a3f680d5453d3930c83e5d309">  104</a></span>&#160;      <span class="keyword">inline</span> std::u16string <a class="code" href="namespacetlib.html#aa9fb4a9a3f680d5453d3930c83e5d309">cstr_u16str</a>(std::string_view str)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = str.data();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aeb42a3d4ff030f4cd17dfc0f58ca2baf">strconvert_u16_codepage</a>.from_bytes(_first_symbol, _first_symbol + str.size());</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespacetlib.html#a4d45ec8960521abc4e71ed04891e07e6">  110</a></span>&#160;      <span class="keyword">inline</span> std::string <a class="code" href="namespacetlib.html#a4d45ec8960521abc4e71ed04891e07e6">u16str_cstr</a>(std::u16string_view ustr)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">const</span> char16_t *_first_symbol = ustr.data();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aeb42a3d4ff030f4cd17dfc0f58ca2baf">strconvert_u16_codepage</a>.to_bytes(_first_symbol, _first_symbol + ustr.size());</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="namespacetlib.html#a3539ec32c98b1ff805a94a9429f6379b">  116</a></span>&#160;      <span class="keyword">inline</span> std::u16string <a class="code" href="namespacetlib.html#aa9fb4a9a3f680d5453d3930c83e5d309">cstr_u16str</a>(std::string_view str, std::string_view loc_name)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            std::wstring_convert&lt;codecvt_u16_o, char16_t&gt; <a class="code" href="namespacetlib.html#aeb42a3d4ff030f4cd17dfc0f58ca2baf">strconvert_u16_codepage</a>(<span class="keyword">new</span> <a class="code" href="namespacetlib.html#ab656115193328b9509de79ad1efac109">codecvt_u16_o</a>(loc_name.data()));</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = str.data();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordflow">return</span> strconvert_u16_codepage.from_bytes(_first_symbol, _first_symbol + str.size());</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="namespacetlib.html#acf9776a9284f8e76d673a4def5d43abf">  124</a></span>&#160;      <span class="keyword">inline</span> std::string <a class="code" href="namespacetlib.html#a4d45ec8960521abc4e71ed04891e07e6">u16str_cstr</a>(std::u16string_view ustr, std::string_view loc_name)</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            std::wstring_convert&lt;codecvt_u16_o, char16_t&gt; <a class="code" href="namespacetlib.html#aeb42a3d4ff030f4cd17dfc0f58ca2baf">strconvert_u16_codepage</a>(<span class="keyword">new</span> <a class="code" href="namespacetlib.html#ab656115193328b9509de79ad1efac109">codecvt_u16_o</a>(loc_name.data()));</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keyword">const</span> char16_t *_first_symbol = ustr.data();</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">return</span> strconvert_u16_codepage.to_bytes(_first_symbol, _first_symbol + ustr.size());</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="comment">//   u8string &lt;--&gt; u16string</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="namespacetlib.html#a7c4ff780af3912ba1217d25f97657e84">  134</a></span>&#160;      <span class="keyword">inline</span> std::u16string <a class="code" href="namespacetlib.html#a7c4ff780af3912ba1217d25f97657e84">u8str_u16str</a>(<a class="code" href="namespacestd.html#a055d74891f333fba5a00a11873e8556f">std::u8string_view</a> u8str)</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = u8str.data();</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a8176ed39966c590724b90930956c2d41">strconvert_u16_u8</a>.from_bytes(_first_symbol, _first_symbol + u8str.size());</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="namespacetlib.html#a15a2f47f0610c88d879be3a5c13b3815">  140</a></span>&#160;      <span class="keyword">inline</span> <a class="code" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">std::u8string</a> <a class="code" href="namespacetlib.html#a15a2f47f0610c88d879be3a5c13b3815">u16str_u8str</a>(std::u16string_view u16str)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keyword">const</span> char16_t *_first_symbol = u16str.data();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a8176ed39966c590724b90930956c2d41">strconvert_u16_u8</a>.to_bytes(_first_symbol, _first_symbol + u16str.size());</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="comment">//   u8string &lt;--&gt; wstring</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="namespacetlib.html#a53368dcd6d396e4ab414de32d3ee6ef0">  148</a></span>&#160;      <span class="keyword">inline</span> std::wstring <a class="code" href="namespacetlib.html#a53368dcd6d396e4ab414de32d3ee6ef0">u8str_wstr</a>(<a class="code" href="namespacestd.html#a055d74891f333fba5a00a11873e8556f">std::u8string_view</a> u8str)</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      {</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">char</span> *_first_symbol = u8str.data();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ae9c70e2afd6bb77678cf3d914b2c1528">strconvert_w_u8</a>.from_bytes(_first_symbol, _first_symbol + u8str.size());</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="namespacetlib.html#a4166e38a3688d73044eb567f69e4752f">  154</a></span>&#160;      <span class="keyword">inline</span> <a class="code" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">std::u8string</a> <a class="code" href="namespacetlib.html#a4166e38a3688d73044eb567f69e4752f">wstr_u8str</a>(std::wstring_view wstr)</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *_first_symbol = wstr.data();</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ae9c70e2afd6bb77678cf3d914b2c1528">strconvert_w_u8</a>.to_bytes(_first_symbol, _first_symbol + wstr.size());</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      }</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="comment">//   u16string &lt;--&gt; wstring   </span></div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="namespacetlib.html#ac06e32d203d9e3f7334c1c47d395ff7b">  161</a></span>&#160;      <span class="keyword">inline</span> std::wstring <a class="code" href="namespacetlib.html#ac06e32d203d9e3f7334c1c47d395ff7b">u16str_wstr</a>(std::u16string_view u16str)</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">return</span> { u16str.begin(), u16str.end() };</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor"></span>            <a class="code" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">std::u8string</a> tmp = <a class="code" href="namespacetlib.html#a15a2f47f0610c88d879be3a5c13b3815">u16str_u8str</a>(u16str);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a53368dcd6d396e4ab414de32d3ee6ef0">u8str_wstr</a>(tmp);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor"></span>      }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="namespacetlib.html#aa6a9b3857a0b94e98411d5ae22299e00">  171</a></span>&#160;      <span class="keyword">inline</span> std::u16string <a class="code" href="namespacetlib.html#aa6a9b3857a0b94e98411d5ae22299e00">wstr_u16str</a>(std::wstring_view wstr)</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">return</span> { wstr.begin(), wstr.end() };</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor"></span>            <a class="code" href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">std::u8string</a> tmp = <a class="code" href="namespacetlib.html#a4166e38a3688d73044eb567f69e4752f">wstr_u8str</a>(wstr);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a7c4ff780af3912ba1217d25f97657e84">u8str_u16str</a>(tmp);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor"></span>      }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #ifdef _UNICODE</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define str2tstr(str)   tlib::cstr_wstr(str)</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define wstr2tstr(str)  str</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define ustr2tstr(str)  tlib::u16str_wstr(str)</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define u8str2tstr(str) tlib::u8str_wstr(str) </span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2str(str)   tlib::wstr_cstr(str)</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2wstr(str)  str</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2ustr(str)  tlib::wstr_u16str(str)</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2u8str(str) tlib::wstr_u8str(str) </span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define str2tstr(str)   str</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define wstr2tstr(str)  tlib::wstr_cstr(str)</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define ustr2tstr(str)  tlib::wstr_cstr(u16str_wstr(str))</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define u8str2tstr(str) tlib::wstr_cstr(tlib::u8str_wstr(str))</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2str(str)   str</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2wstr(str)  tlib::cstr_wstr(str)</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2ustr(str)  tlib::wstr_u16str(cstr_wstr(str))</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor"></span><span class="preprocessor">            #define tstr2u8str(str) tlib::wstr_u8str(cstr_wstr(str)) </span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define str2tstr(str)   tlib::u8str_u16str(str)</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define wstr2tstr(str)  tlib::wstr_u16str(str)</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define ustr2tstr(str)  str</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define u8str2tstr(str) tlib::u8str_u16str(str) </span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define tstr2str(str)   tlib::u16str_u8str(str)</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define tstr2wstr(str)  tlib::u16str_wstr(str)</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define tstr2ustr(str)  str</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define tstr2u8str(str) tlib::u16str_u8str(str)</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="preprocessor"></span>      <span class="comment">//=======================================================================</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      <span class="comment">//  Вводим макросы, которые позволяют задавать в явном виде тип char и wchar_t строки и символа</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="comment">//  Предназначен строго для использования в шаблонах, type - это или char или wchar_t</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      <span class="comment">//</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno"><a class="line" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">  215</a></span>&#160;<span class="preprocessor">#define TemplateTypeOfStr(str, type) ((is_wchar_v&lt;type&gt;) ? (type *)L##str : (is_char16_v&lt;type&gt;) ? (type *)u##str : (type *)str)</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno"><a class="line" href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">  216</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TemplateTypeOfCh(str, type) ((is_wchar_v&lt;type&gt;) ? (type)L##str : (is_char16_v&lt;type&gt;) ? (type)u##str : (type)str)</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> _Elem = get_underlying_<span class="keywordtype">char</span>_t&lt;T&gt;&gt;</div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="namespacetlib.html#a09679f2d327b514d5c1ec262f3e5b22e">  219</a></span>&#160;      <span class="keyword">inline</span> <a class="code" href="namespacetlib.html#afdd8348da28c522eaf1fa3c9506e3de9">tstring</a> <a class="code" href="namespacetlib.html#a09679f2d327b514d5c1ec262f3e5b22e">templateStr_tstr</a>(T&amp;&amp; str)</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      {</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            {</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                  <span class="keywordflow">return</span> wstr2tstr(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            }</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                  <span class="keywordflow">return</span> ustr2tstr(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                  <span class="keywordflow">return</span> str2tstr(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            }</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class </span>R, <span class="keyword">class </span>T,</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_same_v&lt;get_underlying_char_t&lt;T&gt;, <a class="code" href="tchar_8h.html#a146f44b466f922c8e218e89884d35759">TCHAR</a>&gt;&gt;,</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                <span class="keyword">class </span>string_r = std::basic_string&lt;R&gt;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      &gt;</div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="namespacetlib.html#a78b9074f53b71d3544da82dfda5ce771">  239</a></span>&#160;      <span class="keyword">inline</span> string_r <a class="code" href="namespacetlib.html#a78b9074f53b71d3544da82dfda5ce771">tstr_templateStr</a>(T &amp;&amp;str)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;R&gt;)</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                  <span class="keywordflow">return</span> tstr2wstr(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;R&gt;)</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                  <span class="keywordflow">return</span> tstr2ustr(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                  <span class="keywordflow">return</span> tstr2str(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      }</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> _Elem = get_underlying_<span class="keywordtype">char</span>_t&lt;T&gt;&gt;</div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="namespacetlib.html#a7f4dabea344939f6a0d25b6c4a447ddd">  256</a></span>&#160;      <span class="keyword">inline</span> std::string <a class="code" href="namespacetlib.html#a7f4dabea344939f6a0d25b6c4a447ddd">templateStr_cstr</a>(T&amp;&amp; str)</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">wstr_cstr</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a4166e38a3688d73044eb567f69e4752f">wstr_u8str</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="preprocessor"></span>            }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">wstr_cstr</a>(<a class="code" href="namespacetlib.html#ac06e32d203d9e3f7334c1c47d395ff7b">u16str_wstr</a>(std::forward&lt;T&gt;(str)));</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a15a2f47f0610c88d879be3a5c13b3815">u16str_u8str</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor"></span>            }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            {</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                  <span class="keywordflow">return</span> std::forward&lt;T&gt;(str);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      }</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class </span>R, <span class="keyword">class </span>T,                               </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_same_v&lt;get_underlying_char_t&lt;T&gt;, <span class="keywordtype">char</span>&gt;&gt;,</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="keyword">class </span>string_r = std::basic_string&lt;R&gt;       </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;      &gt;</div>
+<div class="line"><a name="l00284"></a><span class="lineno"><a class="line" href="namespacetlib.html#a3181532a88e6ce5422949c37140bc871">  284</a></span>&#160;      <span class="keyword">inline</span> string_r <a class="code" href="namespacetlib.html#a3181532a88e6ce5422949c37140bc871">cstr_templateStr</a>(T&amp;&amp; str)</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;      {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;R&gt;)</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            {</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">cstr_wstr</a>(std::forward&lt;T&gt;(str));                  </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a53368dcd6d396e4ab414de32d3ee6ef0">u8str_wstr</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor"></span>            }</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;R&gt;)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            {</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aa6a9b3857a0b94e98411d5ae22299e00">wstr_u16str</a>(<a class="code" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">cstr_wstr</a>(std::forward&lt;T&gt;(str)));                  </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor"></span>                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#a7c4ff780af3912ba1217d25f97657e84">u8str_u16str</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor"></span>            }</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                  <span class="keywordflow">return</span> std::forward&lt;T&gt;(str);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> _Elem = get_underlying_<span class="keywordtype">char</span>_t&lt;T&gt;&gt;</div>
+<div class="line"><a name="l00309"></a><span class="lineno"><a class="line" href="namespacetlib.html#a355c02422fda1d6cc84922254f4ef9af">  309</a></span>&#160;      <span class="keyword">inline</span> std::wstring <a class="code" href="namespacetlib.html#a355c02422fda1d6cc84922254f4ef9af">templateStr_wstr</a>(T &amp;&amp;str)</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;      {</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                  <span class="keywordflow">return</span> std::forward&lt;T&gt;(str);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            }</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;_Elem&gt;)</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            {</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ac06e32d203d9e3f7334c1c47d395ff7b">u16str_wstr</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            }</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            {</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">cstr_wstr</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            }</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      }</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class </span>R, <span class="keyword">class </span>T,</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_same_v&lt;get_underlying_char_t&lt;T&gt;, <span class="keywordtype">wchar_t</span>&gt;&gt;,</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                <span class="keyword">class </span>string_r = std::basic_string&lt;R&gt;&gt;</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="namespacetlib.html#af2a4b3e71c6c071fe929f3bda8e2e56a">  328</a></span>&#160;      <span class="keyword">inline</span> string_r <a class="code" href="namespacetlib.html#af2a4b3e71c6c071fe929f3bda8e2e56a">wstr_templateStr</a>(T &amp;&amp;str)</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="keywordflow">if</span> constexpr (is_wchar_v&lt;R&gt;)</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            {</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                  <span class="keywordflow">return</span> std::forward&lt;T&gt;(str);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            }</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (is_char16_v&lt;R&gt;)</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            {</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#aa6a9b3857a0b94e98411d5ae22299e00">wstr_u16str</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;            }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;            {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                  <span class="keywordflow">return</span> <a class="code" href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">wstr_cstr</a>(std::forward&lt;T&gt;(str));</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            }</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      }</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;}</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00349"></a><span class="lineno"><a class="line" href="_tstring_8h.html#a31455dbf86aed03b896072878a56bc4b">  349</a></span>&#160;<span class="preprocessor">#define _LIB_NAME &quot;tlib&quot;</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="select__lib_8h.html">win/select_lib.h</a>&gt;</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">#undef _LIB_NAME</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="preprocessor">#endif // !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma warning(pop) // warning(disable: 4996)</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="preprocessor">#endif //TSTRING</span></div>
+<div class="ttc" id="tchar_8h_html_a146f44b466f922c8e218e89884d35759"><div class="ttname"><a href="tchar_8h.html#a146f44b466f922c8e218e89884d35759">TCHAR</a></div><div class="ttdeci">char16_t TCHAR</div><div class="ttdef"><b>Definition:</b> tchar.h:5</div></div>
+<div class="ttc" id="namespacetlib_html_aeb42a3d4ff030f4cd17dfc0f58ca2baf"><div class="ttname"><a href="namespacetlib.html#aeb42a3d4ff030f4cd17dfc0f58ca2baf">tlib::strconvert_u16_codepage</a></div><div class="ttdeci">thread_local std::wstring_convert&lt; codecvt_u16_o, char16_t &gt; strconvert_u16_codepage</div></div>
+<div class="ttc" id="tchar_8h_html"><div class="ttname"><a href="tchar_8h.html">tchar.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_af2a4b3e71c6c071fe929f3bda8e2e56a"><div class="ttname"><a href="namespacetlib.html#af2a4b3e71c6c071fe929f3bda8e2e56a">tlib::wstr_templateStr</a></div><div class="ttdeci">string_r wstr_templateStr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:328</div></div>
+<div class="ttc" id="namespacetlib_html_a7c4ff780af3912ba1217d25f97657e84"><div class="ttname"><a href="namespacetlib.html#a7c4ff780af3912ba1217d25f97657e84">tlib::u8str_u16str</a></div><div class="ttdeci">std::u16string u8str_u16str(std::u8string_view u8str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:134</div></div>
+<div class="ttc" id="namespacetlib_html_a8176ed39966c590724b90930956c2d41"><div class="ttname"><a href="namespacetlib.html#a8176ed39966c590724b90930956c2d41">tlib::strconvert_u16_u8</a></div><div class="ttdeci">thread_local std::wstring_convert&lt; codecvt_u16_u8, char16_t &gt; strconvert_u16_u8</div></div>
+<div class="ttc" id="namespacetlib_html_a20e4361587bc1962cf0b361d2de71b1e"><div class="ttname"><a href="namespacetlib.html#a20e4361587bc1962cf0b361d2de71b1e">tlib::codecvt_w_o</a></div><div class="ttdeci">deletable_facet&lt; std::codecvt_byname&lt; wchar_t, char, std::mbstate_t &gt;&gt; codecvt_w_o</div><div class="ttdef"><b>Definition:</b> Tcodecvt.h:210</div></div>
+<div class="ttc" id="namespacetlib_html_aa6a9b3857a0b94e98411d5ae22299e00"><div class="ttname"><a href="namespacetlib.html#aa6a9b3857a0b94e98411d5ae22299e00">tlib::wstr_u16str</a></div><div class="ttdeci">std::u16string wstr_u16str(std::wstring_view wstr)</div><div class="ttdef"><b>Definition:</b> Tstring.h:171</div></div>
+<div class="ttc" id="namespacetlib_html_a7f4dabea344939f6a0d25b6c4a447ddd"><div class="ttname"><a href="namespacetlib.html#a7f4dabea344939f6a0d25b6c4a447ddd">tlib::templateStr_cstr</a></div><div class="ttdeci">std::string templateStr_cstr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:256</div></div>
+<div class="ttc" id="namespacestd_html_a055d74891f333fba5a00a11873e8556f"><div class="ttname"><a href="namespacestd.html#a055d74891f333fba5a00a11873e8556f">std::u8string_view</a></div><div class="ttdeci">basic_string_view&lt; char8_t &gt; u8string_view</div><div class="ttdef"><b>Definition:</b> Tstring.h:57</div></div>
+<div class="ttc" id="namespacetlib_html_a15a2f47f0610c88d879be3a5c13b3815"><div class="ttname"><a href="namespacetlib.html#a15a2f47f0610c88d879be3a5c13b3815">tlib::u16str_u8str</a></div><div class="ttdeci">std::u8string u16str_u8str(std::u16string_view u16str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:140</div></div>
+<div class="ttc" id="namespacetlib_html_a801ca383476785668f33fb5b8ee3b56f"><div class="ttname"><a href="namespacetlib.html#a801ca383476785668f33fb5b8ee3b56f">tlib::npos</a></div><div class="ttdeci">const size_t npos</div></div>
+<div class="ttc" id="namespacetlib_html_a355c02422fda1d6cc84922254f4ef9af"><div class="ttname"><a href="namespacetlib.html#a355c02422fda1d6cc84922254f4ef9af">tlib::templateStr_wstr</a></div><div class="ttdeci">std::wstring templateStr_wstr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:309</div></div>
+<div class="ttc" id="namespacetlib_html_ae9c70e2afd6bb77678cf3d914b2c1528"><div class="ttname"><a href="namespacetlib.html#ae9c70e2afd6bb77678cf3d914b2c1528">tlib::strconvert_w_u8</a></div><div class="ttdeci">thread_local std::wstring_convert&lt; codecvt_w_u8, wchar_t &gt; strconvert_w_u8</div></div>
+<div class="ttc" id="namespacetlib_html_a53368dcd6d396e4ab414de32d3ee6ef0"><div class="ttname"><a href="namespacetlib.html#a53368dcd6d396e4ab414de32d3ee6ef0">tlib::u8str_wstr</a></div><div class="ttdeci">std::wstring u8str_wstr(std::u8string_view u8str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:148</div></div>
+<div class="ttc" id="namespacetlib_html_a4166e38a3688d73044eb567f69e4752f"><div class="ttname"><a href="namespacetlib.html#a4166e38a3688d73044eb567f69e4752f">tlib::wstr_u8str</a></div><div class="ttdeci">std::u8string wstr_u8str(std::wstring_view wstr)</div><div class="ttdef"><b>Definition:</b> Tstring.h:154</div></div>
+<div class="ttc" id="namespacetlib_html_a78b9074f53b71d3544da82dfda5ce771"><div class="ttname"><a href="namespacetlib.html#a78b9074f53b71d3544da82dfda5ce771">tlib::tstr_templateStr</a></div><div class="ttdeci">string_r tstr_templateStr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:239</div></div>
+<div class="ttc" id="namespacetlib_html_aa30dd470cb9212f47f8c9b4764daad82"><div class="ttname"><a href="namespacetlib.html#aa30dd470cb9212f47f8c9b4764daad82">tlib::cstr_wstr</a></div><div class="ttdeci">std::wstring cstr_wstr(std::string_view str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:74</div></div>
+<div class="ttc" id="char8__t_8h_html"><div class="ttname"><a href="char8__t_8h.html">char8_t.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_ad92441715b8e426893c06146f1062e3f"><div class="ttname"><a href="namespacetlib.html#ad92441715b8e426893c06146f1062e3f">tlib::tstring_view</a></div><div class="ttdeci">std::basic_string_view&lt; TCHAR &gt; tstring_view</div><div class="ttdef"><b>Definition:</b> Tstring.h:66</div></div>
+<div class="ttc" id="namespacestd_html_a174ecdffd8546490814da4d5f82dc681"><div class="ttname"><a href="namespacestd.html#a174ecdffd8546490814da4d5f82dc681">std::u8string</a></div><div class="ttdeci">basic_string&lt; char8_t &gt; u8string</div><div class="ttdef"><b>Definition:</b> Tstring.h:56</div></div>
+<div class="ttc" id="_tcodecvt_8h_html"><div class="ttname"><a href="_tcodecvt_8h.html">Tcodecvt.h</a></div></div>
+<div class="ttc" id="select__lib_8h_html"><div class="ttname"><a href="select__lib_8h.html">select_lib.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a4d45ec8960521abc4e71ed04891e07e6"><div class="ttname"><a href="namespacetlib.html#a4d45ec8960521abc4e71ed04891e07e6">tlib::u16str_cstr</a></div><div class="ttdeci">std::string u16str_cstr(std::u16string_view ustr)</div><div class="ttdef"><b>Definition:</b> Tstring.h:110</div></div>
+<div class="ttc" id="namespacetlib_html_ab656115193328b9509de79ad1efac109"><div class="ttname"><a href="namespacetlib.html#ab656115193328b9509de79ad1efac109">tlib::codecvt_u16_o</a></div><div class="ttdeci">deletable_facet&lt; codecvt_bynames&lt; char16_t, char, tlib_mbstate_t &gt;&gt; codecvt_u16_o</div><div class="ttdef"><b>Definition:</b> Tcodecvt.h:219</div></div>
+<div class="ttc" id="namespacetlib_html_afdd8348da28c522eaf1fa3c9506e3de9"><div class="ttname"><a href="namespacetlib.html#afdd8348da28c522eaf1fa3c9506e3de9">tlib::tstring</a></div><div class="ttdeci">std::basic_string&lt; TCHAR &gt; tstring</div><div class="ttdef"><b>Definition:</b> Tstring.h:65</div></div>
+<div class="ttc" id="namespacetlib_html_a3181532a88e6ce5422949c37140bc871"><div class="ttname"><a href="namespacetlib.html#a3181532a88e6ce5422949c37140bc871">tlib::cstr_templateStr</a></div><div class="ttdeci">string_r cstr_templateStr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:284</div></div>
+<div class="ttc" id="namespacetlib_html_aa9fb4a9a3f680d5453d3930c83e5d309"><div class="ttname"><a href="namespacetlib.html#aa9fb4a9a3f680d5453d3930c83e5d309">tlib::cstr_u16str</a></div><div class="ttdeci">std::u16string cstr_u16str(std::string_view str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:104</div></div>
+<div class="ttc" id="namespacetlib_html_a09679f2d327b514d5c1ec262f3e5b22e"><div class="ttname"><a href="namespacetlib.html#a09679f2d327b514d5c1ec262f3e5b22e">tlib::templateStr_tstr</a></div><div class="ttdeci">tstring templateStr_tstr(T &amp;&amp;str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:219</div></div>
+<div class="ttc" id="namespacetlib_html_ae683ae2d83a90c8b66773243067de222"><div class="ttname"><a href="namespacetlib.html#ae683ae2d83a90c8b66773243067de222">tlib::strconvert_w_codepage</a></div><div class="ttdeci">thread_local std::wstring_convert&lt; codecvt_w_o &gt; strconvert_w_codepage</div></div>
+<div class="ttc" id="namespacetlib_html_ac06e32d203d9e3f7334c1c47d395ff7b"><div class="ttname"><a href="namespacetlib.html#ac06e32d203d9e3f7334c1c47d395ff7b">tlib::u16str_wstr</a></div><div class="ttdeci">std::wstring u16str_wstr(std::u16string_view u16str)</div><div class="ttdef"><b>Definition:</b> Tstring.h:161</div></div>
+<div class="ttc" id="_ttype_8h_html"><div class="ttname"><a href="_ttype_8h.html">Ttype.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_ac97c71b6548e4a6e646a26c82c5a5644"><div class="ttname"><a href="namespacetlib.html#ac97c71b6548e4a6e646a26c82c5a5644">tlib::wstr_cstr</a></div><div class="ttdeci">std::string wstr_cstr(std::wstring_view wstr)</div><div class="ttdef"><b>Definition:</b> Tstring.h:80</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

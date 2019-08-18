@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Исходный файл include/Tregex.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Tregex.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_tregex_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef TREGEX</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TREGEX</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;regex&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tstring_8h.html">Tstring.h</a>&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// CLASS regex_traits&lt;char16_t&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">class </span>std::regex_traits&lt;char16_t&gt;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    : <span class="keyword">public</span> std::_Regex_traits&lt;char16_t&gt;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{ <span class="comment">// specialization for char16_t</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;      <span class="keywordtype">int</span> value(char16_t _Ch, <span class="keywordtype">int</span> _Base)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">      </span>{ <span class="comment">// map character value to numeric value</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">if</span> ((_Base != 8 &amp;&amp; u<span class="charliteral">&#39;0&#39;</span> &lt;= _Ch &amp;&amp; _Ch &lt;= u<span class="charliteral">&#39;9&#39;</span>) || (_Base == 8 &amp;&amp; u<span class="charliteral">&#39;0&#39;</span> &lt;= _Ch &amp;&amp; _Ch &lt;= u<span class="charliteral">&#39;7&#39;</span>))</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                  <span class="keywordflow">return</span> (_Ch - u<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_Base != 16)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                  ;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (u<span class="charliteral">&#39;a&#39;</span> &lt;= _Ch &amp;&amp; _Ch &lt;= u<span class="charliteral">&#39;f&#39;</span>)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                  <span class="keywordflow">return</span> (_Ch - u<span class="charliteral">&#39;a&#39;</span> + 10);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (u<span class="charliteral">&#39;A&#39;</span> &lt;= _Ch &amp;&amp; _Ch &lt;= u<span class="charliteral">&#39;F&#39;</span>)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                  <span class="keywordflow">return</span> (_Ch - u<span class="charliteral">&#39;A&#39;</span> + 10);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> (-1);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">inline</span> <span class="keyword">const</span> char16_t *std::_Cl_names::_Get&lt;char16_t&gt;() <span class="keyword">const</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{ <span class="comment">// get wide pointer</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      <span class="keywordflow">return</span> ((char16_t *)_Wide);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">extern</span> <span class="keyword">template</span> std::locale::id std::collate&lt;char16_t&gt;::id;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span>tlib</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacetlib.html#a205d4580b479043fc3570a9c91f20be6">   41</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a205d4580b479043fc3570a9c91f20be6">uregex</a> = std::basic_regex&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacetlib.html#a27d125b0aa2639190d014a583a49d8f8">   42</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a27d125b0aa2639190d014a583a49d8f8">ucmatch</a> = std::match_results&lt;const char16_t *&gt;;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacetlib.html#a421ca5720421b3c6e3fa2060e5429277">   43</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a421ca5720421b3c6e3fa2060e5429277">usmatch</a> = std::match_results&lt;std::u16string::const_iterator&gt;;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacetlib.html#afea89b13a8f796722f67f08fa17c3f3f">   45</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#afea89b13a8f796722f67f08fa17c3f3f">ucregex_token_iterator</a> = std::regex_token_iterator&lt;const char16_t *&gt;;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacetlib.html#a746436e3107abbe3fed0c8b336b3a3ee">   46</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a746436e3107abbe3fed0c8b336b3a3ee">usregex_token_iterator</a> = std::regex_token_iterator&lt;std::u16string::const_iterator&gt;;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacetlib.html#ae8683b83cf5aeccc4547d97c35f8df63">   47</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#ae8683b83cf5aeccc4547d97c35f8df63">ucregex_iterator</a> = std::regex_iterator&lt;const char16_t *&gt;;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacetlib.html#aad836df9a1734a3f4601d11d7c5113f7">   48</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#aad836df9a1734a3f4601d11d7c5113f7">usregex_iterator</a> = std::regex_iterator&lt;std::u16string::const_iterator&gt;;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacetlib.html#af34f9fff08f0d0cd36dae5394d60e145">   50</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#af34f9fff08f0d0cd36dae5394d60e145">tregex</a> = std::basic_regex&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1ff33312dfbc5e501a5a3eab98fd5a51">   51</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a1ff33312dfbc5e501a5a3eab98fd5a51">tcmatch</a> = std::match_results&lt;const TCHAR *&gt;;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespacetlib.html#a5020d2293c082fa85d428be7a87a5949">   52</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a5020d2293c082fa85d428be7a87a5949">tsmatch</a> = std::match_results&lt;tlib::tstring::const_iterator&gt;;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacetlib.html#af832c3a78a7f66306905142f1476ad56">   54</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#af832c3a78a7f66306905142f1476ad56">tcregex_token_iterator</a> = std::regex_token_iterator&lt;const TCHAR *&gt;;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespacetlib.html#a293ff3093cb4401c02111af4aedad710">   55</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a293ff3093cb4401c02111af4aedad710">tsregex_token_iterator</a> = std::regex_token_iterator&lt;tlib::tstring::const_iterator&gt;;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacetlib.html#a0c696c26ddf9bc192a940ab134d91ae0">   56</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a0c696c26ddf9bc192a940ab134d91ae0">tcregex_iterator</a> = std::regex_iterator&lt;const TCHAR *&gt;;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="namespacetlib.html#aab2b62080ae7cb5111eed70ad355be52">   57</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#aab2b62080ae7cb5111eed70ad355be52">tsregex_iterator</a> = std::regex_iterator&lt;tlib::tstring::const_iterator&gt;;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#if !(defined(__linux__) || defined(_LIB))</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="_tregex_8h.html#a31455dbf86aed03b896072878a56bc4b">   63</a></span>&#160;<span class="preprocessor">#define _LIB_NAME &quot;tlib_char16&quot;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="select__lib_8h.html">win/select_lib.h</a>&gt;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#undef _LIB_NAME</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // !(defined(__linux__) || defined(_LIB))</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif // TREGEX</span></div>
+<div class="ttc" id="namespacetlib_html_af34f9fff08f0d0cd36dae5394d60e145"><div class="ttname"><a href="namespacetlib.html#af34f9fff08f0d0cd36dae5394d60e145">tlib::tregex</a></div><div class="ttdeci">std::basic_regex&lt; TCHAR &gt; tregex</div><div class="ttdef"><b>Definition:</b> Tregex.h:50</div></div>
+<div class="ttc" id="namespacetlib_html_a746436e3107abbe3fed0c8b336b3a3ee"><div class="ttname"><a href="namespacetlib.html#a746436e3107abbe3fed0c8b336b3a3ee">tlib::usregex_token_iterator</a></div><div class="ttdeci">std::regex_token_iterator&lt; std::u16string::const_iterator &gt; usregex_token_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:46</div></div>
+<div class="ttc" id="_tstring_8h_html"><div class="ttname"><a href="_tstring_8h.html">Tstring.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_afea89b13a8f796722f67f08fa17c3f3f"><div class="ttname"><a href="namespacetlib.html#afea89b13a8f796722f67f08fa17c3f3f">tlib::ucregex_token_iterator</a></div><div class="ttdeci">std::regex_token_iterator&lt; const char16_t * &gt; ucregex_token_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:45</div></div>
+<div class="ttc" id="namespacetlib_html_a421ca5720421b3c6e3fa2060e5429277"><div class="ttname"><a href="namespacetlib.html#a421ca5720421b3c6e3fa2060e5429277">tlib::usmatch</a></div><div class="ttdeci">std::match_results&lt; std::u16string::const_iterator &gt; usmatch</div><div class="ttdef"><b>Definition:</b> Tregex.h:43</div></div>
+<div class="ttc" id="namespacetlib_html_a5020d2293c082fa85d428be7a87a5949"><div class="ttname"><a href="namespacetlib.html#a5020d2293c082fa85d428be7a87a5949">tlib::tsmatch</a></div><div class="ttdeci">std::match_results&lt; tlib::tstring::const_iterator &gt; tsmatch</div><div class="ttdef"><b>Definition:</b> Tregex.h:52</div></div>
+<div class="ttc" id="namespacetlib_html_a27d125b0aa2639190d014a583a49d8f8"><div class="ttname"><a href="namespacetlib.html#a27d125b0aa2639190d014a583a49d8f8">tlib::ucmatch</a></div><div class="ttdeci">std::match_results&lt; const char16_t * &gt; ucmatch</div><div class="ttdef"><b>Definition:</b> Tregex.h:42</div></div>
+<div class="ttc" id="namespacetlib_html_a1ff33312dfbc5e501a5a3eab98fd5a51"><div class="ttname"><a href="namespacetlib.html#a1ff33312dfbc5e501a5a3eab98fd5a51">tlib::tcmatch</a></div><div class="ttdeci">std::match_results&lt; const TCHAR * &gt; tcmatch</div><div class="ttdef"><b>Definition:</b> Tregex.h:51</div></div>
+<div class="ttc" id="select__lib_8h_html"><div class="ttname"><a href="select__lib_8h.html">select_lib.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_af832c3a78a7f66306905142f1476ad56"><div class="ttname"><a href="namespacetlib.html#af832c3a78a7f66306905142f1476ad56">tlib::tcregex_token_iterator</a></div><div class="ttdeci">std::regex_token_iterator&lt; const TCHAR * &gt; tcregex_token_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:54</div></div>
+<div class="ttc" id="namespacetlib_html_a205d4580b479043fc3570a9c91f20be6"><div class="ttname"><a href="namespacetlib.html#a205d4580b479043fc3570a9c91f20be6">tlib::uregex</a></div><div class="ttdeci">std::basic_regex&lt; char16_t &gt; uregex</div><div class="ttdef"><b>Definition:</b> Tregex.h:41</div></div>
+<div class="ttc" id="namespacetlib_html_ae8683b83cf5aeccc4547d97c35f8df63"><div class="ttname"><a href="namespacetlib.html#ae8683b83cf5aeccc4547d97c35f8df63">tlib::ucregex_iterator</a></div><div class="ttdeci">std::regex_iterator&lt; const char16_t * &gt; ucregex_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:47</div></div>
+<div class="ttc" id="namespacetlib_html_a293ff3093cb4401c02111af4aedad710"><div class="ttname"><a href="namespacetlib.html#a293ff3093cb4401c02111af4aedad710">tlib::tsregex_token_iterator</a></div><div class="ttdeci">std::regex_token_iterator&lt; tlib::tstring::const_iterator &gt; tsregex_token_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:55</div></div>
+<div class="ttc" id="namespacetlib_html_aad836df9a1734a3f4601d11d7c5113f7"><div class="ttname"><a href="namespacetlib.html#aad836df9a1734a3f4601d11d7c5113f7">tlib::usregex_iterator</a></div><div class="ttdeci">std::regex_iterator&lt; std::u16string::const_iterator &gt; usregex_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:48</div></div>
+<div class="ttc" id="namespacetlib_html_a0c696c26ddf9bc192a940ab134d91ae0"><div class="ttname"><a href="namespacetlib.html#a0c696c26ddf9bc192a940ab134d91ae0">tlib::tcregex_iterator</a></div><div class="ttdeci">std::regex_iterator&lt; const TCHAR * &gt; tcregex_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:56</div></div>
+<div class="ttc" id="namespacetlib_html_aab2b62080ae7cb5111eed70ad355be52"><div class="ttname"><a href="namespacetlib.html#aab2b62080ae7cb5111eed70ad355be52">tlib::tsregex_iterator</a></div><div class="ttdeci">std::regex_iterator&lt; tlib::tstring::const_iterator &gt; tsregex_iterator</div><div class="ttdef"><b>Definition:</b> Tregex.h:57</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

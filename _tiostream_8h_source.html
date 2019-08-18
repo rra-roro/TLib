@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Исходный файл include/Tiostream.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Tiostream.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_tiostream_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#pragma once </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="_tiostream_8h.html#ab327acd0a24a2ccb9dfc3af0a807172f">    6</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="tchar_8h.html">tchar.h</a>&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="tchar_8h.html">linux/tchar.h</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string_view&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>tlib</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keyword">using</span> std::endl;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacetlib.html#a04850bc70bce3491202ef5fa1bbe6e73">   26</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a04850bc70bce3491202ef5fa1bbe6e73">u16istream</a> = std::basic_istream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">   27</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a> = std::basic_ostream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacetlib.html#a3719945bdfc2b09a171f798f3b7f916f">   28</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a3719945bdfc2b09a171f798f3b7f916f">u16ifstream</a> = std::basic_ifstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacetlib.html#a9198fa35a6dd0e6f5d22058acdfd275b">   29</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a9198fa35a6dd0e6f5d22058acdfd275b">u16ofstream</a> = std::basic_ofstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacetlib.html#a9f07e419d577842c9669590348421222">   30</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a9f07e419d577842c9669590348421222">u16fstream</a> = std::basic_fstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacetlib.html#abc7c7879697df60b74c32b6ed439a5fb">   31</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#abc7c7879697df60b74c32b6ed439a5fb">u16istringstream</a> = std::basic_istringstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacetlib.html#abdb69d2903ce8216a696d1895064b3eb">   32</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#abdb69d2903ce8216a696d1895064b3eb">u16ostringstream</a> = std::basic_ostringstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacetlib.html#a3298814aeb965b8221ca9a3c520f59a9">   33</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a3298814aeb965b8221ca9a3c520f59a9">u16stringstream</a> = std::basic_stringstream&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacetlib.html#aece3b4794bdbda2d01c79c3e830877fa">   34</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#aece3b4794bdbda2d01c79c3e830877fa">u16stringbuf</a> = std::basic_stringbuf&lt;char16_t&gt;;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a> <a class="code" href="namespacetlib.html#a33bca8beaf769c138592eb8ac3cbb39f">ucout</a>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#a04850bc70bce3491202ef5fa1bbe6e73">u16istream</a> <a class="code" href="namespacetlib.html#a49b5c1d24a27962d164fb004c06f227e">ucin</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a> <a class="code" href="namespacetlib.html#a87f063080679d0988c0580884e2ac8a7">ucerr</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a> <a class="code" href="namespacetlib.html#a97cc40e57648f84bf41610f184323eda">uclog</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacetlib.html#a7d8e2a1c7d7b6638f311ee68113b754b">   41</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a7d8e2a1c7d7b6638f311ee68113b754b">tistream</a> = std::basic_istream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacetlib.html#a5d2f2c5b207aafa74db7bb89624fd67a">   42</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a5d2f2c5b207aafa74db7bb89624fd67a">tostream</a> = std::basic_ostream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacetlib.html#ab95f5d5d6dbd4f9ea75b8e9baaed9033">   43</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#ab95f5d5d6dbd4f9ea75b8e9baaed9033">tifstream</a> = std::basic_ifstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacetlib.html#aaa32d640b0c0c33ae99b9a4e09d16b02">   44</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#aaa32d640b0c0c33ae99b9a4e09d16b02">tofstream</a> = std::basic_ofstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacetlib.html#aa26bcd95c5fd52c92947b854c388babc">   45</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#aa26bcd95c5fd52c92947b854c388babc">tfstream</a> = std::basic_fstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacetlib.html#a59ca784cf095986fec13e0613f8a324c">   46</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a59ca784cf095986fec13e0613f8a324c">tistringstream</a> = std::basic_istringstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacetlib.html#a7a2578092a9864a681f711edef9f2680">   47</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#a7a2578092a9864a681f711edef9f2680">tostringstream</a> = std::basic_ostringstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacetlib.html#acb8fe35b2b2b2b619e96a15e41060b06">   48</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#acb8fe35b2b2b2b619e96a15e41060b06">tstringstream</a> = std::basic_stringstream&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacetlib.html#ac1dad307114e2c50e42ad9690ed25ce0">   49</a></span>&#160;      <span class="keyword">using</span> <a class="code" href="namespacetlib.html#ac1dad307114e2c50e42ad9690ed25ce0">tstringbuf</a> = std::basic_stringbuf&lt;TCHAR&gt;;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#if (defined(_WIN32) &amp;&amp; defined(_UNICODE))</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span>      <span class="keyword">extern</span> std::wostream&amp; <a class="code" href="namespacetlib.html#a2fb64045d14ccf62417322159fb8c278">tcout</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keyword">extern</span> std::wistream&amp; <a class="code" href="namespacetlib.html#a1aa0fa35eecb4200b74dd89527f82cff">tcin</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keyword">extern</span> std::wostream&amp; <a class="code" href="namespacetlib.html#a8cc9426ac2923c3ebef268dae6a0a4e6">tcerr</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">extern</span> std::wostream&amp; <a class="code" href="namespacetlib.html#a13b6b3d05229de050c1fa31531b30f22">tclog</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a>&amp; <a class="code" href="namespacetlib.html#a2fb64045d14ccf62417322159fb8c278">tcout</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#a04850bc70bce3491202ef5fa1bbe6e73">u16istream</a>&amp; <a class="code" href="namespacetlib.html#a1aa0fa35eecb4200b74dd89527f82cff">tcin</a>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a>&amp; <a class="code" href="namespacetlib.html#a8cc9426ac2923c3ebef268dae6a0a4e6">tcerr</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">extern</span> <a class="code" href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">u16ostream</a>&amp; <a class="code" href="namespacetlib.html#a13b6b3d05229de050c1fa31531b30f22">tclog</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#ifdef Q_OS_WIN</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span>      <span class="keyword">inline</span> std::ostream&amp; operator&lt;&lt;(std::ostream&amp; s, <span class="keyword">const</span> QString&amp; x)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> s &lt;&lt; static_cast&lt;const char*&gt;(x.toLocal8Bit());</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keyword">inline</span> std::wostream&amp; operator&lt;&lt;(std::wostream&amp; s, <span class="keyword">const</span> QString&amp; x)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">return</span> s &lt;&lt; x.toStdWString();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif // Q_OS_WIN</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif // _WIN32</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#if !(defined(__linux__) || defined(_LIB) || defined(UNDER_CE) || defined(WINCE))</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="_tiostream_8h.html#a31455dbf86aed03b896072878a56bc4b">   83</a></span>&#160;<span class="preprocessor">#define _LIB_NAME &quot;tlib&quot;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="select__lib_8h.html">win/select_lib.h</a>&gt;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#undef _LIB_NAME</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif // !(defined(_LIB) || defined(UNDER_CE) || defined(WINCE))</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="ttc" id="tchar_8h_html"><div class="ttname"><a href="tchar_8h.html">tchar.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_aaa32d640b0c0c33ae99b9a4e09d16b02"><div class="ttname"><a href="namespacetlib.html#aaa32d640b0c0c33ae99b9a4e09d16b02">tlib::tofstream</a></div><div class="ttdeci">std::basic_ofstream&lt; TCHAR &gt; tofstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:44</div></div>
+<div class="ttc" id="namespacetlib_html_a2fb64045d14ccf62417322159fb8c278"><div class="ttname"><a href="namespacetlib.html#a2fb64045d14ccf62417322159fb8c278">tlib::tcout</a></div><div class="ttdeci">u16ostream &amp; tcout</div><div class="ttdef"><b>Definition:</b> Tiostream.cpp:38</div></div>
+<div class="ttc" id="namespacetlib_html_ab95f5d5d6dbd4f9ea75b8e9baaed9033"><div class="ttname"><a href="namespacetlib.html#ab95f5d5d6dbd4f9ea75b8e9baaed9033">tlib::tifstream</a></div><div class="ttdeci">std::basic_ifstream&lt; TCHAR &gt; tifstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:43</div></div>
+<div class="ttc" id="namespacetlib_html_a8cc9426ac2923c3ebef268dae6a0a4e6"><div class="ttname"><a href="namespacetlib.html#a8cc9426ac2923c3ebef268dae6a0a4e6">tlib::tcerr</a></div><div class="ttdeci">u16ostream &amp; tcerr</div><div class="ttdef"><b>Definition:</b> Tiostream.cpp:40</div></div>
+<div class="ttc" id="namespacetlib_html_a49b5c1d24a27962d164fb004c06f227e"><div class="ttname"><a href="namespacetlib.html#a49b5c1d24a27962d164fb004c06f227e">tlib::ucin</a></div><div class="ttdeci">u16istream ucin</div></div>
+<div class="ttc" id="namespacetlib_html_a3298814aeb965b8221ca9a3c520f59a9"><div class="ttname"><a href="namespacetlib.html#a3298814aeb965b8221ca9a3c520f59a9">tlib::u16stringstream</a></div><div class="ttdeci">std::basic_stringstream&lt; char16_t &gt; u16stringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:33</div></div>
+<div class="ttc" id="namespacetlib_html_a97cc40e57648f84bf41610f184323eda"><div class="ttname"><a href="namespacetlib.html#a97cc40e57648f84bf41610f184323eda">tlib::uclog</a></div><div class="ttdeci">u16ostream uclog</div></div>
+<div class="ttc" id="namespacetlib_html_a33bca8beaf769c138592eb8ac3cbb39f"><div class="ttname"><a href="namespacetlib.html#a33bca8beaf769c138592eb8ac3cbb39f">tlib::ucout</a></div><div class="ttdeci">u16ostream ucout</div></div>
+<div class="ttc" id="namespacetlib_html_a87f063080679d0988c0580884e2ac8a7"><div class="ttname"><a href="namespacetlib.html#a87f063080679d0988c0580884e2ac8a7">tlib::ucerr</a></div><div class="ttdeci">u16ostream ucerr</div></div>
+<div class="ttc" id="namespacetlib_html_ab90c055f26719957baf199a95c74a2c7"><div class="ttname"><a href="namespacetlib.html#ab90c055f26719957baf199a95c74a2c7">tlib::u16ostream</a></div><div class="ttdeci">std::basic_ostream&lt; char16_t &gt; u16ostream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:27</div></div>
+<div class="ttc" id="namespacetlib_html_a04850bc70bce3491202ef5fa1bbe6e73"><div class="ttname"><a href="namespacetlib.html#a04850bc70bce3491202ef5fa1bbe6e73">tlib::u16istream</a></div><div class="ttdeci">std::basic_istream&lt; char16_t &gt; u16istream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:26</div></div>
+<div class="ttc" id="namespacetlib_html_abc7c7879697df60b74c32b6ed439a5fb"><div class="ttname"><a href="namespacetlib.html#abc7c7879697df60b74c32b6ed439a5fb">tlib::u16istringstream</a></div><div class="ttdeci">std::basic_istringstream&lt; char16_t &gt; u16istringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:31</div></div>
+<div class="ttc" id="namespacetlib_html_a7a2578092a9864a681f711edef9f2680"><div class="ttname"><a href="namespacetlib.html#a7a2578092a9864a681f711edef9f2680">tlib::tostringstream</a></div><div class="ttdeci">std::basic_ostringstream&lt; TCHAR &gt; tostringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:47</div></div>
+<div class="ttc" id="namespacetlib_html_ac1dad307114e2c50e42ad9690ed25ce0"><div class="ttname"><a href="namespacetlib.html#ac1dad307114e2c50e42ad9690ed25ce0">tlib::tstringbuf</a></div><div class="ttdeci">std::basic_stringbuf&lt; TCHAR &gt; tstringbuf</div><div class="ttdef"><b>Definition:</b> Tiostream.h:49</div></div>
+<div class="ttc" id="namespacetlib_html_a7d8e2a1c7d7b6638f311ee68113b754b"><div class="ttname"><a href="namespacetlib.html#a7d8e2a1c7d7b6638f311ee68113b754b">tlib::tistream</a></div><div class="ttdeci">std::basic_istream&lt; TCHAR &gt; tistream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:41</div></div>
+<div class="ttc" id="namespacetlib_html_acb8fe35b2b2b2b619e96a15e41060b06"><div class="ttname"><a href="namespacetlib.html#acb8fe35b2b2b2b619e96a15e41060b06">tlib::tstringstream</a></div><div class="ttdeci">std::basic_stringstream&lt; TCHAR &gt; tstringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:48</div></div>
+<div class="ttc" id="namespacetlib_html_a5d2f2c5b207aafa74db7bb89624fd67a"><div class="ttname"><a href="namespacetlib.html#a5d2f2c5b207aafa74db7bb89624fd67a">tlib::tostream</a></div><div class="ttdeci">std::basic_ostream&lt; TCHAR &gt; tostream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:42</div></div>
+<div class="ttc" id="namespacetlib_html_a13b6b3d05229de050c1fa31531b30f22"><div class="ttname"><a href="namespacetlib.html#a13b6b3d05229de050c1fa31531b30f22">tlib::tclog</a></div><div class="ttdeci">u16ostream &amp; tclog</div><div class="ttdef"><b>Definition:</b> Tiostream.cpp:41</div></div>
+<div class="ttc" id="namespacetlib_html_a59ca784cf095986fec13e0613f8a324c"><div class="ttname"><a href="namespacetlib.html#a59ca784cf095986fec13e0613f8a324c">tlib::tistringstream</a></div><div class="ttdeci">std::basic_istringstream&lt; TCHAR &gt; tistringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:46</div></div>
+<div class="ttc" id="select__lib_8h_html"><div class="ttname"><a href="select__lib_8h.html">select_lib.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a1aa0fa35eecb4200b74dd89527f82cff"><div class="ttname"><a href="namespacetlib.html#a1aa0fa35eecb4200b74dd89527f82cff">tlib::tcin</a></div><div class="ttdeci">u16istream &amp; tcin</div><div class="ttdef"><b>Definition:</b> Tiostream.cpp:39</div></div>
+<div class="ttc" id="namespacetlib_html_a9f07e419d577842c9669590348421222"><div class="ttname"><a href="namespacetlib.html#a9f07e419d577842c9669590348421222">tlib::u16fstream</a></div><div class="ttdeci">std::basic_fstream&lt; char16_t &gt; u16fstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:30</div></div>
+<div class="ttc" id="namespacetlib_html_aece3b4794bdbda2d01c79c3e830877fa"><div class="ttname"><a href="namespacetlib.html#aece3b4794bdbda2d01c79c3e830877fa">tlib::u16stringbuf</a></div><div class="ttdeci">std::basic_stringbuf&lt; char16_t &gt; u16stringbuf</div><div class="ttdef"><b>Definition:</b> Tiostream.h:34</div></div>
+<div class="ttc" id="namespacetlib_html_a9198fa35a6dd0e6f5d22058acdfd275b"><div class="ttname"><a href="namespacetlib.html#a9198fa35a6dd0e6f5d22058acdfd275b">tlib::u16ofstream</a></div><div class="ttdeci">std::basic_ofstream&lt; char16_t &gt; u16ofstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:29</div></div>
+<div class="ttc" id="namespacetlib_html_abdb69d2903ce8216a696d1895064b3eb"><div class="ttname"><a href="namespacetlib.html#abdb69d2903ce8216a696d1895064b3eb">tlib::u16ostringstream</a></div><div class="ttdeci">std::basic_ostringstream&lt; char16_t &gt; u16ostringstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:32</div></div>
+<div class="ttc" id="namespacetlib_html_a3719945bdfc2b09a171f798f3b7f916f"><div class="ttname"><a href="namespacetlib.html#a3719945bdfc2b09a171f798f3b7f916f">tlib::u16ifstream</a></div><div class="ttdeci">std::basic_ifstream&lt; char16_t &gt; u16ifstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:28</div></div>
+<div class="ttc" id="namespacetlib_html_aa26bcd95c5fd52c92947b854c388babc"><div class="ttname"><a href="namespacetlib.html#aa26bcd95c5fd52c92947b854c388babc">tlib::tfstream</a></div><div class="ttdeci">std::basic_fstream&lt; TCHAR &gt; tfstream</div><div class="ttdef"><b>Definition:</b> Tiostream.h:45</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

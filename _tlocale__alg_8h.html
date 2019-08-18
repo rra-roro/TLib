@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Файл include/locale/Tlocale_alg.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_44dc393e838a15e6cc0dc048cc4f7d4e.html">locale</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Пространства имен</a> &#124;
+<a href="#func-members">Функции</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл Tlocale_alg.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;string_view&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;sstream&gt;</code><br/>
+<code>#include &lt;functional&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+<code>#include &lt;locale&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_tlocale__class_8h_source.html">locale/Tlocale_class.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="_ttype_8h_source.html">Ttype.h</a>&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;locale.h&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для Tlocale_alg.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_tlocale__alg_8h__incl.png" border="0" usemap="#include_2locale_2_tlocale__alg_8h" alt=""/></div>
+<map name="include_2locale_2_tlocale__alg_8h" id="include_2locale_2_tlocale__alg_8h">
+<area shape="rect" id="node8" href="_tlocale__class_8h.html" title="locale/Tlocale_class.h" alt="" coords="289,96,439,123"/><area shape="rect" id="node14" href="_ttype_8h.html" title="Ttype.h" alt="" coords="148,395,215,421"/><area shape="rect" id="node9" href="_tstring_8h.html" title="Tstring.h" alt="" coords="351,320,424,347"/><area shape="rect" id="node16" href="_tlocale__facets_8h.html" title="locale/Tlocale_facets.h" alt="" coords="474,171,629,197"/><area shape="rect" id="node10" href="_tcodecvt_8h.html" title="Tcodecvt.h" alt="" coords="341,395,427,421"/><area shape="rect" id="node12" href="char8__t_8h.html" title="char8_t.h" alt="" coords="250,469,325,496"/><area shape="rect" id="node13" href="select__lib_8h.html" title="win/select_lib.h" alt="" coords="441,469,552,496"/><area shape="rect" id="node17" href="_tlocale__config_8h.html" title="Tlocale_config.h" alt="" coords="463,245,579,272"/></map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Граф файлов, в которые включается этот файл:</div>
+<div class="dyncontent">
+<div class="center"><img src="_tlocale__alg_8h__dep__incl.png" border="0" usemap="#include_2locale_2_tlocale__alg_8hdep" alt=""/></div>
+<map name="include_2locale_2_tlocale__alg_8hdep" id="include_2locale_2_tlocale__alg_8hdep">
+<area shape="rect" id="node2" href="_tlocale_8h.html" title="include/Tlocale.h" alt="" coords="728,96,848,123"/><area shape="rect" id="node3" href="_i_n_i_parser_8h.html" title="include/INIParser.h" alt="" coords="201,179,335,205"/><area shape="rect" id="node4" href="test_i_n_i_parser_8cpp.html" title="src_examples/testINIParser.cpp" alt="" coords="5,269,215,296"/><area shape="rect" id="node5" href="_i_n_i_parser_8cpp.html" title="src_lib/INIParser.cpp" alt="" coords="241,269,385,296"/><area shape="rect" id="node6" href="_tiomanip_8h.html" title="include/Tiomanip.h" alt="" coords="519,179,648,205"/><area shape="rect" id="node9" href="test_tstring_console_8cpp.html" title="src_examples/testTstring\lConsole.cpp" alt="" coords="390,427,559,469"/><area shape="rect" id="node11" href="test_c_l_parser_8cpp.html" title="src_examples/testCLParser.cpp" alt="" coords="894,269,1103,296"/><area shape="rect" id="node13" href="test__tlib_8cpp.html" title="src_test/test_tlib.cpp" alt="" coords="1128,269,1272,296"/><area shape="rect" id="node14" href="locale__mbrlen__linux_8cpp.html" title="src_lib/linux/locale\l_mbrlen_linux.cpp" alt="" coords="775,171,904,213"/><area shape="rect" id="node15" href="_tlocale__class_8cpp.html" title="src_lib/locale/Tlocale\l_class.cpp" alt="" coords="929,171,1073,213"/><area shape="rect" id="node16" href="_tcodecvt_8cpp.html" title="src_lib/Tcodecvt.cpp" alt="" coords="1098,179,1240,205"/><area shape="rect" id="node17" href="_tiostream_8cpp.html" title="src_lib/Tiostream.cpp" alt="" coords="1265,179,1412,205"/><area shape="rect" id="node18" href="_tlocale_8cpp.html" title="src_lib/Tlocale.cpp" alt="" coords="1436,179,1565,205"/><area shape="rect" id="node19" href="_tstring_8cpp.html" title="src_lib/Tstring.cpp" alt="" coords="1590,179,1719,205"/><area shape="rect" id="node20" href="locale__mbrlen__win_8cpp.html" title="src_lib/win/locale\l_mbrlen_win.cpp" alt="" coords="1744,171,1867,213"/><area shape="rect" id="node7" href="_texception__class_8h.html" title="include/exception/Texception\l_class.h" alt="" coords="679,262,869,303"/><area shape="rect" id="node12" href="_tiomanip_8cpp.html" title="src_lib/Tiomanip.cpp" alt="" coords="513,269,655,296"/><area shape="rect" id="node8" href="_texception_8h.html" title="include/Texception.h" alt="" coords="643,352,785,379"/><area shape="rect" id="node10" href="exception__win_8cpp.html" title="src_lib/win/exception\l_win.cpp" alt="" coords="643,427,787,469"/></map>
+</div>
+</div>
+<p><a href="_tlocale__alg_8h_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Пространства имен</h2></td></tr>
+<tr class="memitem:namespacetlib"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html">tlib</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr class="memitem:a4c951063b58872ea6410c973bebf35fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a4c951063b58872ea6410c973bebf35fc">tlib::isslashr</a> (wchar_t _Ch)</td></tr>
+<tr class="separator:a4c951063b58872ea6410c973bebf35fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb86f69f98b4c42d91445fa9e9af290"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a8bb86f69f98b4c42d91445fa9e9af290">tlib::isslashl</a> (wchar_t _Ch)</td></tr>
+<tr class="separator:a8bb86f69f98b4c42d91445fa9e9af290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fb6a0bca5bb80f545d4343caa24b164"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a9fb6a0bca5bb80f545d4343caa24b164">tlib::isslash</a> (wchar_t _Ch)</td></tr>
+<tr class="separator:a9fb6a0bca5bb80f545d4343caa24b164"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07e1d4c4f5f51911ea50742e85d466fd"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a07e1d4c4f5f51911ea50742e85d466fd"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a07e1d4c4f5f51911ea50742e85d466fd">tlib::mb_sym_byte</a> (T &amp;&amp;str_arg, size_t sym_position, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a07e1d4c4f5f51911ea50742e85d466fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5dd7001b83ca79b95e848cd2ecf9235"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:ab5dd7001b83ca79b95e848cd2ecf9235"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ab5dd7001b83ca79b95e848cd2ecf9235">tlib::mb_byte_sym</a> (T &amp;&amp;str_arg, size_t byte_position, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:ab5dd7001b83ca79b95e848cd2ecf9235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6159f62772a0f7d1ca2885b476b129"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_t  = std::basic_string&lt;_Elem&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a7b6159f62772a0f7d1ca2885b476b129"><td class="memTemplItemLeft" align="right" valign="top">string_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a7b6159f62772a0f7d1ca2885b476b129">tlib::get_lower_str</a> (T &amp;&amp;str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a7b6159f62772a0f7d1ca2885b476b129"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ce83ce59c78e86e225e1e1dd0cae11"><td class="memTemplParams" colspan="2">template&lt;typename _Elem , class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a93ce83ce59c78e86e225e1e1dd0cae11"><td class="memTemplItemLeft" align="right" valign="top">std::basic_string&lt; _Elem &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a93ce83ce59c78e86e225e1e1dd0cae11">tlib::to_lower</a> (std::basic_string&lt; _Elem &gt; &amp;str, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a93ce83ce59c78e86e225e1e1dd0cae11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a07aa3f3aeefc51611c082cc52f4391"><td class="memTemplParams" colspan="2">template&lt;typename _Elem , class string_t  = std::basic_string&lt;_Elem&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a8a07aa3f3aeefc51611c082cc52f4391"><td class="memTemplItemLeft" align="right" valign="top">_Elem *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a8a07aa3f3aeefc51611c082cc52f4391">tlib::to_lower</a> (_Elem *str, size_t size_str, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a8a07aa3f3aeefc51611c082cc52f4391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa20be12e0f4c369227eed85c7ffd8bf"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_t  = std::basic_string&lt;_Elem&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:afa20be12e0f4c369227eed85c7ffd8bf"><td class="memTemplItemLeft" align="right" valign="top">string_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#afa20be12e0f4c369227eed85c7ffd8bf">tlib::get_upper_str</a> (T &amp;&amp;str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:afa20be12e0f4c369227eed85c7ffd8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ba6c54d8ba2bcc134518db9ee287666"><td class="memTemplParams" colspan="2">template&lt;typename _Elem , class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a2ba6c54d8ba2bcc134518db9ee287666"><td class="memTemplItemLeft" align="right" valign="top">std::basic_string&lt; _Elem &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a2ba6c54d8ba2bcc134518db9ee287666">tlib::to_upper</a> (std::basic_string&lt; _Elem &gt; &amp;str, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a2ba6c54d8ba2bcc134518db9ee287666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a745ac1519faca73b6897ba7978a86"><td class="memTemplParams" colspan="2">template&lt;typename _Elem , class string_t  = std::basic_string&lt;_Elem&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a05a745ac1519faca73b6897ba7978a86"><td class="memTemplItemLeft" align="right" valign="top">_Elem *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a05a745ac1519faca73b6897ba7978a86">tlib::to_upper</a> (_Elem *str, size_t size_str, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a05a745ac1519faca73b6897ba7978a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af33808f2eb3d4b9d3c3307c4f5b264bf"><td class="memTemplParams" colspan="2">template&lt;class T1 , class _Elem1  = get_underlying_char_t&lt;T1&gt;, class T2 , class _Elem2  = get_underlying_char_t&lt;T2&gt;, class _Elem  = std::enable_if_t&lt;std::is_same_v&lt;_Elem1, _Elem2&gt;, _Elem1&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:af33808f2eb3d4b9d3c3307c4f5b264bf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#af33808f2eb3d4b9d3c3307c4f5b264bf">tlib::strcmp_i</a> (T1 &amp;&amp;str_arg1, T2 &amp;&amp;str_arg2, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:af33808f2eb3d4b9d3c3307c4f5b264bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af87c760dc24ced61f06ef632e0c50cc0"><td class="memTemplParams" colspan="2">template&lt;class T1 , class _Elem1  = get_underlying_char_t&lt;T1&gt;, class T2 , class _Elem2  = get_underlying_char_t&lt;T2&gt;, class _Elem  = std::enable_if_t&lt;std::is_same_v&lt;_Elem1, _Elem2&gt;, _Elem1&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:af87c760dc24ced61f06ef632e0c50cc0"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#af87c760dc24ced61f06ef632e0c50cc0">tlib::find_substr_i</a> (T1 &amp;&amp;str_arg, T2 &amp;&amp;search_str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:af87c760dc24ced61f06ef632e0c50cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade15e3c0eb92323a169275f0da7235ee"><td class="memTemplParams" colspan="2">template&lt;class T1 , class _Elem1  = get_underlying_char_t&lt;T1&gt;, class T2 , class _Elem2  = get_underlying_char_t&lt;T2&gt;, class _Elem  = std::enable_if_t&lt;std::is_same_v&lt;_Elem1, _Elem2&gt;, _Elem1&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:ade15e3c0eb92323a169275f0da7235ee"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ade15e3c0eb92323a169275f0da7235ee">tlib::find_substr_i</a> (T1 &amp;&amp;str_arg, size_t start_position, T2 &amp;&amp;search_str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:ade15e3c0eb92323a169275f0da7235ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b2a952211800c2e614c6cce1ec71408"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a5b2a952211800c2e614c6cce1ec71408"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a5b2a952211800c2e614c6cce1ec71408">tlib::find_graph_symbol</a> (T &amp;&amp;str_arg, size_t pos=0, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a5b2a952211800c2e614c6cce1ec71408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c7fc91eef2bc01834ac52395b1324d"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:ab3c7fc91eef2bc01834ac52395b1324d"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#ab3c7fc91eef2bc01834ac52395b1324d">tlib::rfind_graph_symbol</a> (T &amp;&amp;str_arg, size_t pos=npos, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:ab3c7fc91eef2bc01834ac52395b1324d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3469ad2422b3a3be494cdf34b4605641"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a3469ad2422b3a3be494cdf34b4605641"><td class="memTemplItemLeft" align="right" valign="top">string_view_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a3469ad2422b3a3be494cdf34b4605641">tlib::remove_left_spaces</a> (T &amp;&amp;str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a3469ad2422b3a3be494cdf34b4605641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7182135db3c952613058748c03816be5"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a7182135db3c952613058748c03816be5"><td class="memTemplItemLeft" align="right" valign="top">string_view_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a7182135db3c952613058748c03816be5">tlib::remove_right_spaces</a> (T &amp;&amp;str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a7182135db3c952613058748c03816be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3177155e9b1deeb28fdd790342ac4e51"><td class="memTemplParams" colspan="2">template&lt;class T , class _Elem  = get_underlying_char_t&lt;T&gt;, class string_view_t  = std::basic_string_view&lt;_Elem&gt;, class tl  = tlib::locale&gt; </td></tr>
+<tr class="memitem:a3177155e9b1deeb28fdd790342ac4e51"><td class="memTemplItemLeft" align="right" valign="top">string_view_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetlib.html#a3177155e9b1deeb28fdd790342ac4e51">tlib::remove_space</a> (T &amp;&amp;str_arg, const tl &amp;loc=tl::get_locale_program())</td></tr>
+<tr class="separator:a3177155e9b1deeb28fdd790342ac4e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

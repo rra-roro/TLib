@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Исходный файл include/Tlocale_config.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Tlocale_config.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_tlocale__config_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;locale&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tstring_8h.html">Tstring.h</a>&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>tlib</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;      <span class="comment">/*---</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">    *   CodePageCharInSrc - задает имя кодировки строковых литералов и типа char</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">    *                       в скомпилированной программе.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">    *   Это не то же самое, что имя кодировка исходного текста програмы, которая по</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">    *   соглашению всегда UTF-8 BOM.</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">    *   Кодировка строковых литералов и типа char задается компилятором в момент</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">    *   компиляции программы и устанавливается такой же, как кодировка системы в</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">    *   момент компиляции.</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span>      constexpr <span class="keyword">const</span> <span class="keywordtype">char</span>* CodePageCharInSrc = <span class="stringliteral">&quot;Russian_Russia.1251&quot;</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#elif __linux__</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span>      constexpr <span class="keyword">const</span> <span class="keywordtype">char</span>* CodePageCharInSrc = <span class="stringliteral">&quot;ru_RU.utf8&quot;</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#error &quot;Unknown compiler&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> CharT&gt;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html">   25</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structtlib_1_1locale__cfg__numbers.html">locale_cfg_numbers</a></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      {</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">   27</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a> = CharT;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#ae7df108155c59c59986dc63ac81c36d9">   29</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a> <a class="code" href="structtlib_1_1locale__cfg__numbers.html#ae7df108155c59c59986dc63ac81c36d9">decimal_point</a> = <a class="code" href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">TemplateTypeOfCh</a>(<span class="charliteral">&#39;,&#39;</span>, <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#a3db757a084bf26dca415468d7dcb2977">   30</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a> <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a3db757a084bf26dca415468d7dcb2977">thousands_sep</a> = <a class="code" href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">TemplateTypeOfCh</a>(<span class="charliteral">&#39;.&#39;</span>, <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#a91991d07d0b8c0a3c3f81379bdc72866">   31</a></span>&#160;            std::string <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a91991d07d0b8c0a3c3f81379bdc72866">grouping</a> = <span class="stringliteral">&quot;\3&quot;</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#a5e0f4c9a6bc489d970d5ba1d4e14d70d">   32</a></span>&#160;            <span class="keyword">const</span> <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>* <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a5e0f4c9a6bc489d970d5ba1d4e14d70d">truename</a> = <a class="code" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(<span class="stringliteral">&quot;true&quot;</span>, <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__numbers.html#a40b37a47ee99a335b942d375fe1194d2">   33</a></span>&#160;            <span class="keyword">const</span> <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>* <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a40b37a47ee99a335b942d375fe1194d2">falsename</a> = <a class="code" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(<span class="stringliteral">&quot;false&quot;</span>, <a class="code" href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">char_type</a>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      };</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> CharT&gt;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html">   37</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structtlib_1_1locale__cfg__moneys.html">locale_cfg_moneys</a></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      {</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">   39</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a> = CharT;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">   40</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">string_type</a> = std::basic_string&lt;char_type&gt;;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#ab19d5e494c455d90fa53dca6bdaf84f2">   41</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#ab19d5e494c455d90fa53dca6bdaf84f2">mb</a> = std::money_base;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#af5482960965300ed2b353e241710b984">   42</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#af5482960965300ed2b353e241710b984">pattern</a> = mb::pattern;            </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#ae7eb549acd97c070de7edc8dfbc83157">   44</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#ae7eb549acd97c070de7edc8dfbc83157">decimal_point</a> = <a class="code" href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">TemplateTypeOfCh</a>(<span class="charliteral">&#39;,&#39;</span>, <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a039c28b500ebe42803e178e098d8290d">   45</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a039c28b500ebe42803e178e098d8290d">thousands_sep</a> = <a class="code" href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">TemplateTypeOfCh</a>(<span class="charliteral">&#39;.&#39;</span>, <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a73161bc8b064be0c07e92fcc77dff151">   46</a></span>&#160;            std::string <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a73161bc8b064be0c07e92fcc77dff151">grouping</a> = <span class="stringliteral">&quot;\3&quot;</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#adc0f722dbca8d7eddcf9ebf200eb9e9e">   47</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">string_type</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#adc0f722dbca8d7eddcf9ebf200eb9e9e">curr_symbol</a> = <a class="code" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(<span class="stringliteral">&quot;руб.&quot;</span>, <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#ab84674212da6df66b4c28765377003ac">   48</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">string_type</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#ab84674212da6df66b4c28765377003ac">positive_sign</a> = <a class="code" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(<span class="stringliteral">&quot;+&quot;</span>, <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#acb65a43f0c55ca5ad3058b63ce179bc8">   49</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">string_type</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#acb65a43f0c55ca5ad3058b63ce179bc8">negative_sign</a> = <a class="code" href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a>(<span class="stringliteral">&quot;-&quot;</span>, <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">char_type</a>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a8e67e8fdbd688baef00ec038e046253a">   50</a></span>&#160;            <span class="keywordtype">int</span> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a8e67e8fdbd688baef00ec038e046253a">frac_digits</a> = 2;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#a58df177ba9dfbb945b5b915e6e5213bb">   51</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#af5482960965300ed2b353e241710b984">pattern</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#a58df177ba9dfbb945b5b915e6e5213bb">pos_format</a> = { mb::sign, mb::value, mb::space, mb::symbol };</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structtlib_1_1locale__cfg__moneys.html#aab146c73b96a11d6a4bd2b96c08939be">   52</a></span>&#160;            <a class="code" href="structtlib_1_1locale__cfg__moneys.html#af5482960965300ed2b353e241710b984">pattern</a> <a class="code" href="structtlib_1_1locale__cfg__moneys.html#aab146c73b96a11d6a4bd2b96c08939be">neg_format</a> = { mb::sign, mb::value, mb::space, mb::symbol };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      };</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_a3db757a084bf26dca415468d7dcb2977"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#a3db757a084bf26dca415468d7dcb2977">tlib::locale_cfg_numbers::thousands_sep</a></div><div class="ttdeci">char_type thousands_sep</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:30</div></div>
+<div class="ttc" id="_tstring_8h_html"><div class="ttname"><a href="_tstring_8h.html">Tstring.h</a></div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_adc0f722dbca8d7eddcf9ebf200eb9e9e"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#adc0f722dbca8d7eddcf9ebf200eb9e9e">tlib::locale_cfg_moneys::curr_symbol</a></div><div class="ttdeci">string_type curr_symbol</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:47</div></div>
+<div class="ttc" id="_tstring_8h_html_aeaba0a1c0076fc91e6249a1c52d31f3c"><div class="ttname"><a href="_tstring_8h.html#aeaba0a1c0076fc91e6249a1c52d31f3c">TemplateTypeOfStr</a></div><div class="ttdeci">#define TemplateTypeOfStr(str, type)</div><div class="ttdef"><b>Definition:</b> Tstring.h:215</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_acb65a43f0c55ca5ad3058b63ce179bc8"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#acb65a43f0c55ca5ad3058b63ce179bc8">tlib::locale_cfg_moneys::negative_sign</a></div><div class="ttdeci">string_type negative_sign</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:49</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a99408454646ce44589b30e0259094a75"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a99408454646ce44589b30e0259094a75">tlib::locale_cfg_moneys&lt; char_type &gt;::char_type</a></div><div class="ttdeci">char_type char_type</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:39</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_a1021d9f5466fc01679b642d0e2491362"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#a1021d9f5466fc01679b642d0e2491362">tlib::locale_cfg_numbers&lt; char_type &gt;::char_type</a></div><div class="ttdeci">char_type char_type</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:27</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_a91991d07d0b8c0a3c3f81379bdc72866"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#a91991d07d0b8c0a3c3f81379bdc72866">tlib::locale_cfg_numbers::grouping</a></div><div class="ttdeci">std::string grouping</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:31</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_a40b37a47ee99a335b942d375fe1194d2"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#a40b37a47ee99a335b942d375fe1194d2">tlib::locale_cfg_numbers::falsename</a></div><div class="ttdeci">const char_type * falsename</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:33</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html">tlib::locale_cfg_numbers</a></div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:25</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_ab19d5e494c455d90fa53dca6bdaf84f2"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#ab19d5e494c455d90fa53dca6bdaf84f2">tlib::locale_cfg_moneys&lt; char_type &gt;::mb</a></div><div class="ttdeci">std::money_base mb</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:41</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_af5482960965300ed2b353e241710b984"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#af5482960965300ed2b353e241710b984">tlib::locale_cfg_moneys&lt; char_type &gt;::pattern</a></div><div class="ttdeci">mb::pattern pattern</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:42</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a73161bc8b064be0c07e92fcc77dff151"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a73161bc8b064be0c07e92fcc77dff151">tlib::locale_cfg_moneys::grouping</a></div><div class="ttdeci">std::string grouping</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:46</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a8e67e8fdbd688baef00ec038e046253a"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a8e67e8fdbd688baef00ec038e046253a">tlib::locale_cfg_moneys::frac_digits</a></div><div class="ttdeci">int frac_digits</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:50</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a039c28b500ebe42803e178e098d8290d"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a039c28b500ebe42803e178e098d8290d">tlib::locale_cfg_moneys::thousands_sep</a></div><div class="ttdeci">char_type thousands_sep</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:45</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html">tlib::locale_cfg_moneys</a></div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:37</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_ae7df108155c59c59986dc63ac81c36d9"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#ae7df108155c59c59986dc63ac81c36d9">tlib::locale_cfg_numbers::decimal_point</a></div><div class="ttdeci">char_type decimal_point</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:29</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_ae7eb549acd97c070de7edc8dfbc83157"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#ae7eb549acd97c070de7edc8dfbc83157">tlib::locale_cfg_moneys::decimal_point</a></div><div class="ttdeci">char_type decimal_point</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:44</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_aab146c73b96a11d6a4bd2b96c08939be"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#aab146c73b96a11d6a4bd2b96c08939be">tlib::locale_cfg_moneys::neg_format</a></div><div class="ttdeci">pattern neg_format</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:52</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_ab84674212da6df66b4c28765377003ac"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#ab84674212da6df66b4c28765377003ac">tlib::locale_cfg_moneys::positive_sign</a></div><div class="ttdeci">string_type positive_sign</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:48</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a58df177ba9dfbb945b5b915e6e5213bb"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a58df177ba9dfbb945b5b915e6e5213bb">tlib::locale_cfg_moneys::pos_format</a></div><div class="ttdeci">pattern pos_format</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:51</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__numbers_html_a5e0f4c9a6bc489d970d5ba1d4e14d70d"><div class="ttname"><a href="structtlib_1_1locale__cfg__numbers.html#a5e0f4c9a6bc489d970d5ba1d4e14d70d">tlib::locale_cfg_numbers::truename</a></div><div class="ttdeci">const char_type * truename</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:32</div></div>
+<div class="ttc" id="structtlib_1_1locale__cfg__moneys_html_a8642b966da626df965369a510dbe3248"><div class="ttname"><a href="structtlib_1_1locale__cfg__moneys.html#a8642b966da626df965369a510dbe3248">tlib::locale_cfg_moneys&lt; char_type &gt;::string_type</a></div><div class="ttdeci">std::basic_string&lt; char_type &gt; string_type</div><div class="ttdef"><b>Definition:</b> Tlocale_config.h:40</div></div>
+<div class="ttc" id="_tstring_8h_html_a184b77d2df0d91e4e0d30c4f353eea3f"><div class="ttname"><a href="_tstring_8h.html#a184b77d2df0d91e4e0d30c4f353eea3f">TemplateTypeOfCh</a></div><div class="ttdeci">#define TemplateTypeOfCh(str, type)</div><div class="ttdef"><b>Definition:</b> Tstring.h:216</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

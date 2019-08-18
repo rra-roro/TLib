@@ -1,0 +1,20 @@
+<map id="src_lib/win/exception_win.cpp" name="src_lib/win/exception_win.cpp">
+<area shape="rect" id="node3" href="$_tstring_8h.html" title="Tstring.h" alt="" coords="1530,725,1603,752"/>
+<area shape="rect" id="node13" href="$_texception_8h.html" title="Texception.h" alt="" coords="831,96,928,123"/>
+<area shape="rect" id="node7" href="$_tcodecvt_8h.html" title="Tcodecvt.h" alt="" coords="1605,800,1691,827"/>
+<area shape="rect" id="node9" href="$char8__t_8h.html" title="char8_t.h" alt="" coords="1529,875,1604,901"/>
+<area shape="rect" id="node10" href="$select__lib_8h.html" title="win/select_lib.h" alt="" coords="1740,875,1851,901"/>
+<area shape="rect" id="node11" href="$_ttype_8h.html" title="Ttype.h" alt="" coords="403,800,469,827"/>
+<area shape="rect" id="node15" href="$_texception__class_8h.html" title="exception/Texception\l_class.h" alt="" coords="807,171,953,213"/>
+<area shape="rect" id="node37" href="$_texception__hendler_8h.html" title="exception/Texception\l_hendler.h" alt="" coords="52,486,199,527"/>
+<area shape="rect" id="node16" href="$_tiomanip_8h.html" title="Tiomanip.h" alt="" coords="837,261,923,288"/>
+<area shape="rect" id="node17" href="$_tiostream_8h.html" title="Tiostream.h" alt="" coords="1408,493,1499,520"/>
+<area shape="rect" id="node22" href="$_tlocale_8h.html" title="Tlocale.h" alt="" coords="928,336,1001,363"/>
+<area shape="rect" id="node34" href="$_tiomanip__standart_8h.html" title="iomanip/Tiomanip_standart.h" alt="" coords="383,336,572,363"/>
+<area shape="rect" id="node35" href="$_tiomanip__extentions_8h.html" title="iomanip/Tiomanip_extentions.h" alt="" coords="693,336,896,363"/>
+<area shape="rect" id="node24" href="$_tlocale__config_8h.html" title="Tlocale_config.h" alt="" coords="1037,651,1153,677"/>
+<area shape="rect" id="node25" href="$_tlocale__facets_8h.html" title="locale/Tlocale_facets.h" alt="" coords="998,576,1153,603"/>
+<area shape="rect" id="node26" href="$_tlocale__class_8h.html" title="locale/Tlocale_class.h" alt="" coords="962,493,1112,520"/>
+<area shape="rect" id="node29" href="$_tlocale__alg_8h.html" title="locale/Tlocale_alg.h" alt="" coords="639,411,776,437"/>
+<area shape="rect" id="node36" href="$_tstdlib_8h.html" title="Tstdlib.h" alt="" coords="1569,651,1641,677"/>
+</map>

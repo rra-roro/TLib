@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Исходный файл include/Tiomanip.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Tiomanip.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_tiomanip_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">*   Файл Tiomanip.h - содержит классы для создания манипуляторов потоков с аргументами</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">*</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">*   Версия файла 1.0</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">*   Версия файла 2.0 - Добавил манипулятр TabRight -выравнивает текст в колонку, прижатую</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">*                      к правой стороне окна.</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">*</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef TIO_MANIP</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TIO_MANIP</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#ifndef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="_tiomanip_8h.html#ab327acd0a24a2ccb9dfc3af0a807172f">   15</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tstring_8h.html">Tstring.h</a>&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tiostream_8h.html">Tiostream.h</a>&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tlocale_8h.html">Tlocale.h</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;iomanip&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tiomanip__standart_8h.html">iomanip/Tiomanip_standart.h</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #include &lt;<a class="code" href="iomanip__win_8h.html">win/iomanip_win.h</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_tiomanip__extentions_8h.html">iomanip/Tiomanip_extentions.h</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>tlib</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      <span class="comment">//========================================================================================</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="comment">// Объявим манипуляторы с двумя аргументами:</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="comment">// Манипулятор Color()</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="comment">// для изменения цвета выводимого текста</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="comment">// ColorText         - Цвет текста</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="comment">// ColorBackground   - Цвет фона</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">   43</a></span>&#160;      <span class="keyword">enum</span> <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">EnumColor</a></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      {</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a9af2774498a02f69bc53885c3aa407d3">   45</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a9af2774498a02f69bc53885c3aa407d3">black</a> = 49,</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a44b675c0bcf9f4ddcb9efa06a65650f3">   46</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a44b675c0bcf9f4ddcb9efa06a65650f3">dark_red</a> = 31,</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aeabdd5806a535a8af3ba2b0fb485089e">   47</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aeabdd5806a535a8af3ba2b0fb485089e">dark_green</a> = 32,</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a19c782082ea8b06b9811f3343c5e007b">   48</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a19c782082ea8b06b9811f3343c5e007b">dark_yellow</a> = 33,</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae7e8cdeb8d30bb95c592b25734590dc2">   49</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae7e8cdeb8d30bb95c592b25734590dc2">dark_blue</a> = 34,</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a27442138d0213afdb257a359c3e594a1">   50</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a27442138d0213afdb257a359c3e594a1">dark_pink</a> = 35,</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a30a59444e047e1f0887b4997f5daf84f">   51</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a30a59444e047e1f0887b4997f5daf84f">dark_cyan</a> = 36,</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aaba23b393ab758cb81fba3dd0ee2aba3">   52</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aaba23b393ab758cb81fba3dd0ee2aba3">dark_grey</a> = 37,</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae59aaef228c957028b4f166922764879">   53</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae59aaef228c957028b4f166922764879">red</a> = 91,</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a529a3221fa0457e962a27ff79e2a1dd2">   54</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a529a3221fa0457e962a27ff79e2a1dd2">green</a> = 92,</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a67d9b87aa3f7d82c5a789ca214921346">   55</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a67d9b87aa3f7d82c5a789ca214921346">yellow</a> = 93,</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a25a6cd7fa1931d5904ba563588b271de">   56</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a25a6cd7fa1931d5904ba563588b271de">blue</a> = 94,</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a12e14fc41583de51d0e5d7d987164c50">   57</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a12e14fc41583de51d0e5d7d987164c50">pink</a> = 95,</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ad0e1eb00b5cac307c374d04d3b2a7925">   58</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ad0e1eb00b5cac307c374d04d3b2a7925">cyan</a> = 96,</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a292eb2b1f29fb1b26f7a5c7fe64bfc29">   59</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a292eb2b1f29fb1b26f7a5c7fe64bfc29">grey</a> = 97,</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a1621fd78cec80ccd63932f98e5476c9f">   60</a></span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a1621fd78cec80ccd63932f98e5476c9f">white</a> = 39,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      };</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classtlib_1_1_color.html">   63</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classtlib_1_1_color.html">Color</a></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">EnumColor</a> ColorText;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">EnumColor</a> ColorFone;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classtlib_1_1_color.html#a829655da70fa309b86570193fab131bd">   69</a></span>&#160;            <a class="code" href="classtlib_1_1_color.html#a829655da70fa309b86570193fab131bd">Color</a>(<a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">EnumColor</a> ColorText = <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a292eb2b1f29fb1b26f7a5c7fe64bfc29">grey</a>, <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">EnumColor</a> ColorFone = <a class="code" href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a9af2774498a02f69bc53885c3aa407d3">black</a>) : ColorText(ColorText), ColorFone(ColorFone){};</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classtlib_1_1_color.html#aeb7530290ea28d63d744c061cbd784de">   71</a></span>&#160;            <span class="keyword">friend</span> <span class="keyword">inline</span> std::iostream&amp; <a class="code" href="classtlib_1_1_color.html#aeb7530290ea28d63d744c061cbd784de">operator&lt;&lt;</a>(std::iostream&amp; ios, [[maybe_unused]] <span class="keyword">const</span> <a class="code" href="classtlib_1_1_color.html">Color</a>&amp; c) { <span class="keywordflow">return</span> ios; };</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classtlib_1_1_color.html#ab349fb9d55402ec5b392e2cf2bb7ed65">   72</a></span>&#160;            <span class="keyword">friend</span> <span class="keyword">inline</span> std::wiostream&amp; <a class="code" href="classtlib_1_1_color.html#ab349fb9d55402ec5b392e2cf2bb7ed65">operator&lt;&lt;</a>(std::wiostream&amp; wios, [[maybe_unused]] <span class="keyword">const</span> <a class="code" href="classtlib_1_1_color.html">Color</a>&amp; c) { <span class="keywordflow">return</span> wios; };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">template</span> &lt;<span class="keyword">class</span> _Elem&gt;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classtlib_1_1_color.html#ab6d82a806327b9eec09f8f224e687bc7">   75</a></span>&#160;            <span class="keyword">friend</span> <span class="keyword">inline</span> std::basic_ostream&lt;_Elem&gt;&amp; operator&lt;&lt;(std::basic_ostream&lt;_Elem&gt;&amp; os, [[maybe_unused]]  <span class="keyword">const</span> <a class="code" href="classtlib_1_1_color.html">Color</a>&amp; c)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                  <span class="comment">//os &lt;&lt; TemplateTypeOfStr(&quot;\033[&quot;, _Elem) &lt;&lt; (c.ColorFone + 10) &lt;&lt; TemplateTypeOfStr(&quot;;&quot;, _Elem) &lt;&lt; c.ColorText &lt;&lt; TemplateTypeOfStr(&quot;m&quot;, _Elem);</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                  <span class="comment">//os.clear();</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                  <span class="keywordflow">return</span> os;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      };</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif // TIO_MANIP</span></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a529a3221fa0457e962a27ff79e2a1dd2"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a529a3221fa0457e962a27ff79e2a1dd2">tlib::green</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:54</div></div>
+<div class="ttc" id="_tstring_8h_html"><div class="ttname"><a href="_tstring_8h.html">Tstring.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a292eb2b1f29fb1b26f7a5c7fe64bfc29"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a292eb2b1f29fb1b26f7a5c7fe64bfc29">tlib::grey</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:59</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a27442138d0213afdb257a359c3e594a1"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a27442138d0213afdb257a359c3e594a1">tlib::dark_pink</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:50</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a25a6cd7fa1931d5904ba563588b271de"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a25a6cd7fa1931d5904ba563588b271de">tlib::blue</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:56</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a19c782082ea8b06b9811f3343c5e007b"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a19c782082ea8b06b9811f3343c5e007b">tlib::dark_yellow</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:48</div></div>
+<div class="ttc" id="iomanip__win_8h_html"><div class="ttname"><a href="iomanip__win_8h.html">iomanip_win.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a1621fd78cec80ccd63932f98e5476c9f"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a1621fd78cec80ccd63932f98e5476c9f">tlib::white</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:60</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a12e14fc41583de51d0e5d7d987164c50"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a12e14fc41583de51d0e5d7d987164c50">tlib::pink</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:57</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66ae7e8cdeb8d30bb95c592b25734590dc2"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae7e8cdeb8d30bb95c592b25734590dc2">tlib::dark_blue</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:49</div></div>
+<div class="ttc" id="_tlocale_8h_html"><div class="ttname"><a href="_tlocale_8h.html">Tlocale.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66">tlib::EnumColor</a></div><div class="ttdeci">EnumColor</div><div class="ttdef"><b>Definition:</b> Tiomanip.h:43</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a9af2774498a02f69bc53885c3aa407d3"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a9af2774498a02f69bc53885c3aa407d3">tlib::black</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:45</div></div>
+<div class="ttc" id="classtlib_1_1_color_html_aeb7530290ea28d63d744c061cbd784de"><div class="ttname"><a href="classtlib_1_1_color.html#aeb7530290ea28d63d744c061cbd784de">tlib::Color::operator&lt;&lt;</a></div><div class="ttdeci">friend std::iostream &amp; operator&lt;&lt;(std::iostream &amp;ios, [[maybe_unused]] const Color &amp;c)</div><div class="ttdef"><b>Definition:</b> Tiomanip.h:71</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66ae59aaef228c957028b4f166922764879"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ae59aaef228c957028b4f166922764879">tlib::red</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:53</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a67d9b87aa3f7d82c5a789ca214921346"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a67d9b87aa3f7d82c5a789ca214921346">tlib::yellow</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:55</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66ad0e1eb00b5cac307c374d04d3b2a7925"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66ad0e1eb00b5cac307c374d04d3b2a7925">tlib::cyan</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:58</div></div>
+<div class="ttc" id="_tiomanip__extentions_8h_html"><div class="ttname"><a href="_tiomanip__extentions_8h.html">Tiomanip_extentions.h</a></div></div>
+<div class="ttc" id="classtlib_1_1_color_html_ab349fb9d55402ec5b392e2cf2bb7ed65"><div class="ttname"><a href="classtlib_1_1_color.html#ab349fb9d55402ec5b392e2cf2bb7ed65">tlib::Color::operator&lt;&lt;</a></div><div class="ttdeci">friend std::wiostream &amp; operator&lt;&lt;(std::wiostream &amp;wios, [[maybe_unused]] const Color &amp;c)</div><div class="ttdef"><b>Definition:</b> Tiomanip.h:72</div></div>
+<div class="ttc" id="_tiostream_8h_html"><div class="ttname"><a href="_tiostream_8h.html">Tiostream.h</a></div></div>
+<div class="ttc" id="classtlib_1_1_color_html"><div class="ttname"><a href="classtlib_1_1_color.html">tlib::Color</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:63</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a30a59444e047e1f0887b4997f5daf84f"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a30a59444e047e1f0887b4997f5daf84f">tlib::dark_cyan</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:51</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66aaba23b393ab758cb81fba3dd0ee2aba3"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aaba23b393ab758cb81fba3dd0ee2aba3">tlib::dark_grey</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:52</div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66aeabdd5806a535a8af3ba2b0fb485089e"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66aeabdd5806a535a8af3ba2b0fb485089e">tlib::dark_green</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:47</div></div>
+<div class="ttc" id="_tiomanip__standart_8h_html"><div class="ttname"><a href="_tiomanip__standart_8h.html">Tiomanip_standart.h</a></div></div>
+<div class="ttc" id="namespacetlib_html_a1020528de1c95adea79a73b46e74ff66a44b675c0bcf9f4ddcb9efa06a65650f3"><div class="ttname"><a href="namespacetlib.html#a1020528de1c95adea79a73b46e74ff66a44b675c0bcf9f4ddcb9efa06a65650f3">tlib::dark_red</a></div><div class="ttdef"><b>Definition:</b> Tiomanip.h:46</div></div>
+<div class="ttc" id="classtlib_1_1_color_html_a829655da70fa309b86570193fab131bd"><div class="ttname"><a href="classtlib_1_1_color.html#a829655da70fa309b86570193fab131bd">tlib::Color::Color</a></div><div class="ttdeci">Color(EnumColor ColorText=grey, EnumColor ColorFone=black)</div><div class="ttdef"><b>Definition:</b> Tiomanip.h:69</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>

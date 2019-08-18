@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>TLib: Файл include/Tcl_parser.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TLib
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Файлы</span></a></li>
+      <li><a href="globals.html"><span>Список&#160;членов&#160;всех&#160;файлов</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Классы</a> &#124;
+<a href="#namespaces">Пространства имен</a> &#124;
+<a href="#define-members">Макросы</a> &#124;
+<a href="#enum-members">Перечисления</a>  </div>
+  <div class="headertitle">
+<div class="title">Файл Tcl_parser.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;<a class="el" href="_tstring_8h_source.html">Tstring.h</a>&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
+<code>#include &lt;<a class="el" href="select__lib_8h_source.html">win/select_lib.h</a>&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для Tcl_parser.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_tcl__parser_8h__incl.png" border="0" usemap="#include_2_tcl__parser_8h" alt=""/></div>
+<map name="include_2_tcl__parser_8h" id="include_2_tcl__parser_8h">
+<area shape="rect" id="node2" href="_tstring_8h.html" title="Tstring.h" alt="" coords="283,80,356,107"/><area shape="rect" id="node9" href="select__lib_8h.html" title="win/select_lib.h" alt="" coords="503,229,613,256"/><area shape="rect" id="node6" href="_tcodecvt_8h.html" title="Tcodecvt.h" alt="" coords="318,155,404,181"/><area shape="rect" id="node8" href="char8__t_8h.html" title="char8_t.h" alt="" coords="402,229,477,256"/><area shape="rect" id="node10" href="_ttype_8h.html" title="Ttype.h" alt="" coords="13,155,80,181"/></map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Граф файлов, в которые включается этот файл:</div>
+<div class="dyncontent">
+<div class="center"><img src="_tcl__parser_8h__dep__incl.png" border="0" usemap="#include_2_tcl__parser_8hdep" alt=""/></div>
+<map name="include_2_tcl__parser_8hdep" id="include_2_tcl__parser_8hdep">
+<area shape="rect" id="node2" href="test_c_l_parser_8cpp.html" title="src_examples/testCLParser.cpp" alt="" coords="5,88,213,115"/><area shape="rect" id="node3" href="test_i_n_i_parser_8cpp.html" title="src_examples/testINIParser.cpp" alt="" coords="239,88,448,115"/><area shape="rect" id="node4" href="_tcl__parser__impl_8cpp.html" title="src_lib/clparser/Tcl\l_parser_impl.cpp" alt="" coords="474,81,605,122"/><area shape="rect" id="node5" href="_tcl__parser__interface__impl_8cpp.html" title="src_lib/clparser/Tcl\l_parser_interface_impl.cpp" alt="" coords="631,81,809,122"/></map>
+</div>
+</div>
+<p><a href="_tcl__parser_8h_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Классы</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtlib_1_1parser_1_1command__line__t.html">tlib::parser::command_line_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtlib_1_1parser_1_1command__line__t_1_1unknown__otion__t.html">tlib::parser::command_line_t::unknown_otion_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtlib_1_1parser_1_1command__line__t_1_1non__options__t.html">tlib::parser::command_line_t::non_options_t&lt; Type &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtlib_1_1parser_1_1command__line__t_1_1options__t.html">tlib::parser::command_line_t::options_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Пространства имен</h2></td></tr>
+<tr class="memitem:namespacetlib_1_1parser"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib_1_1parser.html">tlib::parser</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr class="memitem:a31455dbf86aed03b896072878a56bc4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_tcl__parser_8h.html#a31455dbf86aed03b896072878a56bc4b">_LIB_NAME</a>&#160;&#160;&#160;&quot;tlib_parsers&quot;</td></tr>
+<tr class="separator:a31455dbf86aed03b896072878a56bc4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Перечисления</h2></td></tr>
+<tr class="memitem:a104beefc7f1a4ed1d15351f1e794878f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetlib_1_1parser.html#a104beefc7f1a4ed1d15351f1e794878f">tlib::parser::_argtype</a> { <a class="el" href="namespacetlib_1_1parser.html#a104beefc7f1a4ed1d15351f1e794878fa26b5a1495d45caca38f9b282abeb4793">tlib::parser::no_argument</a>, 
+<a class="el" href="namespacetlib_1_1parser.html#a104beefc7f1a4ed1d15351f1e794878fa965a3a2e2047de97aeaee167d68de1fc">tlib::parser::required_argument</a>, 
+<a class="el" href="namespacetlib_1_1parser.html#a104beefc7f1a4ed1d15351f1e794878fabc9c4f74f9be998d7d239cf815684a6f">tlib::parser::optional_argument</a>
+ }</td></tr>
+<tr class="separator:a104beefc7f1a4ed1d15351f1e794878f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Макросы</h2>
+<a class="anchor" id="a31455dbf86aed03b896072878a56bc4b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _LIB_NAME&#160;&#160;&#160;&quot;tlib_parsers&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.6
+</small></address>
+</body>
+</html>
